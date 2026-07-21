@@ -3,8 +3,17 @@
   "name": "Cam360 — Virtual Camera Studio",
   "version": "1.0.0",
   "description": "Intercept and enhance your webcam on any website (Meet, Discord, Zoom web...). Flip, rotate, adjust lighting, blur and zoom — live.",
-  "permissions": ["storage", "scripting", "activeTab"],
+  "permissions": ["storage", "scripting", "activeTab", "unlimitedStorage"],
   "host_permissions": ["<all_urls>"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["vendor/mediapipe/*", "vendor/mediapipe/wasm/*"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "action": {
     "default_title": "Cam360 — Virtual Camera Studio",
     "default_popup": "popup/popup.html",

@@ -39,8 +39,26 @@ Both stay in sync because they share the same stored settings.
 | Brightness / Contrast / Saturation | 0–200% |
 | Hue rotate | 0–360° |
 | Blur (soft focus) | 0–20px |
+| Beautify (skin smoothing) | 0–100 |
+| Low-light boost | toggle (lifts exposure in dim rooms) |
 | Digital zoom | 100–250% |
 | Presets | Warm · Cool · Bright · B&W · Soft focus |
+| **Background — Blur** | AI person segmentation, 2–30px blur |
+| **Background — Colour** | any solid colour |
+| **Background — Scene** | 5 built-in gradient scenes + upload your own image |
+| Edge feather | 0–12px (softens the cut-out edge) |
+
+### AI background (MediaPipe)
+
+Background blur/replacement uses Google's **MediaPipe Selfie Segmentation** model,
+bundled **locally** in `vendor/mediapipe/` — no network calls, nothing loaded from a
+CDN at runtime. When you pick a background mode the engine loads the WebAssembly
+model once, then per frame it separates you from your background and composites you
+over a blurred feed, a solid colour, a gradient scene, or your own uploaded image.
+It runs on the GPU when available and falls back to CPU.
+
+The engine only loads while a background mode is active, so there's no cost when
+you're just using the lighting/flip controls.
 
 ## Install (developer / unpacked)
 
@@ -64,10 +82,11 @@ enable **"Allow access to file URLs"** on the Cam360 card in `chrome://extension
 
 ```
 manifest.json          MV3 manifest (content scripts in MAIN + ISOLATED worlds)
-src/inject.js          MAIN world  — overrides getUserMedia, canvas processing engine
+src/inject.js          MAIN world  — getUserMedia override, canvas engine + segmentation
 src/bridge.js          ISOLATED    — chrome.storage <-> page bridge, draggable overlay
 src/background.js       service worker — keyboard-shortcut relay
 popup/                 toolbar popup UI (html/css/js)
+vendor/mediapipe/      bundled MediaPipe vision WASM + selfie segmentation model
 icons/                 generated PNG icons
 test/test.html         standalone verification page
 ```
@@ -93,9 +112,14 @@ forwards settings across via `window.postMessage`. Both content scripts run at
   module (macOS: CoreMediaIO / a Core Media I/O extension; Windows: a DirectShow /
   Media Foundation virtual camera; Linux: `v4l2loopback`). That's a separate native
   project, not a browser extension. See "Going system-wide" below.
-- Effects are applied via canvas filters, not ML — so there's no true background
-  replacement/segmentation here (that would need a body-segmentation model such as
-  MediaPipe Selfie Segmentation, which can be added to the canvas pipeline later).
+- **Background effects need to load a WebAssembly model into the page.** On most
+  sites this just works. A few sites with a very strict Content-Security-Policy
+  (Google Meet is the notable one) block extensions from loading WASM into their
+  page — there, the background feature disables itself and shows a short notice,
+  while **every other effect (flip, lighting, zoom, blur, beautify) keeps working**.
+  Meet also has its own built-in background blur you can use alongside Cam360's
+  lighting tweaks. On Discord-in-browser, Whereby, Jitsi, most custom video apps,
+  and the local test page, Cam360's own background effects run fine.
 
 ### Going system-wide (roadmap)
 

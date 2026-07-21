@@ -44,6 +44,24 @@ kbd {
 .slider .name { opacity: .85; }
 .slider .val { color: #c4b5fd; font-variant-numeric: tabular-nums; }
 .slider input[type=range] { width: 100%; accent-color: #a78bfa; cursor: pointer; }
+.hidden { display: none !important; }
+.bgmodes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+.bgmodes button {
+  padding: 8px 4px; border: 1px solid rgba(167,139,250,.25); border-radius: 8px;
+  background: rgba(255,255,255,.04); color: #ddd6fe; cursor: pointer; font-size: 12px; transition: all .12s;
+}
+.bgmodes button.active { background: linear-gradient(90deg,#7c3aed,#6366f1); border-color: #a78bfa; color: #fff; }
+.colorwrap { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; color: #ddd6fe; }
+.colorwrap input[type=color] { width: 48px; height: 30px; border: none; background: none; cursor: pointer; }
+.scenes { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 10px; }
+.scenes button {
+  height: 34px; border: 2px solid transparent; border-radius: 8px; cursor: pointer;
+  color: #fff; font-size: 18px; font-weight: 700;
+}
+.scenes button.active { border-color: #fff; box-shadow: 0 0 0 2px #a78bfa; }
+#customScene { background: rgba(255,255,255,.08); border: 1px dashed rgba(167,139,250,.5); }
+.status { font-size: 11px; line-height: 1.4; min-height: 0; color: #c4b5fd; }
+.status.err { color: #fca5a5; }
 .ftr { display: flex; gap: 8px; margin-top: 4px; }
 .ghost {
   flex: 1; padding: 9px; border: 1px solid rgba(167,139,250,.3); border-radius: 9px;

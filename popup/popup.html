@@ -8,11 +8,11 @@
 </head>
 <body>
   <header class="hdr">
-    <div class="brand"><span class="dot"></span> Cam360</div>
+    <div class="brand"><span class="dot">◉</span> Cam360</div>
     <button id="power" class="power">ON</button>
   </header>
 
-  <p class="hint" id="hint">Enhancements apply to any website that uses your camera. Open the panel in a call with <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd>.</p>
+  <p class="hint">Enhances your camera on any website that uses it. Open the panel in a call with <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd>.</p>
 
   <section class="group">
     <div class="row3">
@@ -35,6 +35,51 @@
   </section>
 
   <section class="group sliders" id="sliders"><!-- sliders injected --></section>
+
+  <section class="group">
+    <div class="row3">
+      <button class="chip" data-toggle="lowLight">☀ Low-light</button>
+    </div>
+  </section>
+
+  <section class="group">
+    <label class="lbl">Background</label>
+    <div class="bgmodes" id="bgmodes">
+      <button data-bg="off">Off</button>
+      <button data-bg="blur">Blur</button>
+      <button data-bg="color">Color</button>
+      <button data-bg="image">Scene</button>
+    </div>
+
+    <div id="bgBlurWrap" class="slider hidden">
+      <div class="top"><span class="name">BG blur strength</span><span class="val"></span></div>
+      <input type="range" min="2" max="30" data-slider="bgBlur">
+    </div>
+
+    <div id="bgColorWrap" class="colorwrap hidden">
+      <span>Colour</span>
+      <input type="color" id="bgColor" value="#0b1020">
+    </div>
+
+    <div id="bgSceneWrap" class="hidden">
+      <div class="scenes" id="scenes">
+        <button data-scene="grad-purple" style="background:linear-gradient(135deg,#4f46e5,#db2777)"></button>
+        <button data-scene="grad-sunset" style="background:linear-gradient(135deg,#f59e0b,#7c3aed)"></button>
+        <button data-scene="grad-ocean" style="background:linear-gradient(135deg,#0ea5e9,#0f172a)"></button>
+        <button data-scene="grad-forest" style="background:linear-gradient(135deg,#065f46,#a7f3d0)"></button>
+        <button data-scene="grad-mono" style="background:linear-gradient(135deg,#374151,#111827)"></button>
+        <button data-scene="custom" id="customScene" title="Upload image">+</button>
+      </div>
+      <input type="file" id="bgUpload" accept="image/*" hidden>
+    </div>
+
+    <div id="featherWrap" class="slider hidden">
+      <div class="top"><span class="name">Edge feather</span><span class="val"></span></div>
+      <input type="range" min="0" max="12" data-slider="feather">
+    </div>
+
+    <div id="status" class="status"></div>
+  </section>
 
   <footer class="ftr">
     <button id="panel" class="ghost">Show in-call panel</button>
