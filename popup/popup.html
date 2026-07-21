@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="popup.css" />
+  <title>Cam360</title>
+</head>
+<body>
+  <header class="hdr">
+    <div class="brand"><span class="dot"></span> Cam360</div>
+    <button id="power" class="power">ON</button>
+  </header>
+
+  <p class="hint" id="hint">Enhancements apply to any website that uses your camera. Open the panel in a call with <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd>.</p>
+
+  <section class="group">
+    <div class="row3">
+      <button class="chip" data-toggle="mirror">⇋ Mirror</button>
+      <button class="chip" data-toggle="flipV">⇅ Flip</button>
+      <button class="chip" id="rotate">⟳ 0°</button>
+    </div>
+  </section>
+
+  <section class="group">
+    <label class="lbl">Preset</label>
+    <div class="presets" id="presets">
+      <button data-preset="none">None</button>
+      <button data-preset="warm">Warm</button>
+      <button data-preset="cool">Cool</button>
+      <button data-preset="bright">Bright</button>
+      <button data-preset="bw">B&amp;W</button>
+      <button data-preset="soft">Soft focus</button>
+    </div>
+  </section>
+
+  <section class="group sliders" id="sliders"><!-- sliders injected --></section>
+
+  <footer class="ftr">
+    <button id="panel" class="ghost">Show in-call panel</button>
+    <button id="reset" class="ghost">Reset</button>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  width: 300px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: #17122b;
+  color: #f5f3ff;
+  padding: 12px;
+  font-size: 13px;
+}
+.hdr { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.brand { flex: 1; font-weight: 800; font-size: 16px; letter-spacing: .3px; }
+.dot { color: #a78bfa; }
+.power {
+  border: none; border-radius: 8px; padding: 5px 14px; font-weight: 800;
+  font-size: 12px; color: #fff; cursor: pointer; background: #22c55e;
+  transition: background .15s;
+}
+.power.off { background: #6b7280; }
+.hint { font-size: 11px; line-height: 1.5; color: #b9a9e6; margin-bottom: 12px; }
+kbd {
+  background: rgba(167,139,250,.2); border-radius: 4px; padding: 1px 5px;
+  font-size: 10px; font-family: inherit;
+}
+.group { margin-bottom: 12px; }
+.lbl { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: #9d8fc7; margin-bottom: 6px; }
+.row3 { display: flex; gap: 6px; }
+.chip, #rotate {
+  flex: 1; padding: 9px 4px; border: 1px solid rgba(167,139,250,.3);
+  border-radius: 9px; background: rgba(255,255,255,.05); color: #e9d5ff;
+  cursor: pointer; font-size: 12px; transition: all .12s;
+}
+.chip.active, #rotate.active {
+  background: linear-gradient(90deg,#7c3aed,#6366f1); border-color: #a78bfa; color: #fff;
+}
+.presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.presets button {
+  padding: 8px 4px; border: 1px solid rgba(167,139,250,.25); border-radius: 8px;
+  background: rgba(255,255,255,.04); color: #ddd6fe; cursor: pointer; font-size: 11px;
+  transition: all .12s;
+}
+.presets button.active { background: linear-gradient(90deg,#7c3aed,#6366f1); border-color: #a78bfa; color: #fff; }
+.sliders { display: flex; flex-direction: column; gap: 11px; }
+.slider .top { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.slider .name { opacity: .85; }
+.slider .val { color: #c4b5fd; font-variant-numeric: tabular-nums; }
+.slider input[type=range] { width: 100%; accent-color: #a78bfa; cursor: pointer; }
+.ftr { display: flex; gap: 8px; margin-top: 4px; }
+.ghost {
+  flex: 1; padding: 9px; border: 1px solid rgba(167,139,250,.3); border-radius: 9px;
+  background: transparent; color: #ddd6fe; cursor: pointer; font-weight: 600; font-size: 12px;
+  transition: background .12s;
+}
+.ghost:hover { background: rgba(167,139,250,.12); }
