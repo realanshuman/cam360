@@ -37,9 +37,7 @@
   <section class="group sliders" id="sliders"><!-- sliders injected --></section>
 
   <section class="group">
-    <div class="row3">
-      <button class="chip" data-toggle="lowLight">☀ Low-light</button>
-    </div>
+    <div class="row3"><button class="chip" data-toggle="lowLight">☀ Low-light boost</button></div>
   </section>
 
   <section class="group">
@@ -48,7 +46,17 @@
       <button data-bg="off">Off</button>
       <button data-bg="blur">Blur</button>
       <button data-bg="color">Color</button>
-      <button data-bg="image">Scene</button>
+      <button data-bg="scene">Scene</button>
+      <button data-bg="video">Video</button>
+    </div>
+
+    <div id="keyerWrap" class="hidden">
+      <label class="lbl">Cut-out method</label>
+      <div class="keyer" id="keyer">
+        <button data-keyer="ai">AI (best quality)</button>
+        <button data-keyer="chroma">Green screen</button>
+      </div>
+      <p class="sub" id="keyerNote"></p>
     </div>
 
     <div id="bgBlurWrap" class="slider hidden">
@@ -57,8 +65,7 @@
     </div>
 
     <div id="bgColorWrap" class="colorwrap hidden">
-      <span>Colour</span>
-      <input type="color" id="bgColor" value="#0b1020">
+      <span>Colour</span><input type="color" id="bgColor" value="#0b1020">
     </div>
 
     <div id="bgSceneWrap" class="hidden">
@@ -73,12 +80,57 @@
       <input type="file" id="bgUpload" accept="image/*" hidden>
     </div>
 
+    <div id="bgVideoWrap" class="hidden">
+      <div class="scenes" id="vscenes">
+        <button data-vscene="anim-aurora" style="background:linear-gradient(135deg,#10b981,#4f46e5,#db2777)">✦</button>
+        <button data-vscene="anim-waves" style="background:linear-gradient(135deg,#0ea5e9,#0b1020)">〜</button>
+        <button data-vscene="customv" id="customVScene" title="Upload video">+</button>
+      </div>
+      <input type="file" id="bgvUpload" accept="video/*" hidden>
+    </div>
+
     <div id="featherWrap" class="slider hidden">
       <div class="top"><span class="name">Edge feather</span><span class="val"></span></div>
       <input type="range" min="0" max="12" data-slider="feather">
     </div>
 
+    <div id="chromaWrap" class="hidden">
+      <div class="colorwrap"><span>Key colour</span><input type="color" id="chromaColor" value="#00c000"></div>
+      <div class="slider">
+        <div class="top"><span class="name">Key strength</span><span class="val"></span></div>
+        <input type="range" min="5" max="90" data-slider="chromaThreshold">
+      </div>
+      <div class="slider">
+        <div class="top"><span class="name">Key softness</span><span class="val"></span></div>
+        <input type="range" min="1" max="60" data-slider="chromaSmooth">
+      </div>
+    </div>
+
     <div id="status" class="status"></div>
+  </section>
+
+  <section class="group">
+    <label class="lbl">Presence</label>
+    <div class="row3">
+      <button class="chip" data-toggle="freeze">❚❚ Freeze</button>
+      <button class="chip" data-toggle="brb">☕ BRB</button>
+      <button class="chip" id="snapshot">📷 Snapshot</button>
+    </div>
+    <div id="brbWrap" class="hidden">
+      <input type="text" id="brbText" class="txt" placeholder="Be right back" maxlength="40">
+      <button id="brbUploadBtn" class="ghost small">Set BRB image…</button>
+      <input type="file" id="brbUpload" accept="image/*" hidden>
+    </div>
+  </section>
+
+  <section class="group">
+    <label class="lbl">Overlays</label>
+    <div class="ovrow"><button class="chip" data-toggle="showName">🏷 Name</button>
+      <input type="text" id="nameText" class="txt" placeholder="Your name" maxlength="40"></div>
+    <div class="ovrow"><button class="chip" data-toggle="showLogo">★ Logo</button>
+      <button id="logoUploadBtn" class="ghost small">Upload logo…</button>
+      <input type="file" id="logoUpload" accept="image/*" hidden></div>
+    <div class="row3"><button class="chip" data-toggle="showClock">🕐 Live clock</button></div>
   </section>
 
   <footer class="ftr">

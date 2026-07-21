@@ -43,10 +43,17 @@ Both stay in sync because they share the same stored settings.
 | Low-light boost | toggle (lifts exposure in dim rooms) |
 | Digital zoom | 100–250% |
 | Presets | Warm · Cool · Bright · B&W · Soft focus |
-| **Background — Blur** | AI person segmentation, 2–30px blur |
+| **Background — Blur** | 2–30px blur |
 | **Background — Colour** | any solid colour |
 | **Background — Scene** | 5 built-in gradient scenes + upload your own image |
-| Edge feather | 0–12px (softens the cut-out edge) |
+| **Background — Video** | animated built-ins (aurora, waves) + upload your own video loop |
+| **Cut-out method (keyer)** | AI segmentation **or** green-screen (chroma key) |
+| Edge feather | 0–12px (softens the AI cut-out edge) |
+| Green-screen key colour / strength / softness | pick colour, tune threshold & edge |
+| **Freeze frame** | hold your last frame instantly |
+| **Be right back card** | show a custom image or text card without cutting video |
+| **Snapshot** | save the processed feed to a PNG |
+| **Overlays** | name lower-third, logo watermark, live clock |
 
 ### AI background (MediaPipe)
 
@@ -59,6 +66,35 @@ It runs on the GPU when available and falls back to CPU.
 
 The engine only loads while a background mode is active, so there's no cost when
 you're just using the lighting/flip controls.
+
+### Two ways to remove your background (keyer)
+
+Once you choose a background (blur / colour / scene / video) you pick **how** you're
+separated from it:
+
+- **AI** — MediaPipe segmentation. Best quality, no green screen needed. Blocked on
+  a few strict-CSP sites (Google Meet).
+- **Green screen (chroma key)** — pure JavaScript colour keying that runs **on every
+  site, including Google Meet**. Sit in front of a solid-colour backdrop, pick the
+  key colour (defaults to green), and tune *key strength* / *key softness*. This is
+  the reliable path where the AI model can't load.
+
+### Background content
+
+- **Blur** — a blurred version of your real background.
+- **Colour** — any solid colour.
+- **Scene** — 5 gradient scenes, or upload your own image.
+- **Video** — built-in animated backdrops (aurora, waves) drawn in real time, or
+  upload your own looping video.
+
+### Presence & overlays
+
+- **Freeze** holds your last frame; **Be right back** shows a custom image or text
+  card — both without dropping your video track, so the call keeps you "on".
+- **Snapshot** saves the exact processed frame others see to a PNG.
+- **Overlays** burn a name lower-third, a logo watermark (top-right), and/or a live
+  clock into the outgoing feed. Name and logo text/images are set in the popup;
+  quick on/off toggles live in the in-call panel too.
 
 ## Install (developer / unpacked)
 

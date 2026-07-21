@@ -45,7 +45,22 @@ kbd {
 .slider .val { color: #c4b5fd; font-variant-numeric: tabular-nums; }
 .slider input[type=range] { width: 100%; accent-color: #a78bfa; cursor: pointer; }
 .hidden { display: none !important; }
-.bgmodes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+.sub { font-size: 10px; color: #9d8fc7; margin: 4px 0 8px; line-height: 1.4; }
+.keyer { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.keyer button {
+  padding: 8px 4px; border: 1px solid rgba(167,139,250,.25); border-radius: 8px;
+  background: rgba(255,255,255,.04); color: #ddd6fe; cursor: pointer; font-size: 11px; transition: all .12s;
+}
+.keyer button.active { background: linear-gradient(90deg,#7c3aed,#6366f1); border-color: #a78bfa; color: #fff; }
+.txt {
+  width: 100%; margin: 8px 0; padding: 8px 10px; border-radius: 8px; font-size: 12px;
+  border: 1px solid rgba(167,139,250,.3); background: rgba(255,255,255,.05); color: #f5f3ff;
+}
+.ghost.small { padding: 7px; font-size: 11px; margin-bottom: 4px; }
+.ovrow { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.ovrow .chip { flex: 0 0 auto; min-width: 84px; }
+.ovrow .txt, .ovrow .ghost { margin: 0; }
+.bgmodes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
 .bgmodes button {
   padding: 8px 4px; border: 1px solid rgba(167,139,250,.25); border-radius: 8px;
   background: rgba(255,255,255,.04); color: #ddd6fe; cursor: pointer; font-size: 12px; transition: all .12s;

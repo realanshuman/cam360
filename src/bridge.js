@@ -15,7 +15,10 @@
     brightness: 100, contrast: 100, saturation: 100,
     blur: 0, grayscale: 0, sepia: 0, hue: 0, zoom: 100,
     lowLight: false, beautify: 0,
-    bg: "off", bgBlur: 14, bgColor: "#0b1020", bgImage: "", feather: 4,
+    bg: "off", keyer: "ai", bgBlur: 14, bgColor: "#0b1020", bgImage: "", bgVideo: "", feather: 4,
+    chromaColor: "#00c000", chromaThreshold: 42, chromaSmooth: 14,
+    freeze: false, brb: false, brbText: "Be right back", brbImage: "",
+    showName: false, nameText: "", showLogo: false, logoImage: "", showClock: false,
     overlayVisible: false
   };
   const KEY = "cam360";
@@ -31,13 +34,21 @@
   // Tell the engine its base URL as early as possible (before settings land).
   window.postMessage({ __cam360: "base", baseURL: BASE }, "*");
 
-  // Receive runtime status from the engine.
+  // Receive runtime status + snapshot data from the engine.
   window.addEventListener("message", (e) => {
-    if (e.source !== window || !e.data || e.data.__cam360 !== "status") return;
-    status = e.data.value || status;
-    try { chrome.storage.local.set({ cam360_status: status }); } catch (_) {}
-    syncOverlay();
+    if (e.source !== window || !e.data) return;
+    if (e.data.__cam360 === "status") {
+      status = e.data.value || status;
+      try { chrome.storage.local.set({ cam360_status: status }); } catch (_) {}
+      syncOverlay();
+    } else if (e.data.__cam360 === "snapshotData" && e.data.dataURL) {
+      const a = document.createElement("a");
+      a.href = e.data.dataURL;
+      a.download = "cam360-" + Date.now() + ".png";
+      document.body.appendChild(a); a.click(); a.remove();
+    }
   });
+  function requestSnapshot() { window.postMessage({ __cam360: "snapshot" }, "*"); }
 
   function load() {
     chrome.storage.local.get(KEY, (res) => {
@@ -60,7 +71,9 @@
   });
 
   chrome.runtime.onMessage.addListener((msg) => {
-    if (msg && msg.__cam360 === "toggleOverlay") save({ overlayVisible: !current.overlayVisible });
+    if (!msg) return;
+    if (msg.__cam360 === "toggleOverlay") save({ overlayVisible: !current.overlayVisible });
+    else if (msg.__cam360 === "snapshot") requestSnapshot();
   });
 
   /* ---------------------- In-page control panel ---------------------- */
@@ -150,16 +163,50 @@
     body.appendChild(bgTitle);
 
     const bgRow = document.createElement("div");
-    bgRow.style.cssText = "display:flex;gap:6px";
+    bgRow.style.cssText = "display:flex;gap:6px;flex-wrap:wrap";
     els.bgBtns = {};
     BG_MODES.forEach(([mode, label]) => {
       const b = toggleBtn(label, () => save({ bg: mode }));
+      b.style.flex = "1 1 30%";
       els.bgBtns[mode] = b; bgRow.appendChild(b);
     });
     body.appendChild(bgRow);
 
+    // Keyer: AI segmentation vs green screen (chroma)
+    const keyRow = document.createElement("div");
+    keyRow.style.cssText = "display:flex;gap:6px";
+    els.keyAi = toggleBtn("AI", () => save({ keyer: "ai" }));
+    els.keyChroma = toggleBtn("Green screen", () => save({ keyer: "chroma" }));
+    keyRow.append(els.keyAi, els.keyChroma);
+    els.keyRow = keyRow;
+    body.appendChild(keyRow);
+
     sliderRow("bgBlur", "BG blur", 2, 30, "px", body);
     sliderRow("feather", "Edge feather", 0, 12, "px", body);
+    sliderRow("chromaThreshold", "Key strength", 5, 90, "", body);
+    sliderRow("chromaSmooth", "Key softness", 1, 60, "", body);
+
+    // Presence: freeze / be-right-back / snapshot
+    const presTitle = document.createElement("div");
+    presTitle.textContent = "PRESENCE";
+    presTitle.style.cssText = "font-size:10px;letter-spacing:.6px;color:#9d8fc7;margin-top:2px";
+    body.appendChild(presTitle);
+    const presRow = document.createElement("div");
+    presRow.style.cssText = "display:flex;gap:6px";
+    els.freeze = toggleBtn("❚❚ Freeze", () => save({ freeze: !current.freeze }));
+    els.brb = toggleBtn("☕ BRB", () => save({ brb: !current.brb }));
+    const snap = toggleBtn("📷 Snap", () => requestSnapshot());
+    presRow.append(els.freeze, els.brb, snap);
+    body.appendChild(presRow);
+
+    // Overlays: name / clock quick toggles (full editing in the popup)
+    const ovRow = document.createElement("div");
+    ovRow.style.cssText = "display:flex;gap:6px";
+    els.showName = toggleBtn("🏷 Name", () => save({ showName: !current.showName }));
+    els.showClock = toggleBtn("🕐 Clock", () => save({ showClock: !current.showClock }));
+    els.showLogo = toggleBtn("★ Logo", () => save({ showLogo: !current.showLogo }));
+    ovRow.append(els.showName, els.showClock, els.showLogo);
+    body.appendChild(ovRow);
 
     els.status = document.createElement("div");
     els.status.style.cssText = "font-size:11px;line-height:1.4;color:#c4b5fd;min-height:0";
@@ -171,7 +218,8 @@
     reset.onclick = () => save({
       mirror: false, flipV: false, rotate: 0, brightness: 100, contrast: 100, saturation: 100,
       blur: 0, grayscale: 0, sepia: 0, hue: 0, zoom: 100, lowLight: false, beautify: 0,
-      bg: "off", bgBlur: 14, feather: 4
+      bg: "off", keyer: "ai", bgBlur: 14, feather: 4, chromaThreshold: 42, chromaSmooth: 14,
+      freeze: false, brb: false, showName: false, showClock: false, showLogo: false
     });
     body.appendChild(reset);
 
@@ -197,16 +245,26 @@
     els.rotate.textContent = "⟳ " + current.rotate + "°";
     setActive(els.rotate, current.rotate !== 0);
     setActive(els.lowLight, current.lowLight);
-    ["brightness", "contrast", "saturation", "zoom", "blur", "beautify", "bgBlur", "feather"].forEach((k) => {
+    ["brightness", "contrast", "saturation", "zoom", "blur", "beautify", "bgBlur", "feather", "chromaThreshold", "chromaSmooth"].forEach((k) => {
       const el = els[k]; if (!el) return;
       el.input.value = current[k]; el.label.textContent = current[k] + el.unit;
     });
     Object.entries(els.bgBtns || {}).forEach(([mode, b]) => setActive(b, current.bg === mode));
     const bgActive = current.bg && current.bg !== "off";
+    const chroma = current.keyer === "chroma";
+    if (els.keyRow) els.keyRow.style.display = bgActive ? "flex" : "none";
+    setActive(els.keyAi, !chroma); setActive(els.keyChroma, chroma);
     if (els.bgBlur) els.bgBlur.wrap.style.display = current.bg === "blur" ? "" : "none";
-    if (els.feather) els.feather.wrap.style.display = bgActive ? "" : "none";
+    if (els.feather) els.feather.wrap.style.display = bgActive && !chroma ? "" : "none";
+    if (els.chromaThreshold) els.chromaThreshold.wrap.style.display = bgActive && chroma ? "" : "none";
+    if (els.chromaSmooth) els.chromaSmooth.wrap.style.display = bgActive && chroma ? "" : "none";
+    setActive(els.freeze, current.freeze);
+    setActive(els.brb, current.brb);
+    setActive(els.showName, current.showName);
+    setActive(els.showClock, current.showClock);
+    setActive(els.showLogo, current.showLogo);
     if (els.status) {
-      if (bgActive && status.message) {
+      if (bgActive && !chroma && status.message) {
         els.status.textContent = (status.segState === "error" ? "⚠ " : status.segState === "loading" ? "⏳ " : "✓ ") + status.message;
         els.status.style.color = status.segState === "error" ? "#fca5a5" : "#c4b5fd";
       } else els.status.textContent = "";
