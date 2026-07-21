@@ -76,7 +76,7 @@
 
   /* ----------------------- MediaPipe segmenter ----------------------- */
   let segmenter = null, segLoading = false;
-  const usesAiKeyer = () => settings.bg !== "off" && settings.keyer === "ai";
+  const usesAiKeyer = () => settings.enabled && settings.bg !== "off" && settings.keyer === "ai";
 
   async function maybeInitSegmenter() {
     if (segmenter || segLoading || !usesAiKeyer() || !baseURL) return;
@@ -215,7 +215,7 @@
     const ctx = canvas.getContext("2d", { alpha: false, desynchronized: true });
     const fg = document.createElement("canvas"), fgCtx = fg.getContext("2d");
     const bgLayer = document.createElement("canvas"), bgCtx = bgLayer.getContext("2d");
-    const cut = document.createElement("canvas"), cutCtx = cut.getContext("2d");
+    const cut = document.createElement("canvas"), cutCtx = cut.getContext("2d", { willReadFrequently: true });
     const maskCanvas = document.createElement("canvas"), maskCtx = maskCanvas.getContext("2d");
     const segInput = document.createElement("canvas"), segCtx = segInput.getContext("2d");
     let chromaData = null;
@@ -254,12 +254,13 @@
       const [kr, kg, kb] = hexToRgb(s.chromaColor);
       const inner = s.chromaThreshold * 4.41;
       const outer = inner + Math.max(1, s.chromaSmooth) * 4.41;
+      const inner2 = inner * inner, outer2 = outer * outer, span = outer - inner;
       for (let i = 0; i < px.length; i += 4) {
         const dr = px[i] - kr, dg = px[i + 1] - kg, db = px[i + 2] - kb;
-        const d = Math.sqrt(dr * dr + dg * dg + db * db);
-        if (d < inner) px[i + 3] = 0;
-        else if (d < outer) {
-          px[i + 3] = ((d - inner) / (outer - inner)) * 255;
+        const d2 = dr * dr + dg * dg + db * db;      // squared distance, no sqrt
+        if (d2 < inner2) px[i + 3] = 0;              // fully keyed
+        else if (d2 < outer2) {                       // edge band only: sqrt here
+          px[i + 3] = ((Math.sqrt(d2) - inner) / span) * 255;
           // mild spill suppression: pull green toward luma near the edge
           if (px[i + 1] > px[i] && px[i + 1] > px[i + 2]) px[i + 1] = (px[i] + px[i + 2]) >> 1;
         }
@@ -316,6 +317,15 @@
     function drawFrame() {
       if (!running) return;
       const s = settings;
+
+      // Master switch OFF -> instant raw passthrough (no effects), live.
+      if (!s.enabled) {
+        if (canvas.width !== srcW || canvas.height !== srcH) { canvas.width = srcW; canvas.height = srcH; }
+        activeCanvas = canvas;
+        try { ctx.drawImage(video, 0, 0, srcW, srcH); } catch (_) {}
+        return schedule();
+      }
+
       const rot = ((s.rotate % 360) + 360) % 360, swap = rot === 90 || rot === 270;
       const outW = swap ? srcH : srcW, outH = swap ? srcW : srcH;
       if (canvas.width !== outW) { canvas.width = outW; canvas.height = outH; }
@@ -403,7 +413,7 @@
   async function patchedGetUserMedia(constraints) {
     const real = await nativeGUM(constraints);
     try {
-      if (!settings.enabled || !constraints || !constraints.video) return real;
+      if (!constraints || !constraints.video) return real;
       const videoTrack = real.getVideoTracks()[0];
       if (!videoTrack) return real;
       return processTrack(videoTrack, real.getAudioTracks());
