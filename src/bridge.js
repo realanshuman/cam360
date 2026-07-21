@@ -89,26 +89,30 @@
   ];
   const BG_MODES = [["off", "Off"], ["blur", "Blur"], ["color", "Color"], ["image", "Scene"]];
 
-  function btnStyle(bg) {
-    return "border:none;border-radius:6px;padding:3px 9px;font-weight:700;font-size:11px;cursor:pointer;color:#fff;background:" + bg;
-  }
+  // Notion-style light palette (matches the popup).
+  const C = {
+    bg: "#ffffff", text: "#37352f", sec: "rgba(55,53,47,0.75)", muted: "rgba(55,53,47,0.5)",
+    border: "rgba(55,53,47,0.16)", hair: "rgba(55,53,47,0.09)", hover: "rgba(55,53,47,0.06)",
+    sunken: "#f7f6f3", accent: "#2383e2", accentSoft: "rgba(35,131,226,0.13)"
+  };
+
   function toggleBtn(text, onClick) {
     const b = document.createElement("button");
     b.textContent = text;
-    b.style.cssText = "flex:1;padding:7px 4px;border:1px solid rgba(167,139,250,0.3);border-radius:8px;background:rgba(255,255,255,0.05);color:#e9d5ff;cursor:pointer;font-size:12px";
+    b.style.cssText = `flex:1;padding:6px 4px;border:1px solid ${C.border};border-radius:7px;background:transparent;color:${C.sec};cursor:pointer;font-size:12px;font-family:inherit;transition:background .12s`;
     b.onclick = onClick;
     return b;
   }
   function sliderRow(key, label, min, max, unit, parent) {
     const wrap = document.createElement("div");
     const top = document.createElement("div");
-    top.style.cssText = "display:flex;justify-content:space-between;margin-bottom:3px";
-    const l = document.createElement("span"); l.textContent = label; l.style.opacity = ".85";
-    const v = document.createElement("span"); v.style.cssText = "color:#c4b5fd;font-variant-numeric:tabular-nums";
+    top.style.cssText = "display:flex;justify-content:space-between;margin-bottom:4px";
+    const l = document.createElement("span"); l.textContent = label; l.style.cssText = `font-size:12.5px;color:${C.sec}`;
+    const v = document.createElement("span"); v.style.cssText = `font-size:11px;color:${C.muted};font-variant-numeric:tabular-nums`;
     top.append(l, v);
     const input = document.createElement("input");
     input.type = "range"; input.min = min; input.max = max;
-    input.style.cssText = "width:100%;accent-color:#a78bfa;cursor:pointer";
+    input.style.cssText = `width:100%;accent-color:${C.accent};cursor:pointer;height:4px`;
     input.oninput = () => save({ [key]: Number(input.value) });
     wrap.append(top, input);
     parent.appendChild(wrap);
@@ -120,28 +124,27 @@
     root = document.createElement("div");
     root.id = "cam360-overlay";
     root.style.cssText = [
-      "position:fixed", "top:24px", "right:24px", "z-index:2147483647", "width:256px",
-      "font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif", "color:#f5f3ff",
-      "background:rgba(24,18,43,0.94)", "backdrop-filter:blur(8px)",
-      "border:1px solid rgba(167,139,250,0.35)", "border-radius:14px",
-      "box-shadow:0 12px 40px rgba(0,0,0,0.5)", "user-select:none", "font-size:13px", "overflow:hidden"
+      "position:fixed", "top:24px", "right:24px", "z-index:2147483647", "width:258px",
+      "font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif",
+      `color:${C.text}`, `background:${C.bg}`, `border:1px solid ${C.border}`, "border-radius:12px",
+      "box-shadow:0 10px 34px rgba(15,15,15,0.18),0 0 0 0.5px rgba(15,15,15,0.04)",
+      "user-select:none", "font-size:13px", "overflow:hidden", "-webkit-font-smoothing:antialiased"
     ].join(";");
 
     const header = document.createElement("div");
-    header.style.cssText = "display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:move;background:linear-gradient(90deg,#7c3aed,#4f46e5)";
-    header.innerHTML = '<span style="font-weight:700;letter-spacing:.3px;flex:1">◉ Cam360</span>';
+    header.style.cssText = `display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:move;border-bottom:1px solid ${C.hair}`;
+    header.innerHTML = `<span style="width:15px;height:15px;border-radius:5px;background:linear-gradient(135deg,#2383e2,#7c3aed);display:inline-block"></span><span style="font-weight:600;flex:1;font-size:14px">Cam360</span>`;
     els.power = document.createElement("button");
-    els.power.style.cssText = btnStyle("#22c55e");
     els.power.onclick = () => save({ enabled: !current.enabled });
     const close = document.createElement("button");
     close.textContent = "✕"; close.title = "Hide (Alt+Shift+C to reopen)";
-    close.style.cssText = btnStyle("rgba(255,255,255,0.15)");
+    close.style.cssText = `border:none;background:transparent;color:${C.muted};font-size:13px;cursor:pointer;padding:2px 4px;border-radius:5px`;
     close.onclick = () => save({ overlayVisible: false });
     header.append(els.power, close);
     root.appendChild(header);
 
     const body = document.createElement("div");
-    body.style.cssText = "padding:12px;display:flex;flex-direction:column;gap:10px;max-height:70vh;overflow-y:auto";
+    body.style.cssText = "padding:12px;display:flex;flex-direction:column;gap:10px;max-height:72vh;overflow-y:auto";
 
     const row = document.createElement("div");
     row.style.cssText = "display:flex;gap:6px";
@@ -159,7 +162,7 @@
     // Background section
     const bgTitle = document.createElement("div");
     bgTitle.textContent = "BACKGROUND";
-    bgTitle.style.cssText = "font-size:10px;letter-spacing:.6px;color:#9d8fc7;margin-top:2px";
+    bgTitle.style.cssText = `font-size:10px;letter-spacing:.06em;font-weight:600;color:${C.muted};text-transform:uppercase;margin-top:4px`;
     body.appendChild(bgTitle);
 
     const bgRow = document.createElement("div");
@@ -209,12 +212,12 @@
     body.appendChild(ovRow);
 
     els.status = document.createElement("div");
-    els.status.style.cssText = "font-size:11px;line-height:1.4;color:#c4b5fd;min-height:0";
+    els.status.style.cssText = `font-size:11px;line-height:1.45;color:${C.muted};min-height:0`;
     body.appendChild(els.status);
 
     const reset = document.createElement("button");
     reset.textContent = "Reset all";
-    reset.style.cssText = "margin-top:2px;padding:7px;border:none;border-radius:8px;cursor:pointer;background:rgba(167,139,250,0.18);color:#ddd6fe;font-weight:600";
+    reset.style.cssText = `margin-top:4px;padding:7px;border:1px solid ${C.border};border-radius:7px;cursor:pointer;background:transparent;color:${C.sec};font-size:12.5px;font-family:inherit`;
     reset.onclick = () => save({
       mirror: false, flipV: false, rotate: 0, brightness: 100, contrast: 100, saturation: 100,
       blur: 0, grayscale: 0, sepia: 0, hue: 0, zoom: 100, lowLight: false, beautify: 0,
@@ -231,15 +234,18 @@
 
   function setActive(btn, on) {
     if (!btn) return;
-    btn.style.background = on ? "linear-gradient(90deg,#7c3aed,#6366f1)" : "rgba(255,255,255,0.05)";
-    btn.style.borderColor = on ? "#a78bfa" : "rgba(167,139,250,0.3)";
+    btn.style.background = on ? C.accentSoft : "transparent";
+    btn.style.borderColor = on ? "transparent" : C.border;
+    btn.style.color = on ? C.accent : C.sec;
+    btn.style.fontWeight = on ? "500" : "400";
   }
 
   function syncOverlay() {
     if (!root) return;
     root.style.display = current.overlayVisible ? "block" : "none";
-    els.power.textContent = current.enabled ? "ON" : "OFF";
-    els.power.style.background = current.enabled ? "#22c55e" : "#6b7280";
+    els.power.textContent = current.enabled ? "On" : "Off";
+    els.power.style.cssText = "border:none;border-radius:6px;padding:3px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;" +
+      (current.enabled ? `background:${C.accent};color:#fff` : `background:${C.sunken};color:${C.muted}`);
     setActive(els.mirror, current.mirror);
     setActive(els.flipV, current.flipV);
     els.rotate.textContent = "⟳ " + current.rotate + "°";
@@ -266,7 +272,7 @@
     if (els.status) {
       if (bgActive && !chroma && status.message) {
         els.status.textContent = (status.segState === "error" ? "⚠ " : status.segState === "loading" ? "⏳ " : "✓ ") + status.message;
-        els.status.style.color = status.segState === "error" ? "#fca5a5" : "#c4b5fd";
+        els.status.style.color = status.segState === "error" ? "#e03e3e" : C.muted;
       } else els.status.textContent = "";
     }
   }

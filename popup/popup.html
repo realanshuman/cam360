@@ -7,136 +7,122 @@
   <title>Cam360</title>
 </head>
 <body>
-  <header class="hdr">
-    <div class="brand"><span class="dot">◉</span> Cam360</div>
-    <button id="power" class="power">ON</button>
+  <header class="topbar">
+    <div class="brand"><span class="logo"></span> Cam360</div>
+    <button id="power" class="sw" role="switch" aria-label="Enable Cam360"></button>
   </header>
 
-  <p class="hint">Enhances your camera on any website that uses it. Open the panel in a call with <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd>.</p>
+  <div class="scroll">
+    <section class="section">
+      <div class="section-label">Transform</div>
+      <div class="row"><span class="row-label">⇋&nbsp; Mirror</span><button class="sw" data-toggle="mirror" role="switch"></button></div>
+      <div class="row"><span class="row-label">⇅&nbsp; Flip vertical</span><button class="sw" data-toggle="flipV" role="switch"></button></div>
+      <div class="row"><span class="row-label">⟳&nbsp; Rotate</span><button id="rotate" class="tbtn tbtn-mini">0°</button></div>
+    </section>
 
-  <section class="group">
-    <div class="row3">
-      <button class="chip" data-toggle="mirror">⇋ Mirror</button>
-      <button class="chip" data-toggle="flipV">⇅ Flip</button>
-      <button class="chip" id="rotate">⟳ 0°</button>
-    </div>
-  </section>
-
-  <section class="group">
-    <label class="lbl">Preset</label>
-    <div class="presets" id="presets">
-      <button data-preset="none">None</button>
-      <button data-preset="warm">Warm</button>
-      <button data-preset="cool">Cool</button>
-      <button data-preset="bright">Bright</button>
-      <button data-preset="bw">B&amp;W</button>
-      <button data-preset="soft">Soft focus</button>
-    </div>
-  </section>
-
-  <section class="group sliders" id="sliders"><!-- sliders injected --></section>
-
-  <section class="group">
-    <div class="row3"><button class="chip" data-toggle="lowLight">☀ Low-light boost</button></div>
-  </section>
-
-  <section class="group">
-    <label class="lbl">Background</label>
-    <div class="bgmodes" id="bgmodes">
-      <button data-bg="off">Off</button>
-      <button data-bg="blur">Blur</button>
-      <button data-bg="color">Color</button>
-      <button data-bg="scene">Scene</button>
-      <button data-bg="video">Video</button>
-    </div>
-
-    <div id="keyerWrap" class="hidden">
-      <label class="lbl">Cut-out method</label>
-      <div class="keyer" id="keyer">
-        <button data-keyer="ai">AI (best quality)</button>
-        <button data-keyer="chroma">Green screen</button>
+    <section class="section">
+      <div class="section-label">Look</div>
+      <div class="chips" id="presets">
+        <button data-preset="none">None</button>
+        <button data-preset="warm">Warm</button>
+        <button data-preset="cool">Cool</button>
+        <button data-preset="bright">Bright</button>
+        <button data-preset="bw">B&amp;W</button>
+        <button data-preset="soft">Soft focus</button>
       </div>
-      <p class="sub" id="keyerNote"></p>
-    </div>
+      <div class="sliders" id="sliders"><!-- injected --></div>
+      <div class="row"><span class="row-label">☀&nbsp; Low-light boost</span><button class="sw" data-toggle="lowLight" role="switch"></button></div>
+    </section>
 
-    <div id="bgBlurWrap" class="slider hidden">
-      <div class="top"><span class="name">BG blur strength</span><span class="val"></span></div>
-      <input type="range" min="2" max="30" data-slider="bgBlur">
-    </div>
-
-    <div id="bgColorWrap" class="colorwrap hidden">
-      <span>Colour</span><input type="color" id="bgColor" value="#0b1020">
-    </div>
-
-    <div id="bgSceneWrap" class="hidden">
-      <div class="scenes" id="scenes">
-        <button data-scene="grad-purple" style="background:linear-gradient(135deg,#4f46e5,#db2777)"></button>
-        <button data-scene="grad-sunset" style="background:linear-gradient(135deg,#f59e0b,#7c3aed)"></button>
-        <button data-scene="grad-ocean" style="background:linear-gradient(135deg,#0ea5e9,#0f172a)"></button>
-        <button data-scene="grad-forest" style="background:linear-gradient(135deg,#065f46,#a7f3d0)"></button>
-        <button data-scene="grad-mono" style="background:linear-gradient(135deg,#374151,#111827)"></button>
-        <button data-scene="custom" id="customScene" title="Upload image">+</button>
+    <section class="section">
+      <div class="section-label">Background</div>
+      <div class="seg" id="bgmodes">
+        <button data-bg="off">Off</button>
+        <button data-bg="blur">Blur</button>
+        <button data-bg="color">Color</button>
+        <button data-bg="scene">Scene</button>
+        <button data-bg="video">Video</button>
       </div>
-      <input type="file" id="bgUpload" accept="image/*" hidden>
-    </div>
 
-    <div id="bgVideoWrap" class="hidden">
-      <div class="scenes" id="vscenes">
-        <button data-vscene="anim-aurora" style="background:linear-gradient(135deg,#10b981,#4f46e5,#db2777)">✦</button>
-        <button data-vscene="anim-waves" style="background:linear-gradient(135deg,#0ea5e9,#0b1020)">〜</button>
-        <button data-vscene="customv" id="customVScene" title="Upload video">+</button>
+      <div id="keyerWrap" class="hidden mt">
+        <div class="mini-label">Cut-out method</div>
+        <div class="seg" id="keyer">
+          <button data-keyer="ai">AI</button>
+          <button data-keyer="chroma">Green screen</button>
+        </div>
+        <p class="help" id="keyerNote"></p>
       </div>
-      <input type="file" id="bgvUpload" accept="video/*" hidden>
-    </div>
 
-    <div id="featherWrap" class="slider hidden">
-      <div class="top"><span class="name">Edge feather</span><span class="val"></span></div>
-      <input type="range" min="0" max="12" data-slider="feather">
-    </div>
-
-    <div id="chromaWrap" class="hidden">
-      <div class="colorwrap"><span>Key colour</span><input type="color" id="chromaColor" value="#00c000"></div>
-      <div class="slider">
-        <div class="top"><span class="name">Key strength</span><span class="val"></span></div>
-        <input type="range" min="5" max="90" data-slider="chromaThreshold">
+      <div id="bgBlurWrap" class="slider hidden mt">
+        <div class="top"><span class="name">Blur strength</span><span class="val"></span></div>
+        <input type="range" min="2" max="30" data-slider="bgBlur">
       </div>
-      <div class="slider">
-        <div class="top"><span class="name">Key softness</span><span class="val"></span></div>
-        <input type="range" min="1" max="60" data-slider="chromaSmooth">
+
+      <div id="bgColorWrap" class="colorrow hidden mt"><span class="row-label">Colour</span><input type="color" id="bgColor" value="#0b1020"></div>
+
+      <div id="bgSceneWrap" class="hidden mt">
+        <div class="swatches" id="scenes">
+          <button data-scene="grad-purple" style="background:linear-gradient(135deg,#4f46e5,#db2777)"></button>
+          <button data-scene="grad-sunset" style="background:linear-gradient(135deg,#f59e0b,#7c3aed)"></button>
+          <button data-scene="grad-ocean" style="background:linear-gradient(135deg,#0ea5e9,#0f172a)"></button>
+          <button data-scene="grad-forest" style="background:linear-gradient(135deg,#065f46,#a7f3d0)"></button>
+          <button data-scene="grad-mono" style="background:linear-gradient(135deg,#374151,#111827)"></button>
+          <button data-scene="custom" id="customScene" class="swatch-add" title="Upload image">+</button>
+        </div>
+        <input type="file" id="bgUpload" accept="image/*" hidden>
       </div>
-    </div>
 
-    <div id="status" class="status"></div>
-  </section>
+      <div id="bgVideoWrap" class="hidden mt">
+        <div class="swatches" id="vscenes">
+          <button data-vscene="anim-aurora" style="background:linear-gradient(135deg,#10b981,#4f46e5,#db2777)">✦</button>
+          <button data-vscene="anim-waves" style="background:linear-gradient(135deg,#0ea5e9,#0b1020)">〜</button>
+          <button data-vscene="customv" id="customVScene" class="swatch-add" title="Upload video">+</button>
+        </div>
+        <input type="file" id="bgvUpload" accept="video/*" hidden>
+      </div>
 
-  <section class="group">
-    <label class="lbl">Presence</label>
-    <div class="row3">
-      <button class="chip" data-toggle="freeze">❚❚ Freeze</button>
-      <button class="chip" data-toggle="brb">☕ BRB</button>
-      <button class="chip" id="snapshot">📷 Snapshot</button>
-    </div>
-    <div id="brbWrap" class="hidden">
-      <input type="text" id="brbText" class="txt" placeholder="Be right back" maxlength="40">
-      <button id="brbUploadBtn" class="ghost small">Set BRB image…</button>
-      <input type="file" id="brbUpload" accept="image/*" hidden>
-    </div>
-  </section>
+      <div id="featherWrap" class="slider hidden mt">
+        <div class="top"><span class="name">Edge feather</span><span class="val"></span></div>
+        <input type="range" min="0" max="12" data-slider="feather">
+      </div>
 
-  <section class="group">
-    <label class="lbl">Overlays</label>
-    <div class="ovrow"><button class="chip" data-toggle="showName">🏷 Name</button>
-      <input type="text" id="nameText" class="txt" placeholder="Your name" maxlength="40"></div>
-    <div class="ovrow"><button class="chip" data-toggle="showLogo">★ Logo</button>
-      <button id="logoUploadBtn" class="ghost small">Upload logo…</button>
-      <input type="file" id="logoUpload" accept="image/*" hidden></div>
-    <div class="row3"><button class="chip" data-toggle="showClock">🕐 Live clock</button></div>
-  </section>
+      <div id="chromaWrap" class="hidden mt">
+        <div class="colorrow"><span class="row-label">Key colour</span><input type="color" id="chromaColor" value="#00c000"></div>
+        <div class="slider"><div class="top"><span class="name">Key strength</span><span class="val"></span></div><input type="range" min="5" max="90" data-slider="chromaThreshold"></div>
+        <div class="slider"><div class="top"><span class="name">Key softness</span><span class="val"></span></div><input type="range" min="1" max="60" data-slider="chromaSmooth"></div>
+      </div>
 
-  <footer class="ftr">
-    <button id="panel" class="ghost">Show in-call panel</button>
-    <button id="reset" class="ghost">Reset</button>
+      <p id="status" class="status"></p>
+    </section>
+
+    <section class="section">
+      <div class="section-label">Presence</div>
+      <div class="row"><span class="row-label">❚❚&nbsp; Freeze frame</span><button class="sw" data-toggle="freeze" role="switch"></button></div>
+      <div class="row"><span class="row-label">☕&nbsp; Be right back</span><button class="sw" data-toggle="brb" role="switch"></button></div>
+      <div id="brbWrap" class="hidden">
+        <input type="text" id="brbText" class="txt" placeholder="Be right back" maxlength="40">
+        <button id="brbUploadBtn" class="tbtn full">Set BRB image…</button>
+        <input type="file" id="brbUpload" accept="image/*" hidden>
+      </div>
+      <div class="row"><span class="row-label">📷&nbsp; Snapshot</span><button id="snapshot" class="tbtn tbtn-mini">Save PNG</button></div>
+    </section>
+
+    <section class="section">
+      <div class="section-label">Overlays</div>
+      <div class="row"><span class="row-label">🏷&nbsp; Name tag</span><button class="sw" data-toggle="showName" role="switch"></button></div>
+      <input type="text" id="nameText" class="txt" placeholder="Your name" maxlength="40">
+      <div class="row"><span class="row-label">★&nbsp; Logo</span><button class="sw" data-toggle="showLogo" role="switch"></button></div>
+      <button id="logoUploadBtn" class="tbtn full">Upload logo…</button>
+      <input type="file" id="logoUpload" accept="image/*" hidden>
+      <div class="row"><span class="row-label">🕐&nbsp; Live clock</span><button class="sw" data-toggle="showClock" role="switch"></button></div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <button id="panel" class="tbtn">Show in-call panel</button>
+    <button id="reset" class="tbtn">Reset</button>
   </footer>
+  <p class="kbdhint">Open the panel mid-call with <kbd>Alt</kbd><kbd>Shift</kbd><kbd>C</kbd></p>
 
   <script src="popup.js"></script>
 </body>

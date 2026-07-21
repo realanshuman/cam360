@@ -122,9 +122,7 @@ function matchPreset() {
 const show = (id, on) => document.getElementById(id).classList.toggle("hidden", !on);
 
 function render() {
-  const power = document.getElementById("power");
-  power.textContent = state.enabled ? "ON" : "OFF";
-  power.classList.toggle("off", !state.enabled);
+  document.getElementById("power").classList.toggle("active", state.enabled);
 
   document.querySelectorAll("[data-toggle]").forEach((b) => b.classList.toggle("active", !!state[b.dataset.toggle]));
   const rot = document.getElementById("rotate");
