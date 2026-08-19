@@ -14,13 +14,23 @@
   --radius: 10px;
   --shadow-card: 0 1px 2px rgba(15, 15, 15, 0.05);
   --shadow-float: 0 24px 60px rgba(15, 15, 15, 0.14), 0 2px 8px rgba(15, 15, 15, 0.06);
+  --shadow-pop: 0 12px 32px rgba(15, 15, 15, 0.14), 0 1px 3px rgba(15, 15, 15, 0.08);
   --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   --wrap: 1080px;
+  --gutter: 24px;
+  --nav-h: 60px;
+  --tap: 44px;              /* iOS HIG minimum, Android asks for 48dp */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; scroll-padding-top: 80px; overflow-x: clip; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-h) + 12px);
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;   /* stop Android/iOS inflating body text */
+  text-size-adjust: 100%;
+}
 
 body {
   font-family: var(--font);
@@ -29,46 +39,77 @@ body {
   font-size: 16px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  /* the hero glow bleeds past its box on purpose; clip keeps position:sticky working */
   overflow-x: clip;
+  -webkit-tap-highlight-color: transparent;  /* replaced by explicit :active states */
 }
 
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 
 ::selection { background: var(--wash); }
-
 :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
 
-.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+/* Respect the notch and the home indicator in landscape on iOS */
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding-left: calc(var(--gutter) + env(safe-area-inset-left));
+  padding-right: calc(var(--gutter) + env(safe-area-inset-right));
+}
 
 /* ---------- Nav ---------- */
 .nav {
   position: sticky; top: 0; z-index: 50;
   background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);   /* iOS Safari needs the prefix */
   backdrop-filter: saturate(180%) blur(12px);
   border-bottom: 1px solid var(--line);
 }
-.nav-in { display: flex; align-items: center; gap: 28px; height: 60px; }
+.nav-in { display: flex; align-items: center; gap: 28px; height: var(--nav-h); }
 .brand { display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: 16px; letter-spacing: -0.02em; }
-.brand svg { width: 24px; height: 24px; border-radius: 6px; }
+.brand svg { width: 24px; height: 24px; border-radius: 6px; flex: 0 0 auto; }
 .nav-links { display: flex; gap: 26px; margin-left: auto; font-size: 14px; color: var(--ink-2); }
-.nav-links a:hover { color: var(--ink); }
-.nav-cta { display: flex; gap: 10px; }
+.nav-cta { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.nav-links + .nav-cta { margin-left: 0; }
+
+/* Mobile disclosure menu (no framework, closes via a few lines of inline JS) */
+.menu { display: none; position: relative; }
+.menu-btn {
+  list-style: none; width: var(--tap); height: var(--tap);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; border-radius: 8px; color: var(--ink-2);
+  border: 1px solid var(--line-2);
+}
+.menu-btn::-webkit-details-marker { display: none; }
+.menu[open] .menu-btn { background: var(--sunken); color: var(--ink); }
+.menu-panel {
+  position: absolute; right: 0; top: calc(100% + 10px); z-index: 60;
+  background: var(--canvas); border: 1px solid var(--line-2); border-radius: 12px;
+  box-shadow: var(--shadow-pop); min-width: 208px; padding: 6px;
+  display: flex; flex-direction: column;
+}
+.menu-panel a {
+  display: flex; align-items: center; min-height: var(--tap);
+  padding: 0 12px; border-radius: 8px; font-size: 15px; color: var(--ink-2);
+}
+.menu-panel a:active { background: var(--sunken); color: var(--ink); }
+.menu-sep { height: 1px; background: var(--line); margin: 5px 8px; }
 
 /* ---------- Buttons ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
   font-family: inherit; font-size: 14px; font-weight: 500;
   padding: 9px 16px; border-radius: 8px; border: 1px solid transparent;
-  cursor: pointer; white-space: nowrap; transition: background .15s, border-color .15s, color .15s;
+  cursor: pointer; white-space: nowrap;
+  transition: background .15s, border-color .15s, color .15s, transform .06s;
 }
 .btn-primary { background: var(--blue); color: #fff; }
-.btn-primary:hover { background: var(--blue-press); }
 .btn-ghost { border-color: var(--line-2); color: var(--ink-2); background: transparent; }
-.btn-ghost:hover { background: var(--sunken); color: var(--ink); }
 .btn-lg { font-size: 15px; padding: 12px 22px; }
+.btn:active { transform: scale(0.985); }
+.cta-short { display: none; }
+.btn-primary:active { background: var(--blue-press); }
+.btn-ghost:active { background: var(--sunken); }
 
 /* ---------- Hero ---------- */
 .hero { padding: 84px 0 72px; position: relative; overflow: hidden; }
@@ -78,12 +119,13 @@ a { color: inherit; text-decoration: none; }
   font-size: 12.5px; color: var(--ink-2); background: var(--sunken);
   border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; margin-bottom: 22px;
 }
-.eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+.eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex: 0 0 auto; }
 h1 {
-  font-size: 52px; line-height: 1.08; font-weight: 600; letter-spacing: -0.033em;
+  font-size: clamp(2.05rem, 7.4vw, 3.25rem);
+  line-height: 1.08; font-weight: 600; letter-spacing: -0.033em;
   margin-bottom: 20px; max-width: 15ch;
 }
-.lede { font-size: 18px; color: var(--ink-2); max-width: 46ch; margin-bottom: 30px; }
+.lede { font-size: clamp(1rem, 3.9vw, 1.125rem); color: var(--ink-2); max-width: 46ch; margin-bottom: 30px; }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
 .micro { font-size: 13.5px; color: var(--ink-3); }
 
@@ -108,8 +150,8 @@ h1 {
 section { padding: 96px 0; }
 .sec-head { max-width: 62ch; margin-bottom: 44px; }
 .sec-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue); margin-bottom: 12px; }
-h2 { font-size: 32px; line-height: 1.2; font-weight: 600; letter-spacing: -0.022em; margin-bottom: 14px; }
-.sec-sub { font-size: 17px; color: var(--ink-2); }
+h2 { font-size: clamp(1.6rem, 5.4vw, 2rem); line-height: 1.2; font-weight: 600; letter-spacing: -0.022em; margin-bottom: 14px; }
+.sec-sub { font-size: clamp(1rem, 3.6vw, 1.0625rem); color: var(--ink-2); }
 
 /* ---------- Feature grid ---------- */
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -117,7 +159,6 @@ h2 { font-size: 32px; line-height: 1.2; font-weight: 600; letter-spacing: -0.022
   border: 1px solid var(--line); border-radius: var(--radius); padding: 24px;
   background: var(--canvas); box-shadow: var(--shadow-card); transition: border-color .15s, transform .15s;
 }
-.card:hover { border-color: var(--line-2); transform: translateY(-2px); }
 .card .ico {
   width: 34px; height: 34px; border-radius: 8px; background: var(--wash);
   display: flex; align-items: center; justify-content: center; margin-bottom: 15px; color: var(--blue);
@@ -155,24 +196,25 @@ h2 { font-size: 32px; line-height: 1.2; font-weight: 600; letter-spacing: -0.022
 
 /* ---------- Install ---------- */
 .steps { counter-reset: s; display: flex; flex-direction: column; gap: 2px; max-width: 660px; }
-.step {
-  display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); align-items: baseline;
-}
+.step { display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
 .step:last-child { border-bottom: 0; }
 .step-n { counter-increment: s; font-size: 13px; color: var(--ink-3); font-variant-numeric: tabular-nums; min-width: 20px; }
 .step-n::before { content: counter(s) "."; }
+.step-body { min-width: 0; }
 .step-body h3 { font-size: 15.5px; font-weight: 600; margin-bottom: 4px; }
 .step-body p { font-size: 14.5px; color: var(--ink-2); }
 code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px;
   background: var(--sunken); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; color: var(--ink);
+  overflow-wrap: anywhere;   /* the clone URL must never widen the page on a phone */
 }
 
 /* ---------- FAQ ---------- */
 .faq { max-width: 760px; }
 .faq details { border-bottom: 1px solid var(--line); }
 .faq summary {
-  list-style: none; cursor: pointer; padding: 20px 0; font-size: 16.5px; font-weight: 500;
+  list-style: none; cursor: pointer; padding: 18px 0; min-height: 56px;
+  font-size: 16.5px; font-weight: 500;
   display: flex; align-items: center; justify-content: space-between; gap: 20px;
 }
 .faq summary::-webkit-details-marker { display: none; }
@@ -188,40 +230,117 @@ code {
 .band { text-align: center; padding: 92px 0; border-top: 1px solid var(--line); }
 .band h2 { margin-bottom: 12px; }
 .band p { font-size: 17px; color: var(--ink-2); margin-bottom: 28px; }
-.band .hero-actions { justify-content: center; }
+.band .hero-actions { justify-content: center; margin-bottom: 0; }
 
 /* ---------- Footer ---------- */
-footer { border-top: 1px solid var(--line); background: var(--sunken); padding: 44px 0 52px; }
+footer {
+  border-top: 1px solid var(--line); background: var(--sunken);
+  padding-top: 44px;
+  padding-bottom: calc(52px + env(safe-area-inset-bottom));
+}
 .foot-top { display: flex; gap: 30px; flex-wrap: wrap; align-items: center; margin-bottom: 26px; }
 .foot-links { display: flex; gap: 24px; margin-left: auto; font-size: 14px; color: var(--ink-2); flex-wrap: wrap; }
-.foot-links a:hover { color: var(--ink); }
+.foot-built { font-size: 14.5px; color: var(--ink-2); margin-bottom: 20px; }
+.foot-built a {
+  position: relative;
+  color: var(--ink); font-weight: 600;
+  border-bottom: 1px solid var(--line-2); padding-bottom: 1px;
+  transition: color .15s, border-color .15s;
+}
+.foot-built a:active { color: var(--blue); border-color: var(--blue); }
+/* invisible 44px tall hit area, keeps the underline tight to the word */
+.foot-built a::after {
+  content: ""; position: absolute; left: -4px; right: -4px; top: 50%;
+  transform: translateY(-50%); height: var(--tap);
+}
 .foot-note { font-size: 13px; color: var(--ink-3); max-width: 70ch; }
 .foot-note + .foot-note { margin-top: 8px; }
 
-/* ---------- Responsive ---------- */
+/* ---------- Pointer capable devices only ---------- */
+/* Guarding hover stops phones from latching a hover state after a tap. */
+@media (hover: hover) and (pointer: fine) {
+  .nav-links a:hover { color: var(--ink); }
+  .menu-panel a:hover { background: var(--sunken); color: var(--ink); }
+  .btn-primary:hover { background: var(--blue-press); }
+  .btn-ghost:hover { background: var(--sunken); color: var(--ink); }
+  .card:hover { border-color: var(--line-2); transform: translateY(-2px); }
+  .foot-links a:hover { color: var(--ink); }
+  .foot-built a:hover { color: var(--blue); border-color: var(--blue); }
+}
+
+/* ---------- Tablet and below ---------- */
 @media (max-width: 900px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 48px; }
-  .shot { max-width: 300px; margin: 0 auto; }
-  h1 { font-size: 40px; max-width: 100%; }
+  .hero-grid { grid-template-columns: 1fr; gap: 44px; }
+  .shot { max-width: 280px; margin: 0 auto; }
+  h1 { max-width: 100%; }
   .split { grid-template-columns: 1fr; gap: 40px; }
   .split.alt .split-media { order: 0; }
   .grid-3 { grid-template-columns: 1fr 1fr; }
-  .pipe { grid-template-columns: 1fr; }
-  .pipe-arrow { transform: rotate(90deg); justify-content: center; padding: 2px 0; }
+  .pipe { grid-template-columns: 1fr; gap: 12px; }
+  .pipe-arrow { transform: rotate(90deg); justify-content: center; padding: 0; }
   .nav-links { display: none; }
+  .nav-source { display: none; }
+  /* nav-links is hidden here, so the CTA group takes over pushing to the right */
+  .nav-links + .nav-cta { margin-left: auto; }
+  .menu { display: block; }
+  /* Comfortable touch targets from here down */
+  .btn { min-height: var(--tap); padding: 11px 18px; }
+  .btn-lg { min-height: 48px; }
+  .foot-links a { min-height: var(--tap); display: flex; align-items: center; }
+  .brand { min-height: var(--tap); }
 }
-@media (max-width: 620px) {
-  section { padding: 64px 0; }
-  .hero { padding: 56px 0 48px; }
-  h1 { font-size: 33px; }
-  h2 { font-size: 26px; }
-  .lede { font-size: 16.5px; }
-  .grid-3 { grid-template-columns: 1fr; }
-  .nav-cta .btn-ghost { display: none; }
-  .foot-links { margin-left: 0; gap: 16px; }
+
+/* ---------- Phones ---------- */
+@media (max-width: 640px) {
+  :root { --gutter: 20px; }
+  section { padding: 60px 0; }
+  .hero { padding: 44px 0 52px; }
+  .band { padding: 68px 0; }
+  .sec-head { margin-bottom: 32px; }
+  .grid-3 { grid-template-columns: 1fr; gap: 14px; }
+  .card { padding: 20px; }
+  .shot { max-width: 244px; }
+  .split-media.panel img { max-width: 216px; }
+  .split-media.popup img { max-width: 236px; }
+  .split { gap: 34px; }
+  .strip-in { padding: 18px 0; gap: 10px 18px; }
+  .strip-item { font-size: 14px; }
+  .strip-label { width: 100%; text-align: center; }
+  .tick li { font-size: 14.5px; }
+  .faq summary { font-size: 16px; gap: 14px; }
+  .faq p { font-size: 15px; }
+  .band p { font-size: 16px; }
+  .foot-top { gap: 18px; margin-bottom: 22px; }
+  .foot-links { margin-left: 0; gap: 4px 18px; font-size: 14.5px; }
+  footer { padding-top: 38px; }
+}
+
+/* ---------- Small phones ---------- */
+@media (max-width: 430px) {
+  /* Full width buttons are easier to hit one handed */
+  .hero-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  .hero-actions .btn { width: 100%; }
+  .nav-in { gap: 10px; }
+  .nav-cta { gap: 8px; }
+  .nav-cta .btn-primary { padding: 11px 13px; font-size: 13.5px; }
+  .brand { font-size: 15.5px; }
+}
+
+/* Very narrow, for example an iPhone SE */
+@media (max-width: 400px) {
+  /* Shorten the bar CTA rather than dropping the wordmark */
+  .cta-long { display: none; }
+  .cta-short { display: inline; }
+  .strip-item { font-size: 13.5px; }
+}
+
+/* ---------- Landscape phones ---------- */
+@media (max-height: 460px) and (orientation: landscape) {
+  .hero { padding: 32px 0 36px; }
+  section { padding: 48px 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  * { transition: none !important; }
+  * { transition: none !important; animation: none !important; }
 }

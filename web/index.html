@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cam360 · Better video in every browser call</title>
 <meta name="description" content="Cam360 is a Chrome extension that sits between your webcam and the web. Fix your framing, lighting, and background on any site that asks for your camera. Everything runs locally.">
 <meta name="theme-color" content="#ffffff">
@@ -37,8 +37,22 @@
       <a href="#faq">FAQ</a>
     </div>
     <div class="nav-cta">
-      <a class="btn btn-ghost" href="https://github.com/realanshuman/cam360">View source</a>
-      <a class="btn btn-primary" href="#install">Get the extension</a>
+      <a class="btn btn-ghost nav-source" href="https://github.com/realanshuman/cam360">View source</a>
+      <a class="btn btn-primary" href="#install"><span class="cta-long">Get the extension</span><span class="cta-short">Install</span></a>
+      <details class="menu" id="menu">
+        <summary class="menu-btn" aria-label="Open menu" role="button">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </summary>
+        <div class="menu-panel">
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="#privacy">Privacy</a>
+          <a href="#install">Install</a>
+          <a href="#faq">FAQ</a>
+          <div class="menu-sep"></div>
+          <a href="https://github.com/realanshuman/cam360">View source</a>
+        </div>
+      </details>
     </div>
   </div>
 </nav>
@@ -312,10 +326,26 @@
         <a href="https://github.com/realanshuman/cam360">GitHub</a>
       </div>
     </div>
+    <p class="foot-built">Built by <a href="https://realanshuman.com" target="_blank" rel="noopener noreferrer">Ansh</a></p>
     <p class="foot-note">Camera control for the browser. Built for people who spend a lot of the day on video.</p>
     <p class="foot-note">Cam360 is an independent project and is not affiliated with, endorsed by, or sponsored by Google, Discord, Zoom, Whereby, or Jitsi. Product names are used only to describe where the extension runs.</p>
   </div>
 </footer>
 
+<script>
+(function () {
+  var menu = document.getElementById("menu");
+  if (!menu) return;
+  menu.querySelectorAll(".menu-panel a").forEach(function (a) {
+    a.addEventListener("click", function () { menu.open = false; });
+  });
+  document.addEventListener("click", function (e) {
+    if (menu.open && !menu.contains(e.target)) menu.open = false;
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") menu.open = false;
+  });
+})();
+</script>
 </body>
 </html>

@@ -182,7 +182,15 @@ icons are generated from that same mark, so the product and the site match.
 
 The marketing site is a single static page in [`web/`](web/). It has no build
 step, no framework, and no external requests. Every product image on it is a real
-screenshot rendered from the code in this repository rather than a mockup.
+screenshot rendered from the code in this repository rather than a mockup. The
+only script is a handful of inline lines that close the mobile menu.
+
+It is built for phones as much as desktop: safe area insets for the iPhone notch
+and home indicator, 44px minimum touch targets, hover effects gated behind
+`@media (hover: hover)` so a tap never leaves a stuck hover state, fluid type via
+`clamp()`, and a disclosure menu in place of the desktop nav below 900px. Checked
+for horizontal overflow and target sizes from 320px through 1440px, including
+landscape.
 
 ```
 web/index.html        the page
