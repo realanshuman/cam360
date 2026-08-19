@@ -101,7 +101,7 @@ separated from it:
 1. Open `chrome://extensions` in Chrome (or any Chromium browser: Edge, Brave, Arc).
 2. Turn on **Developer mode** (top-right).
 3. Click **Load unpacked** and select this folder (the one containing `manifest.json`).
-4. Pin the Cam360 icon from the puzzle-piece menu.
+4. Pin the Cam360 plugin icon from the puzzle-piece menu.
 
 Then open a camera site (e.g. https://meet.google.com), start your video, and open
 the Cam360 popup to adjust. Changes on an *already-running* camera apply instantly;
