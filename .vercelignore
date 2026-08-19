@@ -1,0 +1,9 @@
+# Only the landing page in web/ is deployed. Keep the extension out of the bundle.
+src
+popup
+icons
+vendor
+test
+brand
+manifest.json
+README.md

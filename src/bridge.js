@@ -87,7 +87,7 @@
     ["blur", "Blur", 0, 20, "px"],
     ["beautify", "Smooth", 0, 100, ""]
   ];
-  const BG_MODES = [["off", "Off"], ["blur", "Blur"], ["color", "Color"], ["image", "Scene"]];
+  const BG_MODES = [["off", "Off"], ["blur", "Blur"], ["color", "Color"], ["scene", "Scene"], ["video", "Video"]];
 
   // Notion-style light palette (matches the popup).
   const C = {
@@ -133,7 +133,7 @@
 
     const header = document.createElement("div");
     header.style.cssText = `display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:move;border-bottom:1px solid ${C.hair}`;
-    header.innerHTML = `<span style="width:15px;height:15px;border-radius:5px;background:linear-gradient(135deg,#2383e2,#7c3aed);display:inline-block"></span><span style="font-weight:600;flex:1;font-size:14px">Cam360</span>`;
+    header.innerHTML = `<svg viewBox="0 0 48 48" style="width:16px;height:16px;border-radius:5px;display:block;flex:0 0 auto"><rect width="48" height="48" rx="11" fill="#2383E2"/><circle cx="24" cy="24" r="11" fill="none" stroke="#fff" stroke-width="3.25" stroke-linecap="round" stroke-dasharray="57 12.1" transform="rotate(-14 24 24)"/><circle cx="24" cy="24" r="4.25" fill="#fff"/></svg><span style="font-weight:600;flex:1;font-size:14px">Cam360</span>`;
     els.power = document.createElement("button");
     els.power.onclick = () => save({ enabled: !current.enabled });
     const close = document.createElement("button");
@@ -192,7 +192,7 @@
     // Presence: freeze / be-right-back / snapshot
     const presTitle = document.createElement("div");
     presTitle.textContent = "PRESENCE";
-    presTitle.style.cssText = "font-size:10px;letter-spacing:.6px;color:#9d8fc7;margin-top:2px";
+    presTitle.style.cssText = `font-size:10px;letter-spacing:.06em;font-weight:600;color:${C.muted};text-transform:uppercase;margin-top:4px`;
     body.appendChild(presTitle);
     const presRow = document.createElement("div");
     presRow.style.cssText = "display:flex;gap:6px";

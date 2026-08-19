@@ -173,3 +173,42 @@ making the *in-browser* experience one-click.
 
 All processing is local. No network requests, no telemetry, no external libraries.
 Settings are stored only in `chrome.storage.local` on your machine.
+
+## Brand and landing page
+
+The brand identity lives in [`brand/`](brand/): `BRAND.md` covers positioning,
+logo usage, colour, type, and voice, alongside the mark as SVG. The extension
+icons are generated from that same mark, so the product and the site match.
+
+The marketing site is a single static page in [`web/`](web/). It has no build
+step, no framework, and no external requests. Every product image on it is a real
+screenshot rendered from the code in this repository rather than a mockup.
+
+```
+web/index.html        the page
+web/styles.css        design tokens and layout
+web/assets/           product screenshots and the social image
+brand/                brand guide and logo source
+```
+
+### Deploying to Vercel
+
+`vercel.json` at the repository root points Vercel at `web/` as the output
+directory, so a static deploy works with no configuration in the dashboard.
+
+```bash
+npm i -g vercel
+vercel          # preview deployment
+vercel --prod   # production
+```
+
+You can also import the repository at vercel.com and accept the defaults. If you
+prefer to configure it by hand instead, set Framework Preset to Other, leave the
+build command empty, and set the Root Directory to `web`.
+
+`.vercelignore` keeps the extension source and the bundled model out of the
+upload, so only the 600KB site is deployed.
+
+After pointing a custom domain at the deployment, update the absolute URLs in
+`web/index.html` (`og:image`, `twitter:image`, and the canonical link) and the
+`Sitemap:` line in `web/robots.txt`, since social crawlers need absolute URLs.

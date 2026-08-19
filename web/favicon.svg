@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Cam360">
+  <title>Cam360</title>
+  <rect width="48" height="48" rx="11" fill="#2383E2"/>
+  <circle cx="24" cy="24" r="11" fill="none" stroke="#FFFFFF" stroke-width="3.25"
+          stroke-linecap="round" stroke-dasharray="57 12.1" transform="rotate(-14 24 24)"/>
+  <circle cx="24" cy="24" r="4.25" fill="#FFFFFF"/>
+</svg>

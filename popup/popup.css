@@ -44,7 +44,7 @@ body {
 /* Header */
 .topbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; }
 .brand { display: flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
-.logo { width: 17px; height: 17px; border-radius: 5px; background: linear-gradient(135deg, #2383e2, #7c3aed); flex: 0 0 auto; }
+.logo { width: 18px; height: 18px; border-radius: 5px; flex: 0 0 auto; display: block; }
 
 /* Scroll body */
 .scroll { max-height: 460px; overflow-y: auto; overflow-x: hidden; }
