@@ -33,7 +33,6 @@
     <div class="nav-links">
       <a href="#features">Features</a>
       <a href="#how">How it works</a>
-      <a href="#privacy">Privacy</a>
       <a href="#faq">FAQ</a>
     </div>
     <div class="nav-cta">
@@ -46,7 +45,6 @@
         <div class="menu-panel">
           <a href="#features">Features</a>
           <a href="#how">How it works</a>
-          <a href="#privacy">Privacy</a>
           <a href="#install">Install</a>
           <a href="#faq">FAQ</a>
           <div class="menu-sep"></div>
@@ -62,12 +60,12 @@
     <div>
       <span class="eyebrow"><span class="dot"></span> Open source Chrome extension</span>
       <h1>Better video in every browser call.</h1>
-      <p class="lede">Cam360 sits between your webcam and the web. Fix your lighting, flip the frame, blur or replace your background, and keep every frame on your own machine.</p>
+      <p class="lede">Cam360 sits between your webcam and the web. Fix your lighting, flip the frame, and blur or replace your background on any site that asks for your camera.</p>
       <div class="hero-actions">
         <a class="btn btn-primary btn-lg" href="#install">Get the extension</a>
-        <a class="btn btn-ghost btn-lg" href="#how">See how it works</a>
+        <a class="btn btn-ghost btn-lg" href="https://github.com/realanshuman/cam360">View source</a>
       </div>
-      <p class="micro">Free and open source. No account, no servers, no telemetry.</p>
+      <p class="micro">Free and open source. No account, no servers, nothing leaves your computer.</p>
     </div>
     <div class="shot">
       <img src="/assets/popup-light.png" width="300" height="585" alt="The Cam360 popup showing transform toggles, lighting sliders, background controls, and overlay options.">
@@ -90,145 +88,61 @@
 <section id="features">
   <div class="wrap">
     <div class="sec-head">
-      <p class="sec-label">Features</p>
       <h2>Everything the call app forgot to give you.</h2>
       <p class="sec-sub">Websites decide what camera controls you get. Cam360 puts them back, in one place, on every site.</p>
     </div>
-    <div class="grid-3">
-
-      <article class="card">
-        <div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/></svg></div>
-        <h3>Frame it right</h3>
-        <p>Mirror, flip, and rotate in 90 degree steps. Digital zoom up to 250 percent when you want a tighter crop.</p>
-      </article>
+    <div class="grid-2">
 
       <article class="card">
         <div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></div>
-        <h3>Fix the lighting</h3>
-        <p>Brightness, contrast, saturation, and hue, plus a low light boost for dim rooms. Six presets when one click is enough.</p>
+        <h3>Frame it and light it</h3>
+        <p>Mirror, flip, rotate, and zoom up to 250 percent. Brightness, contrast, saturation, and hue, with a low light boost for dim rooms and six presets when one click is enough.</p>
       </article>
 
       <article class="card">
         <div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 14l9 5 9-5"/></svg></div>
         <h3>Replace the background</h3>
-        <p>Blur it, fill it with colour, drop in a scene or your own photo, or run an animated backdrop behind you.</p>
-      </article>
-
-      <article class="card">
-        <div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5c0-4.1 3.4-7.5 7.5-7.5s7.5 3.4 7.5 7.5"/></svg></div>
-        <h3>Two ways to cut out</h3>
-        <p>AI segmentation for quality with no green screen, or colour keying that keeps working on sites which block the model.</p>
+        <p>Blur it, fill it with colour, or drop in a scene, your own photo, or a moving backdrop. Cut yourself out with an on device AI model, or with green screen keying on the few sites that block it.</p>
       </article>
 
       <article class="card">
         <div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg></div>
         <h3>Step away cleanly</h3>
-        <p>Freeze the frame or show a be right back card without dropping your video. Save the processed frame as a PNG.</p>
+        <p>Freeze the frame or show a be right back card without dropping your video, so the call still counts you as present. Save the processed frame as a PNG.</p>
       </article>
 
       <article class="card">
         <div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 2.8 12V4.8A2 2 0 0 1 4.8 2.8H12a2 2 0 0 1 1.4.6l7.2 7.2a2 2 0 0 1 0 2.8z"/><circle cx="7.8" cy="7.8" r="1.4"/></svg></div>
         <h3>Add your details</h3>
-        <p>A name tag, a logo watermark, and a live clock, rendered straight into the outgoing feed.</p>
+        <p>A name tag, a logo watermark, and a live clock, rendered straight into the outgoing feed rather than bolted on by the meeting app.</p>
       </article>
 
     </div>
   </div>
 </section>
 
-<section class="tinted">
+<section class="tinted" id="how">
   <div class="wrap split">
     <div>
-      <p class="sec-label">Backgrounds</p>
-      <h2>Two ways to cut yourself out.</h2>
-      <p class="sec-sub">Choose what goes behind you, then choose how you get separated from it. The second choice is what makes backgrounds work everywhere.</p>
-      <ul class="tick">
-        <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span><b>AI segmentation.</b> A selfie segmentation model runs on your device for the cleanest edge, with no green screen needed.</span></li>
-        <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span><b>Green screen.</b> Colour keying in plain JavaScript, so background replacement still works on strict sites like Google Meet.</span></li>
-        <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span><b>Bundled, not streamed.</b> The model ships inside the extension, so it loads with your network unplugged.</span></li>
-      </ul>
+      <h2>It intercepts the camera, not the app.</h2>
+      <p class="sec-sub">Cam360 answers the camera request itself, which is why one setup covers every video site you use.</p>
+      <ol class="flow">
+        <li><span class="n">1</span><div><b>A site asks for your camera.</b> Cam360 hooks the request before the page can run its own code.</div></li>
+        <li><span class="n">2</span><div><b>Your feed runs through a canvas.</b> Every frame is processed on your device in real time, on the GPU where the browser allows it.</div></li>
+        <li><span class="n">3</span><div><b>The site receives the result</b> and treats it as an ordinary camera.</div></li>
+      </ol>
+      <p class="note">Press <kbd>Alt</kbd><kbd>Shift</kbd><kbd>C</kbd> during a call to open a draggable panel and adjust without leaving the meeting.</p>
     </div>
-    <div class="split-media popup">
-      <img src="/assets/popup-dark.png" width="300" height="585" alt="Cam360 in dark mode, showing the background mode selector, the AI and green screen options, and scene swatches.">
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap split alt">
     <div class="split-media panel">
       <img src="/assets/panel.png" width="260" height="766" alt="The draggable Cam360 control panel as it appears on top of a call, with sliders and background controls.">
     </div>
-    <div>
-      <p class="sec-label">In the call</p>
-      <h2>Adjust without leaving the meeting.</h2>
-      <p class="sec-sub">Nobody wants to open a settings page while twelve people watch. Press Alt, Shift, and C to drop a control panel on top of the call, then drag it out of your way.</p>
-      <ul class="tick">
-        <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>Every change lands on the live stream instantly.</span></li>
-        <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>The panel and the toolbar popup stay in sync.</span></li>
-        <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>Switch Cam360 off and your raw camera returns at once.</span></li>
-      </ul>
-    </div>
   </div>
 </section>
 
-<section class="tinted" id="how">
+<section id="install">
   <div class="wrap">
     <div class="sec-head">
-      <p class="sec-label">How it works</p>
-      <h2>It intercepts the camera, not the app.</h2>
-      <p class="sec-sub">Cam360 does not need a site to support it. It answers the camera request itself, which is why one setup covers every video site you use.</p>
-    </div>
-    <div class="pipe">
-      <div class="pipe-step">
-        <div class="pipe-n">1</div>
-        <h3>A site asks for your camera</h3>
-        <p>Cam360 hooks the request before the page has a chance to run its own code.</p>
-      </div>
-      <div class="pipe-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-      <div class="pipe-step">
-        <div class="pipe-n">2</div>
-        <h3>Your feed runs through a canvas</h3>
-        <p>Each frame is processed on your device in real time, using the GPU where the browser allows it.</p>
-      </div>
-      <div class="pipe-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-      <div class="pipe-step">
-        <div class="pipe-n">3</div>
-        <h3>The site receives the result</h3>
-        <p>Meet, Discord, and the rest get the finished stream and treat it as an ordinary camera.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="privacy">
-  <div class="wrap split">
-    <div>
-      <p class="sec-label">Privacy</p>
-      <h2>Your video never leaves the machine.</h2>
-      <p class="sec-sub">This is the part worth being specific about, because video is not the kind of data you hand over casually.</p>
-      <ul class="tick">
-        <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>No network requests. Cam360 does not call a server, because it does not have one.</span></li>
-        <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>No account, no sign in, no analytics, no crash reporting.</span></li>
-        <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>Settings stay in local browser storage. Uploaded backgrounds never move off disk.</span></li>
-        <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>The source is public, so none of the above has to be taken on faith.</span></li>
-      </ul>
-    </div>
-    <div>
-      <div class="card">
-        <div class="ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8l7.5 3v6c0 4.6-3.1 8.6-7.5 9.8-4.4-1.2-7.5-5.2-7.5-9.8v-6z"/><path d="M9.2 12.2l2 2 3.6-3.9"/></svg></div>
-        <h3>Processing happens in the page</h3>
-        <p>The camera stream is captured, drawn to a canvas, and handed back inside the same tab. Nothing is uploaded at any point, including the AI background, whose model is bundled with the extension rather than fetched from a CDN.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="tinted" id="install">
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="sec-label">Install</p>
-      <h2>Four steps, about a minute.</h2>
+      <h2>Install in about a minute.</h2>
       <p class="sec-sub">Cam360 is not on the Chrome Web Store yet, so it loads as an unpacked extension. That also means you can read every line before you run it.</p>
     </div>
     <div class="steps">
@@ -236,7 +150,8 @@
         <span class="step-n"></span>
         <div class="step-body">
           <h3>Get the files</h3>
-          <p>Download the repository as a ZIP and unpack it, or run <code>git clone https://github.com/realanshuman/cam360.git</code></p>
+          <p>Download the repository as a ZIP and unpack it, or run:</p>
+          <code class="block">git clone https://github.com/realanshuman/cam360.git</code>
         </div>
       </div>
       <div class="step">
@@ -257,19 +172,17 @@
         <span class="step-n"></span>
         <div class="step-body">
           <h3>Pin it and start a call</h3>
-          <p>Pin Cam360 to the toolbar, open any site that uses your camera, and adjust from the popup or press Alt, Shift, C.</p>
+          <p>Pin Cam360 to the toolbar, open any site that uses your camera, and adjust from the popup.</p>
         </div>
       </div>
     </div>
+    <p class="note wide">Everything happens on your machine. Cam360 makes no network requests, has no account, and collects nothing. Even the AI background model ships inside the extension rather than being fetched at runtime.</p>
   </div>
 </section>
 
-<section id="faq">
+<section class="tinted" id="faq">
   <div class="wrap">
-    <div class="sec-head">
-      <p class="sec-label">FAQ</p>
-      <h2>Questions worth answering honestly.</h2>
-    </div>
+    <div class="sec-head"><h2>Questions worth answering honestly.</h2></div>
     <div class="faq">
       <details open>
         <summary>Does it work in the Discord or Zoom desktop app?</summary>
@@ -277,38 +190,19 @@
       </details>
       <details>
         <summary>Does my video ever leave my computer?</summary>
-        <p>No. Cam360 makes no network requests and includes no analytics. Frames are captured, processed, and handed back to the site inside the same browser tab, and the AI model ships inside the extension instead of being downloaded at runtime.</p>
+        <p>No. Cam360 makes no network requests and includes no analytics. Frames are captured, processed, and handed back to the site inside the same browser tab.</p>
       </details>
       <details>
         <summary>Why is the AI background unavailable on Google Meet?</summary>
-        <p>Meet sets a strict content security policy that stops extensions from loading WebAssembly into its page, which is what the segmentation model needs. Switch the cut out method to green screen and background replacement works there too. Every other effect, including lighting, framing, and overlays, keeps working normally.</p>
+        <p>Meet sets a strict content security policy that stops extensions from loading WebAssembly into its page, which is what the segmentation model needs. Switch the cut out method to green screen and background replacement works there too. Every other effect keeps working normally.</p>
       </details>
       <details>
         <summary>Which browsers are supported?</summary>
         <p>Chrome and other Chromium browsers that support Manifest V3, including Microsoft Edge, Brave, and Arc. Firefox and Safari use a different extension model and are not supported today.</p>
       </details>
-      <details>
-        <summary>Will it slow down my machine?</summary>
-        <p>Effects run on the GPU where the browser allows it, and the AI mask is computed at a reduced resolution rather than full frame. The heaviest setting is green screen keying at 1080p, since that inspects pixels directly. Turning Cam360 off returns your raw camera immediately, with no processing at all.</p>
-      </details>
-      <details>
-        <summary>Can I use my own image or video as a background?</summary>
-        <p>Yes. Upload any image for a still background, or any video file for a moving one, and it is composited behind you in real time. There are also five built in gradient scenes and two animated backdrops drawn by the extension itself.</p>
-      </details>
     </div>
   </div>
 </section>
-
-<div class="band">
-  <div class="wrap">
-    <h2>Take the next call looking like you meant it.</h2>
-    <p>Set it up once. It works on every camera site after that.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary btn-lg" href="#install">Get the extension</a>
-      <a class="btn btn-ghost btn-lg" href="https://github.com/realanshuman/cam360">View source</a>
-    </div>
-  </div>
-</div>
 
 <footer>
   <div class="wrap">
@@ -320,14 +214,12 @@
       <div class="foot-links">
         <a href="#features">Features</a>
         <a href="#how">How it works</a>
-        <a href="#privacy">Privacy</a>
         <a href="#install">Install</a>
         <a href="#faq">FAQ</a>
         <a href="https://github.com/realanshuman/cam360">GitHub</a>
       </div>
     </div>
     <p class="foot-built">Built by <a href="https://realanshuman.com" target="_blank" rel="noopener noreferrer">Ansh</a></p>
-    <p class="foot-note">Camera control for the browser. Built for people who spend a lot of the day on video.</p>
     <p class="foot-note">Cam360 is an independent project and is not affiliated with, endorsed by, or sponsored by Google, Discord, Zoom, Whereby, or Jitsi. Product names are used only to describe where the extension runs.</p>
   </div>
 </footer>
