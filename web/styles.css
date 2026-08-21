@@ -112,7 +112,7 @@ a { color: inherit; text-decoration: none; }
 .btn-ghost:active { background: var(--sunken); }
 
 /* ---------- Hero ---------- */
-.hero { padding: 84px 0 72px; position: relative; overflow: hidden; }
+.hero { padding: 76px 0 64px; position: relative; overflow: hidden; }
 .hero-grid { display: grid; grid-template-columns: 1fr 300px; gap: 72px; align-items: center; }
 .eyebrow {
   display: inline-flex; align-items: center; gap: 7px;
@@ -147,14 +147,13 @@ h1 {
 .strip-item { font-size: 15px; color: var(--ink-2); font-weight: 500; }
 
 /* ---------- Sections ---------- */
-section { padding: 96px 0; }
-.sec-head { max-width: 62ch; margin-bottom: 44px; }
-.sec-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue); margin-bottom: 12px; }
+section { padding: 72px 0; }
+.sec-head { max-width: 60ch; margin-bottom: 32px; }
 h2 { font-size: clamp(1.6rem, 5.4vw, 2rem); line-height: 1.2; font-weight: 600; letter-spacing: -0.022em; margin-bottom: 14px; }
 .sec-sub { font-size: clamp(1rem, 3.6vw, 1.0625rem); color: var(--ink-2); }
 
 /* ---------- Feature grid ---------- */
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 .card {
   border: 1px solid var(--line); border-radius: var(--radius); padding: 24px;
   background: var(--canvas); box-shadow: var(--shadow-card); transition: border-color .15s, transform .15s;
@@ -167,37 +166,39 @@ h2 { font-size: clamp(1.6rem, 5.4vw, 2rem); line-height: 1.2; font-weight: 600; 
 .card p { font-size: 14.5px; color: var(--ink-2); line-height: 1.6; }
 
 /* ---------- Split ---------- */
-.split { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
-.split.alt .split-media { order: -1; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
 .split-media { display: flex; justify-content: center; }
 .split-media img { border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow-float); }
-.split-media.panel img { max-width: 260px; }
-.split-media.popup img { max-width: 290px; }
-.tick { list-style: none; margin-top: 22px; display: flex; flex-direction: column; gap: 12px; }
-.tick li { display: flex; gap: 11px; font-size: 15px; color: var(--ink-2); }
-.tick svg { flex: 0 0 auto; margin-top: 4px; color: var(--blue); }
-.tick b { color: var(--ink); font-weight: 600; }
+.split-media.panel {
+  max-height: 492px; overflow: hidden; padding: 12px 12px 0;
+  -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+}
+.split-media.panel img { max-width: 248px; }
+.flow { list-style: none; margin-top: 22px; display: flex; flex-direction: column; gap: 15px; }
+.flow li { display: flex; gap: 13px; font-size: 15px; color: var(--ink-2); line-height: 1.55; }
+.flow .n {
+  flex: 0 0 auto; width: 22px; height: 22px; border-radius: 6px;
+  background: var(--ink); color: #fff; font-size: 11.5px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; margin-top: 3px;
+}
+.flow b { color: var(--ink); font-weight: 600; }
+.note { font-size: 14px; color: var(--ink-3); line-height: 1.6; margin-top: 20px; }
+.note.wide { max-width: 72ch; margin-top: 26px; }
+kbd {
+  display: inline-block; background: var(--canvas); border: 1px solid var(--line-2);
+  border-radius: 4px; padding: 0 5px; margin: 0 1px; font-family: inherit;
+  font-size: 11px; color: var(--ink-2);
+}
 
 .tinted { background: var(--sunken); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 
-/* ---------- Pipeline ---------- */
-.pipe { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 16px; align-items: stretch; }
-.pipe-step {
-  border: 1px solid var(--line); background: var(--canvas); border-radius: var(--radius);
-  padding: 22px; box-shadow: var(--shadow-card);
-}
-.pipe-n {
-  width: 24px; height: 24px; border-radius: 6px; background: var(--ink); color: #fff;
-  font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; margin-bottom: 13px;
-}
-.pipe-step h3 { font-size: 15.5px; font-weight: 600; margin-bottom: 6px; }
-.pipe-step p { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
-.pipe-arrow { display: flex; align-items: center; color: var(--ink-3); }
-
 /* ---------- Install ---------- */
-.steps { counter-reset: s; display: flex; flex-direction: column; gap: 2px; max-width: 660px; }
-.step { display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
-.step:last-child { border-bottom: 0; }
+.steps {
+  counter-reset: s; display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 26px 48px; max-width: 940px;
+}
+.step { display: flex; gap: 14px; align-items: baseline; min-width: 0; }
 .step-n { counter-increment: s; font-size: 13px; color: var(--ink-3); font-variant-numeric: tabular-nums; min-width: 20px; }
 .step-n::before { content: counter(s) "."; }
 .step-body { min-width: 0; }
@@ -206,7 +207,13 @@ h2 { font-size: clamp(1.6rem, 5.4vw, 2rem); line-height: 1.2; font-weight: 600; 
 code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px;
   background: var(--sunken); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; color: var(--ink);
-  overflow-wrap: anywhere;   /* the clone URL must never widen the page on a phone */
+  overflow-wrap: anywhere;   /* short inline snippets stay inside the column */
+}
+/* A full command scrolls inside its own box instead of breaking mid word */
+code.block {
+  display: block; margin-top: 8px; padding: 8px 10px;
+  white-space: pre; overflow-x: auto; overflow-wrap: normal;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ---------- FAQ ---------- */
@@ -225,12 +232,6 @@ code {
 }
 .faq details[open] summary::after { transform: rotate(225deg) translate(-1px, -1px); }
 .faq p { font-size: 15.5px; color: var(--ink-2); padding-bottom: 22px; max-width: 68ch; }
-
-/* ---------- CTA band ---------- */
-.band { text-align: center; padding: 92px 0; border-top: 1px solid var(--line); }
-.band h2 { margin-bottom: 12px; }
-.band p { font-size: 17px; color: var(--ink-2); margin-bottom: 28px; }
-.band .hero-actions { justify-content: center; margin-bottom: 0; }
 
 /* ---------- Footer ---------- */
 footer {
@@ -273,11 +274,9 @@ footer {
   .hero-grid { grid-template-columns: 1fr; gap: 44px; }
   .shot { max-width: 280px; margin: 0 auto; }
   h1 { max-width: 100%; }
-  .split { grid-template-columns: 1fr; gap: 40px; }
-  .split.alt .split-media { order: 0; }
-  .grid-3 { grid-template-columns: 1fr 1fr; }
-  .pipe { grid-template-columns: 1fr; gap: 12px; }
-  .pipe-arrow { transform: rotate(90deg); justify-content: center; padding: 0; }
+  .split { grid-template-columns: 1fr; gap: 36px; }
+  .grid-2 { gap: 14px; }
+  .steps { grid-template-columns: 1fr; gap: 22px; }
   .nav-links { display: none; }
   .nav-source { display: none; }
   /* nav-links is hidden here, so the CTA group takes over pushing to the right */
@@ -293,23 +292,21 @@ footer {
 /* ---------- Phones ---------- */
 @media (max-width: 640px) {
   :root { --gutter: 20px; }
-  section { padding: 60px 0; }
-  .hero { padding: 44px 0 52px; }
-  .band { padding: 68px 0; }
-  .sec-head { margin-bottom: 32px; }
-  .grid-3 { grid-template-columns: 1fr; gap: 14px; }
+  section { padding: 52px 0; }
+  .hero { padding: 40px 0 48px; }
+  .sec-head { margin-bottom: 26px; }
+  .grid-2 { grid-template-columns: 1fr; gap: 12px; }
   .card { padding: 20px; }
   .shot { max-width: 244px; }
+  .split-media.panel { max-height: 420px; }
   .split-media.panel img { max-width: 216px; }
-  .split-media.popup img { max-width: 236px; }
-  .split { gap: 34px; }
+  .split { gap: 30px; }
   .strip-in { padding: 18px 0; gap: 10px 18px; }
   .strip-item { font-size: 14px; }
   .strip-label { width: 100%; text-align: center; }
-  .tick li { font-size: 14.5px; }
+  .flow li { font-size: 14.5px; }
   .faq summary { font-size: 16px; gap: 14px; }
   .faq p { font-size: 15px; }
-  .band p { font-size: 16px; }
   .foot-top { gap: 18px; margin-bottom: 22px; }
   .foot-links { margin-left: 0; gap: 4px 18px; font-size: 14.5px; }
   footer { padding-top: 38px; }
