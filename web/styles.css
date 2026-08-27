@@ -142,9 +142,20 @@ h1 {
 
 /* ---------- Compat strip ---------- */
 .strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--sunken); }
-.strip-in { padding: 22px 0; display: flex; align-items: center; gap: 14px 30px; flex-wrap: wrap; justify-content: center; }
+.strip-in {
+  padding: 20px 0; display: flex; align-items: center; justify-content: center;
+  gap: 10px 26px; flex-wrap: wrap;
+}
 .strip-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); }
-.strip-item { font-size: 15px; color: var(--ink-2); font-weight: 500; }
+.logos { display: flex; align-items: center; justify-content: center; gap: 10px 26px; flex-wrap: wrap; }
+.logo-item {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 15px; font-weight: 500; color: var(--ink-2); white-space: nowrap;
+}
+/* height normalised so a wordmark and a glyph carry the same optical weight */
+.logo-item svg { height: 20px; width: auto; flex: 0 0 auto; }
+.logo-item.wordmark svg { height: 15px; }
+.strip-note { font-size: 14px; color: var(--ink-3); }
 
 /* ---------- Sections ---------- */
 section { padding: 72px 0; }
@@ -269,14 +280,8 @@ footer {
   .foot-built a:hover { color: var(--blue); border-color: var(--blue); }
 }
 
-/* ---------- Tablet and below ---------- */
+/* ---------- Tablets and below: nav collapses, touch targets grow ---------- */
 @media (max-width: 900px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 44px; }
-  .shot { max-width: 280px; margin: 0 auto; }
-  h1 { max-width: 100%; }
-  .split { grid-template-columns: 1fr; gap: 36px; }
-  .grid-2 { gap: 14px; }
-  .steps { grid-template-columns: 1fr; gap: 22px; }
   .nav-links { display: none; }
   .nav-source { display: none; }
   /* nav-links is hidden here, so the CTA group takes over pushing to the right */
@@ -287,6 +292,24 @@ footer {
   .btn-lg { min-height: 48px; }
   .foot-links a { min-height: var(--tap); display: flex; align-items: center; }
   .brand { min-height: var(--tap); }
+  /* Tablet portrait keeps two columns, it just tightens. Stacking this early
+     left the headline running the full width with half the row empty. */
+  .hero-grid { grid-template-columns: 1fr minmax(210px, 260px); gap: 40px; }
+  h1 { max-width: 13ch; }
+  .split { gap: 40px; }
+  .grid-2 { gap: 14px; }
+}
+
+/* ---------- Below tablet portrait: side by side stops paying off ---------- */
+@media (max-width: 860px) {
+  .split { grid-template-columns: 1fr; gap: 36px; }
+  .split-media.panel { max-height: 440px; }
+}
+
+@media (max-width: 720px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .shot { max-width: 268px; margin: 0 auto; }
+  h1 { max-width: 100%; }
 }
 
 /* ---------- Phones ---------- */
@@ -296,14 +319,19 @@ footer {
   .hero { padding: 40px 0 48px; }
   .sec-head { margin-bottom: 26px; }
   .grid-2 { grid-template-columns: 1fr; gap: 12px; }
+  .steps { grid-template-columns: 1fr; gap: 22px; }
   .card { padding: 20px; }
   .shot { max-width: 244px; }
   .split-media.panel { max-height: 420px; }
   .split-media.panel img { max-width: 216px; }
   .split { gap: 30px; }
-  .strip-in { padding: 18px 0; gap: 10px 18px; }
-  .strip-item { font-size: 14px; }
+  .strip-in { padding: 16px 0; gap: 8px 16px; }
   .strip-label { width: 100%; text-align: center; }
+  .logos { gap: 8px 18px; }
+  .logo-item { font-size: 14px; gap: 7px; }
+  .logo-item svg { height: 18px; }
+  .logo-item.wordmark svg { height: 14px; }
+  .strip-note { width: 100%; text-align: center; font-size: 13px; }
   .flow li { font-size: 14.5px; }
   .faq summary { font-size: 16px; gap: 14px; }
   .faq p { font-size: 15px; }
@@ -328,7 +356,7 @@ footer {
   /* Shorten the bar CTA rather than dropping the wordmark */
   .cta-long { display: none; }
   .cta-short { display: inline; }
-  .strip-item { font-size: 13.5px; }
+  .logo-item { font-size: 13px; }
 }
 
 /* ---------- Landscape phones ---------- */
