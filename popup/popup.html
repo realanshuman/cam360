@@ -12,6 +12,19 @@
     <button id="power" class="sw" role="switch" aria-label="Enable Cam360"></button>
   </header>
 
+  <div class="preview" id="previewWrap">
+    <div class="preview-frame">
+      <video id="previewVideo" autoplay playsinline muted hidden></video>
+      <canvas id="previewCanvas" hidden></canvas>
+      <button id="previewStart" class="preview-cta">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        Preview my camera
+      </button>
+      <p id="previewMsg" class="preview-msg" hidden></p>
+      <button id="previewStop" class="preview-close" title="Stop preview" hidden>✕</button>
+    </div>
+  </div>
+
   <div class="scroll">
     <section class="section">
       <div class="section-label">Transform</div>
@@ -124,6 +137,7 @@
   </footer>
   <p class="kbdhint">Open the panel mid-call with <kbd>Alt</kbd><kbd>Shift</kbd><kbd>C</kbd></p>
 
+  <script src="../src/engine.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

@@ -34,6 +34,9 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   width: 300px;
+  /* Chrome caps popups at 600px tall; flex lets the controls area shrink
+     when the preview is open instead of overflowing the cap */
+  display: flex; flex-direction: column; max-height: 585px;
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
@@ -42,12 +45,38 @@ body {
 }
 
 /* Header */
-.topbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; }
+.topbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; flex: 0 0 auto; }
 .brand { display: flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
 .logo { width: 18px; height: 18px; border-radius: 5px; flex: 0 0 auto; display: block; }
 
+/* Live self preview */
+.preview { padding: 0 14px 12px; flex: 0 0 auto; }
+.preview-frame {
+  position: relative; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden;
+  background: var(--sunken); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+}
+.preview-frame canvas { width: 100%; height: 100%; object-fit: cover; display: block; }
+.preview-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border: 1px solid var(--border-strong); border-radius: 8px;
+  background: var(--bg); color: var(--text-secondary); font-size: 13px; font-weight: 500;
+  cursor: pointer; font-family: inherit; transition: background .12s, color .12s;
+}
+.preview-cta:hover { background: var(--hover); color: var(--text); }
+.preview-msg {
+  position: absolute; inset: auto 10px 10px; margin: 0;
+  font-size: 11.5px; line-height: 1.45; color: var(--text-muted); text-align: center;
+}
+.preview-close {
+  position: absolute; top: 6px; right: 6px; width: 24px; height: 24px;
+  border: none; border-radius: 6px; background: rgba(15, 15, 15, 0.45); color: #fff;
+  font-size: 12px; cursor: pointer; line-height: 1;
+}
+.preview-close:hover { background: rgba(15, 15, 15, 0.65); }
+
 /* Scroll body */
-.scroll { max-height: 460px; overflow-y: auto; overflow-x: hidden; }
+.scroll { flex: 1 1 auto; min-height: 140px; max-height: 460px; overflow-y: auto; overflow-x: hidden; }
 .scroll::-webkit-scrollbar { width: 10px; }
 .scroll::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; border: 3px solid var(--bg); }
 
@@ -122,9 +151,11 @@ input[type=color] { width: 40px; height: 26px; border: 1px solid var(--border-st
 .status:empty { margin: 0; }
 
 /* Footer */
-.footer { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--border); }
+.footer { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--border); flex: 0 0 auto; }
 .footer .tbtn { flex: 1; text-align: center; }
-.kbdhint { font-size: 11px; color: var(--text-muted); text-align: center; padding: 0 14px 12px; }
+.kbdhint { font-size: 11px; color: var(--text-muted); text-align: center; padding: 0 14px 12px; flex: 0 0 auto; }
 kbd { display: inline-block; background: var(--sunken); border: 1px solid var(--border-strong); border-radius: 4px; padding: 0 4px; margin: 0 1px; font-family: inherit; font-size: 10px; }
 
 .hidden { display: none !important; }
+/* An author display value beats the UA rule for [hidden]; make hidden win. */
+[hidden] { display: none !important; }

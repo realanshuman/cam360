@@ -21,7 +21,11 @@ raw camera so it never breaks a call.
 
 Two ways to control it:
 
-- **Popup** (toolbar icon) — presets, toggles, and sliders.
+- **Popup** (toolbar icon) — presets, toggles, and sliders, plus a **live self
+  preview**: click "Preview my camera" at the top of the popup and you see your
+  processed feed exactly as a call would receive it, updating live as you move
+  any slider. The preview runs the same engine as the real pipeline, so it
+  cannot drift from what sites actually get.
 - **In-call panel** — a draggable overlay you pop up *during* a call with
   `Alt`+`Shift`+`C` (or the popup's "Show in-call panel" button), so you can adjust
   lighting on the fly without leaving the meeting.
@@ -118,14 +122,20 @@ enable **"Allow access to file URLs"** on the Cam360 card in `chrome://extension
 
 ```
 manifest.json          MV3 manifest (content scripts in MAIN + ISOLATED worlds)
-src/inject.js          MAIN world  — getUserMedia override, canvas engine + segmentation
+src/engine.js          the shared frame pipeline (effects, keyers, overlays)
+src/inject.js          MAIN world  — getUserMedia override wired to the engine
 src/bridge.js          ISOLATED    — chrome.storage <-> page bridge, draggable overlay
 src/background.js       service worker — keyboard-shortcut relay
-popup/                 toolbar popup UI (html/css/js)
+popup/                 toolbar popup UI, runs the engine for the live preview
 vendor/mediapipe/      bundled MediaPipe vision WASM + selfie segmentation model
 icons/                 generated PNG icons
 test/test.html         standalone verification page
 ```
+
+The processing pipeline lives in one file, `src/engine.js`, used by both the
+page pipeline and the popup preview. That is deliberate: a preview drawn by a
+second implementation would drift from the real output and stop being a
+preview.
 
 The MAIN-world script does the camera override (it needs to run in the page's own
 JS context to patch `navigator.mediaDevices.getUserMedia`), but MAIN-world scripts

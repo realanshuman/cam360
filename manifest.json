@@ -31,7 +31,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["src/inject.js"],
+      "js": ["src/engine.js", "src/inject.js"],
       "run_at": "document_start",
       "all_frames": true,
       "world": "MAIN"

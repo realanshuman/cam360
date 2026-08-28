@@ -175,4 +175,69 @@ function renderStatus() {
 }
 
 chrome.storage.onChanged.addListener((c, area) => { if (area === "local" && c.cam360_status) renderStatus(); });
+/* ---------------- Live self preview ----------------
+ * Runs the SAME engine (src/engine.js) the content script uses on the page,
+ * on the popup's own camera, so what you see here is exactly the feed a call
+ * would receive with the current settings.
+ */
+const pv = {
+  wrap: document.getElementById("previewWrap"),
+  video: document.getElementById("previewVideo"),
+  canvas: document.getElementById("previewCanvas"),
+  start: document.getElementById("previewStart"),
+  stop: document.getElementById("previewStop"),
+  msg: document.getElementById("previewMsg"),
+  stream: null, renderer: null
+};
+
+function previewMessage(text) { pv.msg.textContent = text || ""; pv.msg.hidden = !text; }
+
+async function startPreview() {
+  pv.start.hidden = true;
+  previewMessage("Starting camera...");
+  try {
+    pv.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+    pv.video.srcObject = pv.stream;
+    await pv.video.play().catch(() => {});
+    pv.canvas.hidden = false;
+    pv.stop.hidden = false;
+    previewMessage("");
+    pv.renderer = Cam360Engine.createRenderer({
+      video: pv.video,
+      canvas: pv.canvas,
+      getSettings: () => state,
+      getBaseURL: () => chrome.runtime.getURL(""),
+      onStatus: (st) => { if (st.segState === "loading") previewMessage(st.message); else previewMessage(""); }
+    });
+    pv.renderer.start();
+    try { chrome.storage.local.set({ cam360_preview: true }); } catch (_) {}
+  } catch (err) {
+    pv.start.hidden = false;
+    pv.canvas.hidden = true;
+    pv.stop.hidden = true;
+    previewMessage(err && err.name === "NotAllowedError"
+      ? "Camera access was blocked. Allow camera for Cam360 in the site permissions of this popup, then try again."
+      : "Could not start the camera: " + (err && err.message ? err.message : err));
+  }
+}
+
+function stopPreview(remember) {
+  if (pv.renderer) { pv.renderer.stop(); pv.renderer = null; }
+  if (pv.stream) { pv.stream.getTracks().forEach((t) => { try { t.stop(); } catch (_) {} }); pv.stream = null; }
+  pv.video.srcObject = null;
+  pv.canvas.hidden = true;
+  pv.stop.hidden = true;
+  pv.start.hidden = false;
+  previewMessage("");
+  if (remember) { try { chrome.storage.local.set({ cam360_preview: false }); } catch (_) {} }
+}
+
+pv.start.addEventListener("click", startPreview);
+pv.stop.addEventListener("click", () => stopPreview(true));
+// The popup unloads when it closes, which releases the camera; this makes it explicit.
+window.addEventListener("unload", () => stopPreview(false));
+
+// Reopen the preview automatically if it was on last time.
+chrome.storage.local.get("cam360_preview", (res) => { if (res.cam360_preview) startPreview(); });
+
 (async () => { state = await get(); render(); })();
