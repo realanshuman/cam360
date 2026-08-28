@@ -43,11 +43,15 @@
   });
 
   function takeSnapshot() {
+    // Always answer, so the popup can tell the user when there is no camera
+    // here instead of failing silently.
     try {
-      if (!activeCanvas) return;
-      const dataURL = activeCanvas.toDataURL("image/png");
+      const dataURL = activeCanvas ? activeCanvas.toDataURL("image/png") : null;
       window.postMessage({ __cam360: "snapshotData", dataURL }, "*");
-    } catch (err) { console.warn("[Cam360] snapshot failed", err); }
+    } catch (err) {
+      console.warn("[Cam360] snapshot failed", err);
+      window.postMessage({ __cam360: "snapshotData", dataURL: null }, "*");
+    }
   }
 
   const md = navigator.mediaDevices;

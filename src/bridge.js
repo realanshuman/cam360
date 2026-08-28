@@ -35,20 +35,29 @@
   window.postMessage({ __cam360: "base", baseURL: BASE }, "*");
 
   // Receive runtime status + snapshot data from the engine.
+  let snapCallbacks = [];
   window.addEventListener("message", (e) => {
     if (e.source !== window || !e.data) return;
     if (e.data.__cam360 === "status") {
       status = e.data.value || status;
       try { chrome.storage.local.set({ cam360_status: status }); } catch (_) {}
       syncOverlay();
-    } else if (e.data.__cam360 === "snapshotData" && e.data.dataURL) {
-      const a = document.createElement("a");
-      a.href = e.data.dataURL;
-      a.download = "cam360-" + Date.now() + ".png";
-      document.body.appendChild(a); a.click(); a.remove();
+    } else if (e.data.__cam360 === "snapshotData") {
+      const ok = !!e.data.dataURL;
+      if (ok) {
+        const a = document.createElement("a");
+        a.href = e.data.dataURL;
+        a.download = "cam360-" + Date.now() + ".png";
+        document.body.appendChild(a); a.click(); a.remove();
+      }
+      const cbs = snapCallbacks; snapCallbacks = [];
+      cbs.forEach((cb) => { try { cb({ ok }); } catch (_) {} });
     }
   });
-  function requestSnapshot() { window.postMessage({ __cam360: "snapshot" }, "*"); }
+  function requestSnapshot(cb) {
+    if (cb) snapCallbacks.push(cb);
+    window.postMessage({ __cam360: "snapshot" }, "*");
+  }
 
   function load() {
     chrome.storage.local.get(KEY, (res) => {
@@ -70,10 +79,18 @@
     syncOverlay();
   });
 
-  chrome.runtime.onMessage.addListener((msg) => {
+  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (!msg) return;
     if (msg.__cam360 === "toggleOverlay") save({ overlayVisible: !current.overlayVisible });
-    else if (msg.__cam360 === "snapshot") requestSnapshot();
+    else if (msg.__cam360 === "snapshot") {
+      // The message reaches every frame in the tab. A frame with no camera
+      // delays its "no" so a frame that has one can answer first.
+      requestSnapshot((res) => {
+        if (res.ok) sendResponse(res);
+        else setTimeout(() => { try { sendResponse(res); } catch (_) {} }, 600);
+      });
+      return true; // keep sendResponse alive for the async reply
+    }
   });
 
   /* ---------------------- In-page control panel ---------------------- */

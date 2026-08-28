@@ -104,7 +104,38 @@ document.getElementById("logoUploadBtn").addEventListener("click", () => documen
 document.getElementById("logoUpload").addEventListener("change", (e) => {
   const f = e.target.files && e.target.files[0]; if (f) readFile(f, (d) => set({ logoImage: d, showLogo: true }));
 });
-document.getElementById("snapshot").addEventListener("click", () => sendToTab({ __cam360: "snapshot" }));
+const snapBtn = document.getElementById("snapshot");
+function snapFlash(text, ok) {
+  const original = "Save PNG";
+  snapBtn.textContent = text;
+  snapBtn.style.color = ok ? "var(--accent)" : "var(--danger)";
+  setTimeout(() => { snapBtn.textContent = original; snapBtn.style.color = ""; }, 1800);
+}
+snapBtn.addEventListener("click", async () => {
+  // Preview running: save its canvas directly. Same engine, same pixels.
+  if (pv.renderer && pv.renderer.isRunning() && !pv.canvas.hidden && pv.canvas.width) {
+    try {
+      const a = document.createElement("a");
+      a.href = pv.canvas.toDataURL("image/png");
+      a.download = "cam360-" + Date.now() + ".png";
+      document.body.appendChild(a); a.click(); a.remove();
+      snapFlash("Saved", true);
+    } catch (err) { snapFlash("Failed", false); }
+    return;
+  }
+  // Otherwise ask the active tab, and say so when nothing is filming there.
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!tab || tab.id == null) { snapFlash("No camera", false); return; }
+  let done = false;
+  const timer = setTimeout(() => { if (!done) { done = true; snapFlash("No camera", false); } }, 1500);
+  chrome.tabs.sendMessage(tab.id, { __cam360: "snapshot" }, (res) => {
+    void chrome.runtime.lastError;
+    if (done) return;
+    done = true; clearTimeout(timer);
+    if (res && res.ok) snapFlash("Saved", true);
+    else snapFlash("No camera", false);
+  });
+});
 
 document.getElementById("reset").addEventListener("click", () => set({
   mirror: false, flipV: false, rotate: 0, brightness: 100, contrast: 100, saturation: 100,
