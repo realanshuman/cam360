@@ -192,9 +192,34 @@ const pv = {
 
 function previewMessage(text) { pv.msg.textContent = text || ""; pv.msg.hidden = !text; }
 
+function openGrantTab() {
+  // Chrome cannot render the camera permission prompt inside a toolbar popup;
+  // it silently denies instead. A normal extension tab can show it, and the
+  // grant sticks for the whole extension afterwards.
+  chrome.tabs.create({ url: chrome.runtime.getURL("popup/grant.html") });
+  window.close();
+}
+
+async function cameraPermissionState() {
+  try {
+    const st = await navigator.permissions.query({ name: "camera" });
+    return st.state; // granted | prompt | denied
+  } catch (_) { return "unknown"; }
+}
+
 async function startPreview() {
   pv.start.hidden = true;
   previewMessage("Starting camera...");
+
+  // Permission not granted yet: the popup cannot show the prompt, so ask from
+  // a tab instead of letting the request silently fail here.
+  const perm = await cameraPermissionState();
+  if (perm === "prompt" || perm === "denied") {
+    try { chrome.storage.local.set({ cam360_preview: false }); } catch (_) {}
+    openGrantTab();
+    return;
+  }
+
   try {
     pv.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
     pv.video.srcObject = pv.stream;
@@ -215,9 +240,8 @@ async function startPreview() {
     pv.start.hidden = false;
     pv.canvas.hidden = true;
     pv.stop.hidden = true;
-    previewMessage(err && err.name === "NotAllowedError"
-      ? "Camera access was blocked. Allow camera for Cam360 in the site permissions of this popup, then try again."
-      : "Could not start the camera: " + (err && err.message ? err.message : err));
+    if (err && err.name === "NotAllowedError") { openGrantTab(); return; }
+    previewMessage("Could not start the camera: " + (err && err.message ? err.message : err));
   }
 }
 
@@ -237,7 +261,11 @@ pv.stop.addEventListener("click", () => stopPreview(true));
 // The popup unloads when it closes, which releases the camera; this makes it explicit.
 window.addEventListener("unload", () => stopPreview(false));
 
-// Reopen the preview automatically if it was on last time.
-chrome.storage.local.get("cam360_preview", (res) => { if (res.cam360_preview) startPreview(); });
+// Reopen the preview automatically if it was on last time and permission is
+// already granted; never bounce the user into the grant tab on open.
+chrome.storage.local.get("cam360_preview", async (res) => {
+  if (!res.cam360_preview) return;
+  if ((await cameraPermissionState()) === "granted") startPreview();
+});
 
 (async () => { state = await get(); render(); })();

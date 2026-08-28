@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cam360 camera access</title>
+  <style>
+    :root {
+      --bg: #ffffff; --sunken: #f7f6f3; --text: #37352f;
+      --text-2: rgba(55, 53, 47, 0.72); --text-3: rgba(55, 53, 47, 0.5);
+      --border: rgba(55, 53, 47, 0.16); --blue: #2383e2; --danger: #e03e3e;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #202020; --sunken: #2b2b2b; --text: rgba(255,255,255,0.9);
+        --text-2: rgba(255,255,255,0.66); --text-3: rgba(255,255,255,0.44);
+        --border: rgba(255,255,255,0.16);
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;
+    }
+    .card { max-width: 460px; text-align: center; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 600; margin-bottom: 26px; }
+    .brand svg { width: 26px; height: 26px; border-radius: 7px; display: block; }
+    h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 12px; }
+    p { font-size: 15px; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+    .state { margin-top: 18px; font-size: 14px; }
+    .ok { color: var(--blue); font-weight: 600; }
+    .err { color: var(--danger); }
+    .hint { font-size: 13px; color: var(--text-3); margin-top: 16px; line-height: 1.6; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px;
+      background: var(--sunken); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px;
+    }
+    button {
+      margin-top: 20px; padding: 10px 22px; border: none; border-radius: 8px;
+      background: var(--blue); color: #fff; font-size: 14px; font-weight: 500;
+      cursor: pointer; font-family: inherit;
+    }
+    button[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#2383E2"/><circle cx="24" cy="24" r="11" fill="none" stroke="#fff" stroke-width="3.25" stroke-linecap="round" stroke-dasharray="57 12.1" transform="rotate(-14 24 24)"/><circle cx="24" cy="24" r="4.25" fill="#fff"/></svg>
+      Cam360
+    </div>
+    <h1>Allow camera access</h1>
+    <p>Cam360 needs one-time permission to show your live preview. Chrome cannot ask from inside the small popup, so it asks here instead.</p>
+    <p>When the browser prompt appears near the address bar, choose <b>Allow</b>.</p>
+    <p class="state" id="state">Requesting your camera…</p>
+    <p class="hint" id="hint" hidden></p>
+    <button id="retry" hidden>Try again</button>
+  </div>
+  <script src="grant.js"></script>
+</body>
+</html>
