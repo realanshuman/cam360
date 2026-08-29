@@ -9,7 +9,12 @@
 <body>
   <header class="topbar">
     <div class="brand"><svg class="logo" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#2383E2"/><circle cx="24" cy="24" r="11" fill="none" stroke="#fff" stroke-width="3.25" stroke-linecap="round" stroke-dasharray="57 12.1" transform="rotate(-14 24 24)"/><circle cx="24" cy="24" r="4.25" fill="#fff"/></svg> Cam360</div>
-    <button id="power" class="sw" role="switch" aria-label="Enable Cam360"></button>
+    <div class="top-actions">
+      <button id="openWindow" class="iconbtn win-only-hide" title="Open as a resizable window">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </button>
+      <button id="power" class="sw" role="switch" aria-label="Enable Cam360"></button>
+    </div>
   </header>
 
   <div class="preview" id="previewWrap">
@@ -136,6 +141,10 @@
     <button id="reset" class="tbtn">Reset</button>
   </footer>
   <p class="kbdhint">Open the panel mid-call with <kbd>Alt</kbd><kbd>Shift</kbd><kbd>C</kbd></p>
+
+  <div id="grip" class="grip" title="Drag to resize">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="8.5" cy="1.5" r="1.1"/><circle cx="8.5" cy="5" r="1.1"/><circle cx="5" cy="5" r="1.1"/><circle cx="8.5" cy="8.5" r="1.1"/><circle cx="5" cy="8.5" r="1.1"/><circle cx="1.5" cy="8.5" r="1.1"/></svg>
+  </div>
 
   <script src="../src/engine.js"></script>
   <script src="popup.js"></script>

@@ -26,6 +26,11 @@ Two ways to control it:
   processed feed exactly as a call would receive it, updating live as you move
   any slider. The preview runs the same engine as the real pipeline, so it
   cannot drift from what sites actually get.
+  The popup itself is resizable: drag the grip in its bottom corner to any size
+  up to Chrome's 800x600 popup limit (remembered for next time), or click the
+  arrow in the header to open the same controls as a real window you can resize
+  freely. The layout adapts as it grows: side by side panes past 560px, and the
+  controls flow into two then three columns in a wide window.
 - **In-call panel** — a draggable overlay you pop up *during* a call with
   `Alt`+`Shift`+`C` (or the popup's "Show in-call panel" button), so you can adjust
   lighting on the fly without leaving the meeting.

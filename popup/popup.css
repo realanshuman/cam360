@@ -32,25 +32,80 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* The popup sizes itself to the body. The grip writes these two variables so
+   the whole dialog resizes live; Chrome caps toolbar popups at 800x600. */
+:root { --pop-w: 300px; --pop-h: 585px; }
+
 body {
-  width: 300px;
-  /* Chrome caps popups at 600px tall; flex lets the controls area shrink
-     when the preview is open instead of overflowing the cap */
-  display: flex; flex-direction: column; max-height: 585px;
+  width: var(--pop-w);
+  height: var(--pop-h);
+  max-width: 790px; max-height: 590px;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto auto 1fr auto auto;
+  grid-template-areas: "top" "preview" "scroll" "footer" "hint";
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* Detached window mode: the OS owns the size, the layout follows the viewport */
+body.windowed { width: 100vw; height: 100vh; max-width: none; max-height: none; }
+
+/* Two panes once there is room: preview stays put, controls scroll beside it */
+@media (min-width: 560px) {
+  body {
+    grid-template-columns: minmax(250px, 340px) 1fr;
+    grid-template-rows: auto 1fr auto auto;
+    grid-template-areas: "top top" "preview scroll" "footer footer" "hint hint";
+  }
+  .preview { border-right: 1px solid var(--border); padding-top: 2px; }
+  .scroll { border-top: 0; }
+}
+
+/* Wide window: the controls flow into two columns */
+@media (min-width: 900px) {
+  /* column-fill: auto packs the first column before starting the next,
+     instead of balancing them and leaving dead space */
+  .scroll { column-count: 2; column-gap: 0; column-fill: auto; }
+  body { grid-template-columns: minmax(280px, 400px) 1fr; }
+  .section { break-inside: avoid; }
+  .section:nth-child(even) { border-left: 1px solid var(--border); }
+}
+@media (min-width: 1320px) {
+  .scroll { column-count: 3; }
 }
 
 /* Header */
-.topbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; flex: 0 0 auto; }
+.topbar { grid-area: top; display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; }
 .brand { display: flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
 .logo { width: 18px; height: 18px; border-radius: 5px; flex: 0 0 auto; display: block; }
 
+/* Header actions */
+.top-actions { display: flex; align-items: center; gap: 8px; }
+.iconbtn {
+  width: 28px; height: 28px; border: 1px solid var(--border-strong); border-radius: 7px;
+  background: transparent; color: var(--text-muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: background .12s, color .12s;
+}
+.iconbtn:hover { background: var(--hover); color: var(--text); }
+body.windowed .win-only-hide { display: none; }
+
+/* Resize grip (toolbar popup only; a detached window resizes at the OS level) */
+.grip {
+  position: fixed; right: 0; bottom: 0; width: 18px; height: 18px;
+  cursor: nwse-resize; color: var(--text-muted); opacity: 0.7; z-index: 60;
+  display: flex; align-items: flex-end; justify-content: flex-end; padding: 3px;
+}
+.grip:hover { opacity: 1; color: var(--text); }
+body.windowed .grip { display: none; }
+
 /* Live self preview */
-.preview { padding: 0 14px 12px; flex: 0 0 auto; }
+.preview { grid-area: preview; padding: 0 14px 12px; }
 .preview-frame {
   position: relative; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden;
   background: var(--sunken); border: 1px solid var(--border);
@@ -76,7 +131,7 @@ body {
 .preview-close:hover { background: rgba(15, 15, 15, 0.65); }
 
 /* Scroll body */
-.scroll { flex: 1 1 auto; min-height: 140px; max-height: 460px; overflow-y: auto; overflow-x: hidden; }
+.scroll { grid-area: scroll; min-height: 0; overflow-y: auto; overflow-x: hidden; }
 .scroll::-webkit-scrollbar { width: 10px; }
 .scroll::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; border: 3px solid var(--bg); }
 
@@ -151,9 +206,9 @@ input[type=color] { width: 40px; height: 26px; border: 1px solid var(--border-st
 .status:empty { margin: 0; }
 
 /* Footer */
-.footer { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--border); flex: 0 0 auto; }
+.footer { grid-area: footer; display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--border); }
 .footer .tbtn { flex: 1; text-align: center; }
-.kbdhint { font-size: 11px; color: var(--text-muted); text-align: center; padding: 0 14px 12px; flex: 0 0 auto; }
+.kbdhint { grid-area: hint; font-size: 11px; color: var(--text-muted); text-align: center; padding: 0 14px 12px; }
 kbd { display: inline-block; background: var(--sunken); border: 1px solid var(--border-strong); border-radius: 4px; padding: 0 4px; margin: 0 1px; font-family: inherit; font-size: 10px; }
 
 .hidden { display: none !important; }

@@ -1,4 +1,61 @@
 /* Cam360 — popup.js : shares chrome.storage with the in-call overlay. */
+
+/* ---------------- Dialog sizing ----------------
+ * Two ways to a bigger dialog:
+ *  - the grip in the corner resizes the toolbar popup live, within Chrome's
+ *    hard 800x600 popup cap, and the chosen size is remembered
+ *  - "Open as window" moves the same page into a real window the OS can
+ *    resize to any size; the responsive layout takes it from there
+ */
+const IS_WINDOW = new URLSearchParams(location.search).has("window");
+if (IS_WINDOW) document.body.classList.add("windowed");
+
+const SIZE_MIN_W = 280, SIZE_MAX_W = 780, SIZE_MIN_H = 430, SIZE_MAX_H = 585;
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+function applySize(w, h) {
+  document.documentElement.style.setProperty("--pop-w", w + "px");
+  document.documentElement.style.setProperty("--pop-h", h + "px");
+}
+
+if (!IS_WINDOW) {
+  chrome.storage.local.get("cam360_size", (res) => {
+    const sz = res.cam360_size;
+    if (sz && sz.w && sz.h) applySize(clamp(sz.w, SIZE_MIN_W, SIZE_MAX_W), clamp(sz.h, SIZE_MIN_H, SIZE_MAX_H));
+  });
+
+  const grip = document.getElementById("grip");
+  let drag = null;
+  grip.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    grip.setPointerCapture(e.pointerId);
+    drag = { x: e.screenX, y: e.screenY, w: document.body.offsetWidth, h: document.body.offsetHeight };
+  });
+  grip.addEventListener("pointermove", (e) => {
+    if (!drag) return;
+    applySize(clamp(drag.w + (e.screenX - drag.x), SIZE_MIN_W, SIZE_MAX_W),
+              clamp(drag.h + (e.screenY - drag.y), SIZE_MIN_H, SIZE_MAX_H));
+  });
+  grip.addEventListener("pointerup", (e) => {
+    if (!drag) return;
+    drag = null;
+    try {
+      chrome.storage.local.set({ cam360_size: { w: document.body.offsetWidth, h: document.body.offsetHeight } });
+    } catch (_) {}
+  });
+} else {
+  const g = document.getElementById("grip");
+  if (g) g.remove();
+}
+
+document.getElementById("openWindow").addEventListener("click", () => {
+  chrome.windows.create({
+    url: chrome.runtime.getURL("popup/popup.html?window=1"),
+    type: "popup", width: 960, height: 680
+  });
+  window.close();
+});
+
 const KEY = "cam360";
 const DEFAULTS = {
   enabled: true, mirror: false, flipV: false, rotate: 0,
