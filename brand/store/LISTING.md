@@ -67,12 +67,34 @@ English
 
 Upload the screenshots in that order; the first one is what most people see.
 
-## Privacy tab answers
+## Privacy practices tab, field by field
 
-- Single purpose description: "Enhances the user's webcam video (background, lighting, framing) on websites that use the camera."
-- Permission justification, content scripts on all sites: "The extension enhances the camera on whichever website the user makes a call from, which cannot be known in advance. It only activates when a site requests the camera."
-- Permission justification, storage / unlimitedStorage: "Stores the user's settings and their own uploaded background images locally."
-- Data collection: answer No to everything. The extension makes no network requests and collects nothing.
+These are the fields behind the "Unable to publish" checklist. All of them live
+on the item's Privacy practices tab except the last one.
+
+1. Single purpose description:
+   "Enhances the user's webcam video (background, lighting, framing) on websites that use the camera."
+
+2. Host permission justification:
+   "The extension enhances the camera on whichever website the user makes a call from (Google Meet, Discord, Zoom in the browser, and others), which cannot be known in advance. Its content script only activates when a site requests the camera, and it makes no network requests."
+
+3. Remote code use: select "No, I am not using remote code". Everything,
+   including the WebAssembly module and the AI model, ships inside the package.
+   If a justification is still required:
+   "No remote code. All scripts, the WebAssembly module, and the AI model are bundled inside the extension package. The extension makes no network requests."
+
+4. storage justification:
+   "Stores the user's settings (slider values, chosen background, overlay text) locally on their device."
+
+5. unlimitedStorage justification:
+   "Users can set their own image or video as a virtual background. These files are stored locally on the user's device and can exceed the default storage quota."
+
+6. Data usage: answer No to all collection questions, then tick the
+   certification checkbox at the bottom of the tab.
+
+7. Contact email: Settings, then Account. Add an email, send the verification,
+   click the link in the email, come back and Save draft.
+
 - Privacy policy URL: https://cam360.vercel.app/privacy
 
 ## Additional fields
