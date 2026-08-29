@@ -24,28 +24,39 @@ if (!IS_WINDOW) {
     if (sz && sz.w && sz.h) applySize(clamp(sz.w, SIZE_MIN_W, SIZE_MAX_W), clamp(sz.h, SIZE_MIN_H, SIZE_MAX_H));
   });
 
-  const grip = document.getElementById("grip");
-  let drag = null;
-  grip.addEventListener("pointerdown", (e) => {
-    e.preventDefault();
-    grip.setPointerCapture(e.pointerId);
-    drag = { x: e.screenX, y: e.screenY, w: document.body.offsetWidth, h: document.body.offsetHeight };
-  });
-  grip.addEventListener("pointermove", (e) => {
-    if (!drag) return;
-    applySize(clamp(drag.w + (e.screenX - drag.x), SIZE_MIN_W, SIZE_MAX_W),
-              clamp(drag.h + (e.screenY - drag.y), SIZE_MIN_H, SIZE_MAX_H));
-  });
-  grip.addEventListener("pointerup", (e) => {
-    if (!drag) return;
-    drag = null;
-    try {
-      chrome.storage.local.set({ cam360_size: { w: document.body.offsetWidth, h: document.body.offsetHeight } });
-    } catch (_) {}
+  // Corner resizes both axes; the right and bottom edges resize one each,
+  // so the dialog can be dragged by its borders like a normal window.
+  const handles = [
+    ["grip", true, true],
+    ["edgeR", true, false],
+    ["edgeB", false, true]
+  ];
+  handles.forEach(([id, doW, doH]) => {
+    const el = document.getElementById(id);
+    let drag = null;
+    el.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      el.setPointerCapture(e.pointerId);
+      drag = { x: e.screenX, y: e.screenY, w: document.body.offsetWidth, h: document.body.offsetHeight };
+    });
+    el.addEventListener("pointermove", (e) => {
+      if (!drag) return;
+      applySize(doW ? clamp(drag.w + (e.screenX - drag.x), SIZE_MIN_W, SIZE_MAX_W) : drag.w,
+                doH ? clamp(drag.h + (e.screenY - drag.y), SIZE_MIN_H, SIZE_MAX_H) : drag.h);
+    });
+    el.addEventListener("pointerup", () => {
+      if (!drag) return;
+      drag = null;
+      try {
+        chrome.storage.local.set({ cam360_size: { w: document.body.offsetWidth, h: document.body.offsetHeight } });
+      } catch (_) {}
+    });
   });
 } else {
-  const g = document.getElementById("grip");
-  if (g) g.remove();
+  ["grip", "edgeR", "edgeB"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.remove();
+  });
 }
 
 document.getElementById("openWindow").addEventListener("click", () => {

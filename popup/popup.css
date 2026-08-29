@@ -95,6 +95,14 @@ body.windowed { width: 100vw; height: 100vh; max-width: none; max-height: none; 
 .iconbtn:hover { background: var(--hover); color: var(--text); }
 body.windowed .win-only-hide { display: none; }
 
+/* Edge drag zones: the dialog resizes from its own right and bottom borders,
+   like a normal window. Invisible until hovered. */
+.edge { position: fixed; z-index: 59; }
+.edge-r { top: 0; right: 0; width: 7px; height: 100%; cursor: ew-resize; }
+.edge-b { bottom: 0; left: 0; width: 100%; height: 7px; cursor: ns-resize; }
+.edge:hover { background: var(--accent-soft); }
+body.windowed .edge { display: none; }
+
 /* Resize grip (toolbar popup only; a detached window resizes at the OS level) */
 .grip {
   position: fixed; right: 0; bottom: 0; width: 18px; height: 18px;
