@@ -3,15 +3,22 @@
   "name": "Cam360 — Virtual Camera Studio",
   "version": "1.0.0",
   "description": "Intercept and enhance your webcam on any website (Meet, Discord, Zoom web...). Flip, rotate, adjust lighting, blur and zoom — live.",
-  "permissions": ["storage", "scripting", "activeTab", "unlimitedStorage"],
-  "host_permissions": ["<all_urls>"],
+  "permissions": [
+    "storage",
+    "unlimitedStorage"
+  ],
   "content_security_policy": {
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
   },
   "web_accessible_resources": [
     {
-      "resources": ["vendor/mediapipe/*", "vendor/mediapipe/wasm/*"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "vendor/mediapipe/*",
+        "vendor/mediapipe/wasm/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ],
   "action": {
@@ -30,15 +37,24 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["src/engine.js", "src/inject.js"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "src/engine.js",
+        "src/inject.js"
+      ],
       "run_at": "document_start",
       "all_frames": true,
       "world": "MAIN"
     },
     {
-      "matches": ["<all_urls>"],
-      "js": ["src/bridge.js"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "src/bridge.js"
+      ],
       "run_at": "document_start",
       "all_frames": true,
       "world": "ISOLATED"
@@ -46,7 +62,9 @@
   ],
   "commands": {
     "toggle-overlay": {
-      "suggested_key": { "default": "Alt+Shift+C" },
+      "suggested_key": {
+        "default": "Alt+Shift+C"
+      },
       "description": "Show/hide the Cam360 in-call control panel"
     }
   },
