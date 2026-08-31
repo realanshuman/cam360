@@ -43,8 +43,8 @@ body {
   max-width: 790px; max-height: 590px;
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: auto auto 1fr auto auto;
-  grid-template-areas: "top" "preview" "scroll" "footer" "hint";
+  grid-template-rows: auto auto 1fr auto auto auto;
+  grid-template-areas: "top" "preview" "scroll" "footer" "hint" "credit";
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
@@ -60,8 +60,8 @@ body.windowed { width: 100vw; height: 100vh; max-width: none; max-height: none; 
 @media (min-width: 560px) {
   body {
     grid-template-columns: minmax(250px, 340px) 1fr;
-    grid-template-rows: auto 1fr auto auto;
-    grid-template-areas: "top top" "preview scroll" "footer footer" "hint hint";
+    grid-template-rows: auto 1fr auto auto auto;
+    grid-template-areas: "top top" "preview scroll" "footer footer" "hint hint" "credit credit";
   }
   .preview { border-right: 1px solid var(--border); padding-top: 2px; }
   .scroll { border-top: 0; }
@@ -217,6 +217,16 @@ input[type=color] { width: 40px; height: 26px; border: 1px solid var(--border-st
 .footer { grid-area: footer; display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--border); }
 .footer .tbtn { flex: 1; text-align: center; }
 .kbdhint { grid-area: hint; font-size: 11px; color: var(--text-muted); text-align: center; padding: 0 14px 12px; }
+
+/* Minimal credit line */
+.credit {
+  grid-area: credit; font-size: 11px; color: var(--text-muted);
+  text-align: center; padding: 0 14px 10px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.credit a { color: var(--text-secondary); font-weight: 500; text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+.credit a:hover { color: var(--accent); border-color: var(--accent); }
+.credit-dot { color: var(--border-strong); }
 kbd { display: inline-block; background: var(--sunken); border: 1px solid var(--border-strong); border-radius: 4px; padding: 0 4px; margin: 0 1px; font-family: inherit; font-size: 10px; }
 
 .hidden { display: none !important; }

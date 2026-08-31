@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Cam360",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Look better on every video call. Blur or swap your background, fix lighting, mirror and zoom. Works on Meet, Discord, Zoom & more.",
   "permissions": [
     "storage",
