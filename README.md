@@ -105,7 +105,11 @@ separated from it:
   clock into the outgoing feed. Name and logo text/images are set in the popup;
   quick on/off toggles live in the in-call panel too.
 
-## Install (developer / unpacked)
+## Install
+
+**From the Chrome Web Store (recommended):** [Add Cam360 to Chrome](https://chromewebstore.google.com/detail/cam360/EXTENSION_ID).
+
+**From source (developer / unpacked):**
 
 1. Open `chrome://extensions` in Chrome (or any Chromium browser: Edge, Brave, Arc).
 2. Turn on **Developer mode** (top-right).

@@ -227,6 +227,21 @@ code.block {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Source install collapses now that the store is the main path */
+.devinstall { margin-top: 26px; }
+.devinstall summary {
+  list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14.5px; color: var(--ink-2); min-height: var(--tap);
+}
+.devinstall summary::-webkit-details-marker { display: none; }
+.devinstall summary::after {
+  content: ""; width: 8px; height: 8px;
+  border-right: 1.75px solid var(--ink-3); border-bottom: 1.75px solid var(--ink-3);
+  transform: rotate(45deg); transition: transform .18s; margin-top: -3px;
+}
+.devinstall[open] summary::after { transform: rotate(225deg); margin-top: 3px; }
+.devinstall .steps { margin-top: 14px; }
+
 /* ---------- FAQ ---------- */
 .faq { max-width: 760px; }
 .faq details { border-bottom: 1px solid var(--line); }
