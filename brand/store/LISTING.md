@@ -1,5 +1,7 @@
 # Chrome Web Store listing for Cam360
 
+Live listing: https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe
+
 Copy and paste from here into the developer dashboard. Every field is below.
 
 ## Item title

@@ -107,7 +107,7 @@ separated from it:
 
 ## Install
 
-**From the Chrome Web Store (recommended):** [Add Cam360 to Chrome](https://chromewebstore.google.com/detail/cam360/EXTENSION_ID).
+**From the Chrome Web Store (recommended):** [Add Cam360 to Chrome](https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe).
 
 **From source (developer / unpacked):**
 
