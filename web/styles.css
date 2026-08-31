@@ -20,7 +20,52 @@
   --gutter: 24px;
   --nav-h: 60px;
   --tap: 44px;              /* iOS HIG minimum, Android asks for 48dp */
+  --nav-bg: rgba(255, 255, 255, 0.86);
+  --on-accent: #ffffff;
+  --scheme: light;
 }
+
+/* Dark palette. Defined once and applied in two places: when the OS asks for
+   dark and the visitor has not chosen, and when they explicitly choose dark. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: rgba(255, 255, 255, 0.92);
+    --ink-2: rgba(255, 255, 255, 0.68);
+    --ink-3: rgba(255, 255, 255, 0.46);
+    --canvas: #191919;
+    --sunken: #212121;
+    --line: rgba(255, 255, 255, 0.09);
+    --line-2: rgba(255, 255, 255, 0.17);
+    --blue: #4c9df0;
+    --blue-press: #6bb0f5;
+    --wash: rgba(76, 157, 240, 0.16);
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-float: 0 24px 60px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-pop: 0 12px 32px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
+    --nav-bg: rgba(25, 25, 25, 0.84);
+    --on-accent: #08121c;
+    --scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ink: rgba(255, 255, 255, 0.92);
+  --ink-2: rgba(255, 255, 255, 0.68);
+  --ink-3: rgba(255, 255, 255, 0.46);
+  --canvas: #191919;
+  --sunken: #212121;
+  --line: rgba(255, 255, 255, 0.09);
+  --line-2: rgba(255, 255, 255, 0.17);
+  --blue: #4c9df0;
+  --blue-press: #6bb0f5;
+  --wash: rgba(76, 157, 240, 0.16);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-float: 0 24px 60px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 12px 32px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
+  --nav-bg: rgba(25, 25, 25, 0.84);
+  --on-accent: #08121c;
+  --scheme: dark;
+}
+html { color-scheme: light dark; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -60,7 +105,7 @@ a { color: inherit; text-decoration: none; }
 /* ---------- Nav ---------- */
 .nav {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(255, 255, 255, 0.86);
+  background: var(--nav-bg);
   -webkit-backdrop-filter: saturate(180%) blur(12px);   /* iOS Safari needs the prefix */
   backdrop-filter: saturate(180%) blur(12px);
   border-bottom: 1px solid var(--line);
@@ -68,7 +113,10 @@ a { color: inherit; text-decoration: none; }
 .nav-in { display: flex; align-items: center; gap: 28px; height: var(--nav-h); }
 .brand { display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: 16px; letter-spacing: -0.02em; }
 .brand svg { width: 24px; height: 24px; border-radius: 6px; flex: 0 0 auto; }
-.nav-links { display: flex; gap: 26px; margin-left: auto; font-size: 14px; color: var(--ink-2); }
+.nav-links { display: flex; gap: 4px; margin-left: auto; font-size: 14px; color: var(--ink-2); }
+.nav-links a {
+  padding: 7px 12px; border-radius: 8px; transition: background .12s, color .12s;
+}
 .nav-cta { display: flex; align-items: center; gap: 10px; margin-left: auto; }
 .nav-links + .nav-cta { margin-left: 0; }
 
@@ -95,6 +143,24 @@ a { color: inherit; text-decoration: none; }
 .menu-panel a:active { background: var(--sunken); color: var(--ink); }
 .menu-sep { height: 1px; background: var(--line); margin: 5px 8px; }
 
+/* Theme switch, in the footer */
+.themeswitch { display: inline-flex; align-items: center; gap: 10px; }
+.themeswitch .label { font-size: 13.5px; color: var(--ink-2); }
+.seg-theme {
+  display: inline-flex; background: var(--sunken); border: 1px solid var(--line);
+  border-radius: 999px; padding: 3px; gap: 2px;
+}
+.seg-theme button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 32px; padding: 0 12px; border: none; background: transparent;
+  border-radius: 999px; cursor: pointer; font-family: inherit; font-size: 13px;
+  color: var(--ink-3); transition: background .14s, color .14s;
+}
+.seg-theme button[aria-pressed="true"] {
+  background: var(--canvas); color: var(--ink); box-shadow: var(--shadow-card); font-weight: 500;
+}
+.seg-theme svg { flex: 0 0 auto; }
+
 /* ---------- Buttons ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
@@ -103,7 +169,7 @@ a { color: inherit; text-decoration: none; }
   cursor: pointer; white-space: nowrap;
   transition: background .15s, border-color .15s, color .15s, transform .06s;
 }
-.btn-primary { background: var(--blue); color: #fff; }
+.btn-primary { background: var(--blue); color: var(--on-accent); }
 .btn-ghost { border-color: var(--line-2); color: var(--ink-2); background: transparent; }
 .btn-lg { font-size: 15px; padding: 12px 22px; }
 .btn:active { transform: scale(0.985); }
@@ -132,7 +198,7 @@ h1 {
 .shot { position: relative; }
 .shot::before {
   content: ""; position: absolute; inset: -12% -22% -8%;
-  background: radial-gradient(60% 55% at 50% 42%, rgba(35, 131, 226, 0.13), transparent 70%);
+  background: radial-gradient(60% 55% at 50% 42%, var(--wash), transparent 70%);
   border-radius: 50%; z-index: 0;
 }
 .shot img {
@@ -190,7 +256,7 @@ h2 { font-size: clamp(1.6rem, 5.4vw, 2rem); line-height: 1.2; font-weight: 600; 
 .flow li { display: flex; gap: 13px; font-size: 15px; color: var(--ink-2); line-height: 1.55; }
 .flow .n {
   flex: 0 0 auto; width: 22px; height: 22px; border-radius: 6px;
-  background: var(--ink); color: #fff; font-size: 11.5px; font-weight: 600;
+  background: var(--ink); color: var(--canvas); font-size: 11.5px; font-weight: 600;
   display: flex; align-items: center; justify-content: center; margin-top: 3px;
 }
 .flow b { color: var(--ink); font-weight: 600; }
@@ -267,6 +333,7 @@ footer {
 }
 .foot-top { display: flex; gap: 30px; flex-wrap: wrap; align-items: center; margin-bottom: 26px; }
 .foot-links { display: flex; gap: 24px; margin-left: auto; font-size: 14px; color: var(--ink-2); flex-wrap: wrap; }
+.foot-theme { margin-bottom: 22px; }
 .foot-built { font-size: 14.5px; color: var(--ink-2); margin-bottom: 20px; }
 .foot-built a {
   position: relative;
@@ -286,7 +353,7 @@ footer {
 /* ---------- Pointer capable devices only ---------- */
 /* Guarding hover stops phones from latching a hover state after a tap. */
 @media (hover: hover) and (pointer: fine) {
-  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover { color: var(--ink); background: var(--sunken); }
   .menu-panel a:hover { background: var(--sunken); color: var(--ink); }
   .btn-primary:hover { background: var(--blue-press); }
   .btn-ghost:hover { background: var(--sunken); color: var(--ink); }
@@ -307,6 +374,7 @@ footer {
   .btn-lg { min-height: 48px; }
   .foot-links a { min-height: var(--tap); display: flex; align-items: center; }
   .brand { min-height: var(--tap); }
+  .seg-theme button { min-height: 40px; padding: 0 16px; }
   /* Tablet portrait keeps two columns, it just tightens. Stacking this early
      left the headline running the full width with half the row empty. */
   .hero-grid { grid-template-columns: 1fr minmax(210px, 260px); gap: 40px; }
@@ -353,6 +421,11 @@ footer {
   .foot-top { gap: 18px; margin-bottom: 22px; }
   .foot-links { margin-left: 0; gap: 4px 18px; font-size: 14.5px; }
   footer { padding-top: 38px; }
+  /* Switch goes full width and taller so it is comfortable to thumb */
+  .themeswitch { width: 100%; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .seg-theme { width: 100%; }
+  .seg-theme button { flex: 1; min-height: var(--tap); font-size: 13.5px; }
+  .foot-theme { margin-bottom: 26px; }
 }
 
 /* ---------- Small phones ---------- */
