@@ -40,11 +40,11 @@
 body {
   width: var(--pop-w);
   height: var(--pop-h);
-  max-width: 790px; max-height: 590px;
+  max-width: 790px; max-height: 596px;
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: auto auto 1fr auto auto auto;
-  grid-template-areas: "top" "preview" "scroll" "footer" "hint" "credit";
+  grid-template-rows: auto auto 1fr auto auto;
+  grid-template-areas: "top" "preview" "scroll" "footer" "meta";
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
@@ -57,14 +57,21 @@ body {
 body.windowed { width: 100vw; height: 100vh; max-width: none; max-height: none; }
 
 /* Two panes once there is room: preview stays put, controls scroll beside it */
+/* Two panes. The actions move under the preview so the controls column gets
+   the full height, and the frame centres in what is left rather than leaving
+   a tall gap beneath it. */
 @media (min-width: 560px) {
   body {
     grid-template-columns: minmax(250px, 340px) 1fr;
-    grid-template-rows: auto 1fr auto auto auto;
-    grid-template-areas: "top top" "preview scroll" "footer footer" "hint hint" "credit credit";
+    grid-template-rows: auto 1fr auto auto;
+    grid-template-areas: "top top" "preview scroll" "footer scroll" "meta meta";
   }
-  .preview { border-right: 1px solid var(--border); padding-top: 2px; }
-  .scroll { border-top: 0; }
+  .preview {
+    border-right: 1px solid var(--border); padding-top: 2px;
+    display: flex; flex-direction: column; justify-content: flex-start;
+  }
+  .footer { border-right: 1px solid var(--border); }
+  .scroll { border-top: 0; border-left: 0; }
 }
 
 /* Wide window: the controls flow into two columns */
@@ -115,9 +122,17 @@ body.windowed .grip { display: none; }
 /* Live self preview */
 .preview { grid-area: preview; padding: 0 14px 12px; }
 .preview-frame {
-  position: relative; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden;
+  position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden;
   background: var(--sunken); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+}
+/* Single pane and idle: an empty 200px placeholder was costing more of the
+   dialog than any control group, so the frame shrinks to its button and
+   expands to the 16:9 frame the moment the camera starts. */
+@media (max-width: 559px) {
+  .preview-frame { max-width: 320px; margin: 0 auto; }
+  body:not(.preview-on) .preview-frame { aspect-ratio: auto; padding: 8px; border-style: dashed; }
+  body:not(.preview-on) .preview-msg { position: static; inset: auto; }
 }
 .preview-frame canvas { width: 100%; height: 100%; object-fit: cover; display: block; }
 .preview-cta {
@@ -150,7 +165,7 @@ body.windowed .grip { display: none; }
 .mt { margin-top: 10px; }
 
 /* Rows */
-.row { display: flex; align-items: center; justify-content: space-between; min-height: 30px; padding: 3px 0; }
+.row { display: flex; align-items: center; justify-content: space-between; min-height: 32px; padding: 3px 0; }
 .row-label { font-size: 14px; color: var(--text); white-space: nowrap; }
 
 /* Switch */
@@ -172,19 +187,23 @@ body.windowed .grip { display: none; }
 .chips button.active { background: var(--accent-soft); border-color: transparent; color: var(--accent); font-weight: 500; }
 
 /* Sliders */
-.sliders { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
-.slider .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+.sliders { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.slider .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
 .slider .name { font-size: 13px; color: var(--text-secondary); }
 .slider .val { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
 input[type=range] {
-  -webkit-appearance: none; appearance: none; width: 100%; height: 4px;
-  border-radius: 3px; background: var(--track-off); cursor: pointer;
+  -webkit-appearance: none; appearance: none; width: 100%; height: 18px;
+  background: transparent; cursor: pointer; display: block;
 }
+input[type=range]::-webkit-slider-runnable-track { height: 4px; border-radius: 3px; background: var(--track-off); }
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%;
-  background: #fff; border: 1px solid var(--border-strong); box-shadow: var(--shadow); margin-top: -1px;
+  background: #fff; border: 1px solid var(--border-strong); box-shadow: var(--shadow);
+  margin-top: -5.5px;   /* centres the 15px thumb on the 4px track */
 }
+input[type=range]::-moz-range-track { height: 4px; border-radius: 3px; background: var(--track-off); border: none; }
 input[type=range]::-moz-range-thumb { width: 15px; height: 15px; border-radius: 50%; background: #fff; border: 1px solid var(--border-strong); box-shadow: var(--shadow); }
+input[type=range]:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--accent); outline-offset: 1px; }
 
 /* Colour picker rows */
 .colorrow { display: flex; align-items: center; justify-content: space-between; }
@@ -199,7 +218,7 @@ input[type=color] { width: 40px; height: 26px; border: 1px solid var(--border-st
 /* Text buttons */
 .tbtn { border: 1px solid var(--border-strong); background: transparent; color: var(--text-secondary); border-radius: 7px; padding: 7px 12px; font-size: 13px; cursor: pointer; transition: background .12s; font-family: inherit; }
 .tbtn:hover { background: var(--hover); color: var(--text); }
-.tbtn-mini { padding: 4px 12px; min-width: 62px; }
+.tbtn-mini { padding: 5px 12px; min-width: 64px; }
 .tbtn.full { display: block; width: 100%; margin-top: 8px; }
 
 /* Text inputs */
@@ -216,17 +235,26 @@ input[type=color] { width: 40px; height: 26px; border: 1px solid var(--border-st
 /* Footer */
 .footer { grid-area: footer; display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--border); }
 .footer .tbtn { flex: 1; text-align: center; }
-.kbdhint { grid-area: hint; font-size: 11px; color: var(--text-muted); text-align: center; padding: 0 14px 12px; }
 
-/* Minimal credit line */
-.credit {
-  grid-area: credit; font-size: 11px; color: var(--text-muted);
-  text-align: center; padding: 0 14px 10px;
-  display: flex; align-items: center; justify-content: center; gap: 6px;
+/* Meta strip: shortcut, support, credit. Two centred lines in a narrow
+   dialog, one line once the dialog is wide enough to hold them. */
+.meta {
+  grid-area: meta; padding: 0 14px 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  font-size: 11px; color: var(--text-muted);
 }
-.credit a { color: var(--text-secondary); font-weight: 500; text-decoration: none; border-bottom: 1px solid var(--border-strong); }
-.credit a:hover { color: var(--accent); border-color: var(--accent); }
-.credit-dot { color: var(--border-strong); }
+.meta-row { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.meta-dot { color: var(--border-strong); }
+.meta a { position: relative; color: var(--text-secondary); font-weight: 500; text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+.meta a::after { content: ""; position: absolute; left: -4px; right: -4px; top: 50%; transform: translateY(-50%); height: 22px; }
+.meta a:hover { color: var(--accent); border-color: var(--accent); }
+.meta-help { display: inline-flex; align-items: center; gap: 4px; border-bottom: 0 !important; }
+.meta-help svg { opacity: 0.75; }
+.meta-help:hover { color: var(--accent); }
+.meta-help:hover svg { opacity: 1; }
+@media (min-width: 460px) {
+  .meta { flex-direction: row; justify-content: center; gap: 14px; }
+}
 kbd { display: inline-block; background: var(--sunken); border: 1px solid var(--border-strong); border-radius: 4px; padding: 0 4px; margin: 0 1px; font-family: inherit; font-size: 10px; }
 
 .hidden { display: none !important; }
