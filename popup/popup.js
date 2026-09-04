@@ -10,7 +10,7 @@
 const IS_WINDOW = new URLSearchParams(location.search).has("window");
 if (IS_WINDOW) document.body.classList.add("windowed");
 
-const SIZE_MIN_W = 280, SIZE_MAX_W = 780, SIZE_MIN_H = 430, SIZE_MAX_H = 585;
+const SIZE_MIN_W = 280, SIZE_MAX_W = 780, SIZE_MIN_H = 430, SIZE_MAX_H = 596;
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
 function applySize(w, h) {
@@ -325,6 +325,7 @@ async function startPreview() {
     await pv.video.play().catch(() => {});
     pv.canvas.hidden = false;
     pv.stop.hidden = false;
+    document.body.classList.add("preview-on");
     previewMessage("");
     pv.renderer = Cam360Engine.createRenderer({
       video: pv.video,
@@ -339,6 +340,7 @@ async function startPreview() {
     pv.start.hidden = false;
     pv.canvas.hidden = true;
     pv.stop.hidden = true;
+    document.body.classList.remove("preview-on");
     if (err && err.name === "NotAllowedError") { openGrantTab(); return; }
     previewMessage("Could not start the camera: " + (err && err.message ? err.message : err));
   }
@@ -351,6 +353,7 @@ function stopPreview(remember) {
   pv.canvas.hidden = true;
   pv.stop.hidden = true;
   pv.start.hidden = false;
+  document.body.classList.remove("preview-on");
   previewMessage("");
   if (remember) { try { chrome.storage.local.set({ cam360_preview: false }); } catch (_) {} }
 }

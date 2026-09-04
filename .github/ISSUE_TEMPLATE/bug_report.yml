@@ -1,0 +1,55 @@
+name: Bug report
+description: Report something that is broken or behaves incorrectly.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you expected, and what you got instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The shortest path you know of to trigger it.
+      placeholder: |
+        1. Open meet.google.com and start a call
+        2. Open the Cam360 popup and set Background to Blur
+        3. The video freezes for a second, then the blur drops off
+    validations:
+      required: true
+  - type: input
+    id: site
+    attributes:
+      label: Which site
+      placeholder: meet.google.com
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      placeholder: Chrome 141 on Windows 11
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Cam360 version
+      placeholder: "1.0.1"
+    validations:
+      required: false
+  - type: textarea
+    id: console
+    attributes:
+      label: Console output
+      description: >
+        Optional but very useful. Open DevTools with F12, go to the Console
+        tab, reproduce the problem, and paste anything in red. Remove anything
+        personal before pasting.
+      render: text
+    validations:
+      required: false

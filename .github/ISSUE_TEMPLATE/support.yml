@@ -1,0 +1,55 @@
+name: Get help
+description: Ask a question or get help with something that is not working the way you expected.
+title: "[Help] "
+labels: ["support"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reaching out. Cam360 has no support inbox, so this is the
+        place to ask. Answers here stay public, which helps the next person
+        with the same question.
+
+        If your question is already covered, the
+        [FAQ](https://cam360.vercel.app/#faq) may be faster than waiting.
+  - type: textarea
+    id: question
+    attributes:
+      label: What do you need help with?
+      description: Describe what you were trying to do and what happened instead.
+      placeholder: I turned on background blur in Google Meet and my background stayed sharp.
+    validations:
+      required: true
+  - type: input
+    id: site
+    attributes:
+      label: Which site were you on?
+      description: The video site where you saw the problem, for example Google Meet, Discord, or Zoom in the browser.
+      placeholder: meet.google.com
+    validations:
+      required: false
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      description: Paste this from your browser's About page, or from chrome://version
+      placeholder: Chrome 141 on macOS 15
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: Cam360 version
+      description: Shown on chrome://extensions with Developer mode turned on.
+      placeholder: "1.0.1"
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you post
+      options:
+        - label: I checked the FAQ on the site.
+          required: false
+        - label: I am using Cam360 on a website, not in a desktop app such as the Discord or Zoom client.
+          required: false

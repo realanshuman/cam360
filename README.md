@@ -193,6 +193,17 @@ making the *in-browser* experience one-click.
 All processing is local. No network requests, no telemetry, no external libraries.
 Settings are stored only in `chrome.storage.local` on your machine.
 
+## Support
+
+Questions, bugs, and feature requests all go through
+[GitHub issues](https://github.com/realanshuman/cam360/issues/new/choose).
+There is no support inbox, so asking here keeps the answer public for the next
+person. The popup links to the same place under "Get help", and so does the
+[Support section](https://cam360.vercel.app/#support) on the site.
+
+When reporting a problem, include the site you were on, your browser version,
+and the Cam360 version from `chrome://extensions`.
+
 ## Brand and landing page
 
 The brand identity lives in [`brand/`](brand/): `BRAND.md` covers positioning,

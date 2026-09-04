@@ -256,7 +256,7 @@ h2 { font-size: clamp(1.6rem, 5.4vw, 2rem); line-height: 1.2; font-weight: 600; 
 .flow li { display: flex; gap: 13px; font-size: 15px; color: var(--ink-2); line-height: 1.55; }
 .flow .n {
   flex: 0 0 auto; width: 22px; height: 22px; border-radius: 6px;
-  background: var(--ink); color: var(--canvas); font-size: 11.5px; font-weight: 600;
+  background: var(--ink); color: var(--canvas); font-size: 12px; font-weight: 600;
   display: flex; align-items: center; justify-content: center; margin-top: 3px;
 }
 .flow b { color: var(--ink); font-weight: 600; }
@@ -324,6 +324,20 @@ code.block {
 }
 .faq details[open] summary::after { transform: rotate(225deg) translate(-1px, -1px); }
 .faq p { font-size: 15.5px; color: var(--ink-2); padding-bottom: 22px; max-width: 68ch; }
+
+/* ---------- Support ---------- */
+.support-card {
+  max-width: 720px; margin: 0 auto; text-align: center;
+  padding: 38px 28px; border-radius: var(--radius);
+  border: 1px solid var(--line); background: var(--sunken);
+}
+.support-card h2 { margin-bottom: 12px; }
+.support-card .sec-sub { max-width: 52ch; margin: 0 auto; }
+.support-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 24px; }
+.support-note {
+  margin: 22px auto 0; max-width: 58ch;
+  font-size: 13.5px; line-height: 1.6; color: var(--ink-3);
+}
 
 /* ---------- Footer ---------- */
 footer {
@@ -404,6 +418,7 @@ footer {
   .grid-2 { grid-template-columns: 1fr; gap: 12px; }
   .steps { grid-template-columns: 1fr; gap: 22px; }
   .card { padding: 20px; }
+  .support-card { padding: 28px 20px; }
   .shot { max-width: 244px; }
   .split-media.panel { max-height: 420px; }
   .split-media.panel img { max-width: 216px; }
@@ -431,8 +446,8 @@ footer {
 /* ---------- Small phones ---------- */
 @media (max-width: 430px) {
   /* Full width buttons are easier to hit one handed */
-  .hero-actions { flex-direction: column; align-items: stretch; gap: 10px; }
-  .hero-actions .btn { width: 100%; }
+  .hero-actions, .support-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  .hero-actions .btn, .support-actions .btn { width: 100%; }
   .nav-in { gap: 10px; }
   .nav-cta { gap: 8px; }
   .nav-cta .btn-primary { padding: 11px 13px; font-size: 13.5px; }

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Frequently asked questions
+    url: https://cam360.vercel.app/#faq
+    about: Desktop apps, Google Meet, supported browsers, and where your video goes. Often the fastest answer.
+  - name: Privacy policy
+    url: https://cam360.vercel.app/privacy
+    about: What Cam360 stores, and what it does not.
