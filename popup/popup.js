@@ -213,6 +213,42 @@ document.getElementById("reset").addEventListener("click", () => set({
 }));
 document.getElementById("panel").addEventListener("click", () => set({ overlayVisible: !state.overlayVisible }));
 
+/* ---------------- Keyboard shortcut ----------------
+ * Chrome silently drops a suggested shortcut when it clashes with something
+ * else, so the manifest value is a request, not a fact. Show what is really
+ * bound, and make the chip a one click route to Chrome's shortcuts page so a
+ * user with a clash, or on a keyboard layout where the default is awkward,
+ * can set their own.
+ */
+const shortcutBtn = document.getElementById("shortcut");
+
+function paintShortcut() {
+  chrome.commands.getAll((cmds) => {
+    const cmd = (cmds || []).find((c) => c.name === "toggle-overlay");
+    const combo = cmd && cmd.shortcut;
+    shortcutBtn.textContent = "";
+    if (combo) {
+      shortcutBtn.classList.remove("unset");
+      shortcutBtn.title = "Change this shortcut";
+      combo.split("+").forEach((key) => {
+        const k = document.createElement("kbd");
+        k.textContent = key;
+        shortcutBtn.appendChild(k);
+      });
+    } else {
+      // Nothing bound. Say so plainly instead of printing keys that do nothing.
+      shortcutBtn.classList.add("unset");
+      shortcutBtn.textContent = "not set";
+      shortcutBtn.title = "No shortcut is bound. Click to set one.";
+    }
+  });
+}
+shortcutBtn.addEventListener("click", () => {
+  chrome.tabs.create({ url: "chrome://extensions/shortcuts" });
+  window.close();
+});
+paintShortcut();
+
 function matchPreset() {
   for (const [name, p] of Object.entries(PRESETS))
     if (Object.entries(p).every(([k, v]) => state[k] === v)) return name;

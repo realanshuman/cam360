@@ -37,7 +37,7 @@ WHY PEOPLE INSTALL IT
 
 - It works everywhere. Google Meet, Discord, Zoom in the browser, Whereby, Jitsi, and any other site that asks for your camera. One setup covers all of them.
 - It is private. Your video is processed on your own computer and handed straight to the site. Cam360 makes no network requests, has no analytics, and never records or uploads anything. Even the AI background model is bundled inside the extension.
-- It is instant. Change anything mid call from a small panel (press Alt Shift C) and everyone sees it live.
+- It is instant. Change anything mid call from a small panel (press Alt C) and everyone sees it live.
 - It is free and open source. You can read every line of code on GitHub.
 
 HOW IT WORKS

@@ -64,7 +64,7 @@
   "commands": {
     "toggle-overlay": {
       "suggested_key": {
-        "default": "Alt+Shift+C"
+        "default": "Alt+C"
       },
       "description": "Show/hide the Cam360 in-call control panel"
     }

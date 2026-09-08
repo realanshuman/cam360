@@ -43,8 +43,10 @@ loaded, toggle your camera off and on once in that site.
   still counts you as present. Save the current frame as a PNG.
 - **Overlays.** A name tag, a logo watermark and a live clock, drawn into the
   outgoing video rather than added by the meeting app.
-- **Mid call.** Press <kbd>Alt</kbd> <kbd>Shift</kbd> <kbd>C</kbd> for a
-  draggable panel, so you can adjust without leaving the meeting.
+- **Mid call.** Press <kbd>Alt</kbd> <kbd>C</kbd> for a draggable panel, so you
+  can adjust without leaving the meeting. The popup shows the shortcut actually
+  bound on your machine, and clicking it opens Chrome's shortcuts page if you
+  want a different one.
 
 The popup also has a live preview that runs the real pipeline, so what you see
 there is what the call receives.
