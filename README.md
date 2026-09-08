@@ -161,5 +161,8 @@ and the Cam360 version from `chrome://extensions`.
 
 ## License
 
-Not yet chosen. Until a license file is added, default copyright applies and
-nobody else has permission to reuse this code.
+[MIT](LICENSE). Use it, change it, ship it, just keep the copyright notice.
+
+The bundled MediaPipe selfie segmentation model and WASM runtime in
+`vendor/mediapipe/` are Google's, under the Apache License 2.0, and are
+redistributed here unchanged.
