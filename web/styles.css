@@ -4,7 +4,10 @@
 :root {
   --ink: #14100a;
   --ink-2: rgba(20, 16, 10, 0.68);
-  --ink-3: rgba(20, 16, 10, 0.46);
+  --ink-3: rgba(20, 16, 10, 0.62);
+  --drop: #d8d2c6;            /* opaque base under neutral buttons */
+  --ok: #2ea043;
+  --ok-ring: rgba(46, 160, 67, 0.2);
   --canvas: #fffdf8;          /* warm cream, not stark white */
   --surface: #ffffff;
   --sunken: #fff6e8;
@@ -42,7 +45,10 @@
   :root:not([data-theme="light"]) {
     --ink: rgba(255, 252, 245, 0.93);
     --ink-2: rgba(255, 252, 245, 0.68);
-    --ink-3: rgba(255, 252, 245, 0.46);
+    --ink-3: rgba(255, 252, 245, 0.56);
+    --drop: #080705;
+    --ok: #3fb950;
+    --ok-ring: rgba(63, 185, 80, 0.25);
     --canvas: #14120e;
     --surface: #1d1a15;
     --sunken: #241f18;
@@ -67,7 +73,10 @@
 :root[data-theme="dark"] {
   --ink: rgba(255, 252, 245, 0.93);
   --ink-2: rgba(255, 252, 245, 0.68);
-  --ink-3: rgba(255, 252, 245, 0.46);
+  --ink-3: rgba(255, 252, 245, 0.56);
+  --drop: #080705;
+  --ok: #3fb950;
+  --ok-ring: rgba(63, 185, 80, 0.25);
   --canvas: #14120e;
   --surface: #1d1a15;
   --sunken: #241f18;
@@ -112,7 +121,7 @@ body {
 img, svg { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 ::selection { background: var(--wash); }
-:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 8px; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -180,7 +189,7 @@ a { color: inherit; text-decoration: none; }
   display: inline-flex; align-items: center; justify-content: center; gap: 9px;
   font-family: inherit; font-size: 15px; font-weight: 650; line-height: 1;
   padding: 12px 20px; border-radius: 999px; border: 2px solid transparent;
-  cursor: pointer; white-space: nowrap;
+  min-height: var(--tap); cursor: pointer; white-space: nowrap;
   transition: transform .1s, box-shadow .1s, background .15s, border-color .15s;
 }
 .btn svg { flex: 0 0 auto; }
@@ -192,9 +201,9 @@ a { color: inherit; text-decoration: none; }
 /* btn-soft is the new secondary; btn-ghost is kept because privacy.html uses it */
 .btn-soft, .btn-ghost {
   background: var(--surface); color: var(--ink); border-color: var(--line-2);
-  box-shadow: 0 4px 0 var(--line-2);
+  box-shadow: 0 4px 0 var(--drop);
 }
-.btn-soft:active, .btn-ghost:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--line-2); }
+.btn-soft:active, .btn-ghost:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--drop); }
 .btn-lg { font-size: 16.5px; padding: 16px 28px; }
 
 /* ---------- Hero ---------- */
@@ -213,7 +222,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 h1 {
-  margin: 26px auto 0; max-width: 16ch;
+  margin: 26px auto 0; max-width: 15ch; text-wrap: balance;
   font-size: clamp(2.3rem, 6.4vw, 4rem);
   line-height: 1.06; font-weight: 780; letter-spacing: -0.035em;
 }
@@ -238,12 +247,12 @@ h1 {
 .shot-card-tall img { width: 248px; max-height: 500px; object-fit: cover; object-position: top; }
 
 /* ---------- Works on strip ---------- */
-.strip { margin-top: 72px; border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); background: var(--sunken); }
+.strip { margin-top: 64px; border-bottom: 2px solid var(--line); background: var(--sunken); }
 .strip-in {
   padding: 26px 0; display: flex; align-items: center; justify-content: center;
   gap: 12px 28px; flex-wrap: wrap; text-align: center;
 }
-.strip-label { font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-3); }
+.strip-label { font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-2); }
 .logos { display: flex; align-items: center; justify-content: center; gap: 10px 14px; flex-wrap: wrap; }
 .logo-item {
   display: inline-flex; align-items: center; gap: 9px;
@@ -257,11 +266,13 @@ h1 {
 
 /* ---------- Sections ---------- */
 section { padding: var(--sec) 0; }
+/* Same-canvas neighbours share one gap instead of stacking two. */
+section:not(.tinted) + section:not(.tinted) { padding-top: 0; }
 .tinted { background: var(--sunken); border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); }
 
-.sec-head { max-width: 640px; margin: 0 auto 52px; text-align: center; }
+.sec-head { max-width: 600px; margin: 0 auto 48px; text-align: center; }
 .sec-head-left { margin: 0 0 32px; text-align: left; }
-h2 { font-size: clamp(1.8rem, 3.4vw, 2.5rem); line-height: 1.14; font-weight: 750; letter-spacing: -0.028em; }
+h2 { font-size: clamp(1.8rem, 3.4vw, 2.5rem); line-height: 1.14; font-weight: 750; letter-spacing: -0.028em; text-wrap: balance; }
 .sec-sub { margin-top: 14px; font-size: 17px; line-height: 1.6; color: var(--ink-2); }
 
 /* ---------- Feature cards ---------- */
@@ -304,7 +315,7 @@ h2 { font-size: clamp(1.8rem, 3.4vw, 2.5rem); line-height: 1.14; font-weight: 75
 kbd {
   display: inline-block; font-family: var(--mono); font-size: 12px; font-weight: 600;
   padding: 3px 7px; margin: 0 2px; border-radius: 7px;
-  border: 2px solid var(--line-2); background: var(--sunken); color: var(--ink);
+  border: 1px solid var(--line-2); background: var(--sunken); color: var(--ink);
   white-space: nowrap;
 }
 .split-media { display: flex; justify-content: center; min-width: 0; }
@@ -387,7 +398,9 @@ code.block {
   transform: rotate(45deg); transition: transform .18s;
 }
 .faq details[open] summary::after { transform: rotate(225deg); margin-top: -2px; }
-.faq p { padding: 0 22px 22px; font-size: 15.5px; line-height: 1.65; color: var(--ink-2); }
+.faq summary:focus-visible { outline-offset: -5px; border-radius: 12px; }
+.devinstall > summary:focus-visible { outline-offset: 2px; border-radius: 999px; }
+.faq p { padding: 0 22px 22px; max-width: 64ch; font-size: 15.5px; line-height: 1.65; color: var(--ink-2); }
 
 /* ---------- Support ---------- */
 .support-card {
@@ -401,7 +414,7 @@ code.block {
 .support-note { margin: 26px auto 0; max-width: 58ch; font-size: 14.5px; line-height: 1.6; color: var(--ink-3); }
 
 /* ---------- Footer ---------- */
-footer { border-top: 2px solid var(--line); padding: 56px 0 calc(48px + env(safe-area-inset-bottom)); }
+footer { border-top: 1px solid var(--line); padding: 56px 0 calc(48px + env(safe-area-inset-bottom)); }
 .foot-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 28px; }
 .foot-links { display: flex; flex-wrap: wrap; gap: 4px; }
 .foot-links a { font-size: 15px; font-weight: 500; color: var(--ink-2); padding: 10px 12px; border-radius: 999px; }
@@ -430,7 +443,7 @@ footer { border-top: 2px solid var(--line); padding: 56px 0 calc(48px + env(safe
 }
 .seg-theme button {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-  min-height: 36px; padding: 0 15px; border: none; border-radius: 999px;
+  min-height: 40px; padding: 0 15px; border: none; border-radius: 999px;
   background: transparent; color: var(--ink-2);
   font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
   transition: background .15s, color .15s;
@@ -449,15 +462,15 @@ footer { border-top: 2px solid var(--line); padding: 56px 0 calc(48px + env(safe
   content: ""; position: absolute; left: -4px; right: -4px; top: 50%;
   transform: translateY(-50%); height: var(--tap);
 }
-.foot-note { margin-top: 14px; font-size: 13px; line-height: 1.6; color: var(--ink-3); max-width: 74ch; }
+.foot-note { margin-top: 14px; font-size: 13px; line-height: 1.6; color: var(--ink-3); max-width: 64ch; }
 .foot-note + .foot-note { margin-top: 8px; }
 
 /* ---------- Pointer capable devices only ---------- */
 @media (hover: hover) and (pointer: fine) {
   .nav-links a:hover { color: var(--ink); background: var(--sunken); }
   .menu-panel a:hover { background: var(--sunken); }
-  .btn-primary:hover { background: var(--blue-press); }
-  .btn-soft:hover, .btn-ghost:hover { background: var(--sunken); border-color: var(--ink-3); }
+  .btn-primary:hover { background: var(--blue-press); transform: translateY(-1px); box-shadow: 0 5px 0 var(--blue-deep); }
+  .btn-soft:hover, .btn-ghost:hover { background: var(--sunken); border-color: var(--ink-3); transform: translateY(-1px); box-shadow: 0 5px 0 var(--drop); }
   .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); border-color: var(--line-2); }
   .faq summary:hover { background: var(--sunken); }
   .devinstall > summary:hover { color: var(--ink); }
@@ -465,7 +478,11 @@ footer { border-top: 2px solid var(--line); padding: 56px 0 calc(48px + env(safe
   .foot-built a:hover { color: var(--blue); border-color: var(--blue); }
   .seg-theme button:hover { color: var(--ink); }
   .bmc:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--honey-deep); }
-  .logo-item:hover { border-color: var(--line-2); }
+}
+
+@media (pointer: coarse) {
+  .seg-theme button { min-height: var(--tap); }
+  .nav-links a { padding: 11px 13px; }
 }
 
 /* ---------- Responsive ---------- */
@@ -479,7 +496,6 @@ footer { border-top: 2px solid var(--line); padding: 56px 0 calc(48px + env(safe
 @media (max-width: 900px) {
   .nav-links { display: none; }
   .menu { display: block; }
-  .btn { min-height: var(--tap); }
   .btn-lg { min-height: 52px; }
   .brand { min-height: var(--tap); }
   .foot-links a { min-height: var(--tap); display: flex; align-items: center; }
@@ -547,4 +563,606 @@ footer { border-top: 2px solid var(--line); padding: 56px 0 calc(48px + env(safe
   .hero { padding-top: 36px; }
   .shot-stage { margin-top: 32px; }
   section { padding: 56px 0; }
+}
+/* Cam360 landing components. Every class is prefixed c- so this file can be
+   appended to web/styles.css without collisions. Relies on the token block
+   in styles.css (var(--ink), var(--surface), var(--blue) and friends) and on
+   the page reset there. No colours are hardcoded except the live-status
+   green, which has no token and reads correctly in both themes. */
+
+/* ---------------------------------------------------------------- buttons */
+.c-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  min-height: var(--tap, 44px);
+  font-family: inherit; font-size: 15px; font-weight: 650; line-height: 1;
+  padding: 13px 22px; border-radius: 999px; border: 2px solid transparent;
+  cursor: pointer; white-space: nowrap; text-decoration: none; color: inherit;
+  transition: transform .1s, box-shadow .1s, background .15s, border-color .15s;
+}
+.c-btn svg { flex: 0 0 auto; }
+.c-btn-primary {
+  background: var(--blue); color: var(--on-accent);
+  box-shadow: 0 4px 0 var(--blue-deep);
+}
+.c-btn-primary:hover { background: var(--blue-press); }
+.c-btn-primary:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--blue-deep); }
+.c-btn-soft {
+  background: var(--surface); color: var(--ink); border-color: var(--line-2);
+  box-shadow: 0 4px 0 var(--line-2);
+}
+.c-btn-soft:hover { background: var(--sunken); }
+.c-btn-soft:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--line-2); }
+.c-btn-lg { font-size: 16.5px; padding: 16px 28px; }
+
+/* ------------------------------------------------------------------ chips */
+/* Small option chips used inside the feature visuals and the flow diagram. */
+.c-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.c-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 11px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 650; line-height: 1.3; letter-spacing: -0.005em;
+  background: var(--surface); color: var(--ink-2);
+  border: 1.5px solid var(--line-2);
+  box-shadow: 0 2px 0 var(--line);
+}
+.c-chip.is-on {
+  background: var(--blue); color: var(--on-accent); border-color: var(--blue);
+  box-shadow: 0 2px 0 var(--blue-deep);
+}
+.c-chip svg { width: 12px; height: 12px; flex: 0 0 auto; }
+
+/* ----------------------------------------------------------- feature cards */
+.c-cards {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px;
+}
+.c-card {
+  display: flex; flex-direction: column;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius-lg, 24px); box-shadow: var(--shadow-card);
+  overflow: hidden; min-width: 0;
+  transition: transform .15s, box-shadow .15s;
+}
+@media (hover: hover) {
+  .c-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+}
+.c-card-body { padding: 20px 22px 24px; }
+.c-card h3 { font-size: 19px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; }
+.c-card p { margin-top: 9px; font-size: 15.5px; line-height: 1.62; color: var(--ink-2); }
+.c-card-wide { grid-column: span 2; }
+.c-card-wide .c-viz { aspect-ratio: auto; min-height: 220px; }
+
+/* The visual is a coloured tile in the top half of the card. Each variant
+   picks its own tile colour; the tile is decorative so it is aria-hidden. */
+.c-viz {
+  position: relative; aspect-ratio: 16 / 10; overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 16px; gap: 12px;
+}
+.c-viz-amber { background: var(--tile-amber); }
+.c-viz-blue  { background: var(--tile-blue); }
+.c-viz-mint  { background: var(--tile-mint); }
+.c-viz-lilac { background: var(--tile-lilac); }
+
+/* Head and shoulders silhouette: one shape, filled light, thin edge so it
+   still reads when the tile goes dark. */
+.c-sil { fill: var(--surface); stroke: var(--line-2); stroke-width: 1.5; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .c-sil { stroke: var(--ink-3); }
+}
+:root[data-theme="dark"] .c-sil { stroke: var(--ink-3); }
+
+/* A framed viewport inside the tile: the "camera" the visuals are drawn in. */
+.c-view {
+  position: relative; flex: 1 1 auto; min-height: 0;
+  border-radius: 14px; overflow: hidden;
+  border: 1.5px solid var(--line-2);
+  box-shadow: 0 4px 0 var(--line);
+  background: var(--sunken);
+}
+
+/* a. Background: same person, sharp room left, blurred room right.
+   The room is drawn twice; the second copy is clipped to the right half
+   and blurred, so the seam shows the effect on identical furniture. */
+.c-viz-bg .c-view { background: var(--sunken); }
+.c-room {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(38% 42% at 88% 34%, var(--tile-amber) 0%, transparent 70%),
+    linear-gradient(180deg, var(--surface) 0%, var(--sunken) 62%, var(--tile-amber) 62.5%, var(--sunken) 100%);
+}
+.c-room-floor { position: absolute; left: 0; right: 0; top: 62%; height: 2px; background: var(--line-2); }
+.c-room-window {                        /* four panes with a light frame */
+  position: absolute; left: 10%; top: 12%; width: 26%; height: 40%;
+  border-radius: 6px; border: 3px solid var(--surface);
+  background:
+    linear-gradient(90deg, transparent 48%, var(--surface) 48%, var(--surface) 52%, transparent 52%),
+    linear-gradient(180deg, transparent 48%, var(--surface) 48%, var(--surface) 52%, transparent 52%),
+    linear-gradient(160deg, var(--tile-blue), var(--blue) 140%);
+  box-shadow: 0 2px 0 var(--line);
+}
+.c-room-shelf {                         /* plank with a row of books on it */
+  position: absolute; left: 57%; top: 30%; width: 26%; height: 3px;
+  background: var(--ink-3); border-radius: 2px;
+}
+.c-room-shelf::before {
+  content: ""; position: absolute; left: 6%; right: 10%; bottom: 3px; height: 26px;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(90deg,
+    var(--blue) 0 14%, transparent 14% 18%,
+    var(--tile-lilac) 18% 30%, transparent 30% 34%,
+    var(--ink-3) 34% 42%, transparent 42% 46%,
+    var(--tile-mint) 46% 62%, transparent 62% 66%,
+    var(--blue-deep) 66% 76%, transparent 76% 80%,
+    var(--tile-blue) 80% 100%);
+}
+.c-room-lamp {                          /* floor lamp: stem and base */
+  position: absolute; left: 88%; top: 30%; width: 3px; height: 32%;
+  margin-left: -1.5px; background: var(--ink-3); border-radius: 2px;
+}
+.c-room-lamp::before {                  /* shade */
+  content: ""; position: absolute; left: 50%; top: -14px; width: 34px; height: 16px;
+  margin-left: -17px; background: var(--surface); border: 2px solid var(--ink-3);
+  border-radius: 3px 3px 5px 5px;
+  clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%);
+}
+.c-room-lamp::after {                   /* base */
+  content: ""; position: absolute; left: 50%; bottom: -2px; width: 20px; height: 5px;
+  margin-left: -10px; background: var(--ink-3); border-radius: 999px;
+}
+.c-room-blur { clip-path: inset(0 0 0 50%); filter: blur(6px); }
+.c-seam {                               /* sits above the silhouette, like a compare handle */
+  position: absolute; z-index: 1; top: 0; bottom: 0; left: 50%; width: 2px; margin-left: -1px;
+  background: var(--surface); box-shadow: 0 0 0 1px var(--line-2);
+}
+.c-seam::after {
+  content: ""; position: absolute; left: 50%; top: 14px; width: 14px; height: 14px;
+  margin-left: -7px; border-radius: 50%;
+  background: var(--surface); border: 2px solid var(--blue); box-shadow: 0 2px 0 var(--line-2);
+}
+.c-viz-bg .c-sil-wrap { position: absolute; inset: auto 0 0 0; height: 78%; }
+.c-viz-bg .c-sil-wrap svg { width: 100%; height: 100%; }
+.c-viz-label {
+  position: absolute; bottom: 8px; padding: 3px 9px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  background: var(--surface); color: var(--ink-2); border: 1px solid var(--line-2);
+}
+.c-viz-label.is-left { left: 8px; }
+.c-viz-label.is-right { right: 8px; color: var(--blue); }
+
+/* b. Lighting: three sliders and a row of presets */
+.c-sliders { display: grid; gap: 10px; }
+.c-slider {
+  display: grid; grid-template-columns: 74px 1fr 38px; align-items: center; gap: 10px;
+  font-size: 12.5px; font-weight: 650; color: var(--ink-2);
+}
+.c-slider output { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink-3); }
+.c-track {
+  position: relative; height: 10px; border-radius: 999px;
+  background: var(--surface); border: 1.5px solid var(--line-2);
+  box-shadow: inset 0 1px 0 var(--line);
+}
+.c-track-fill {
+  position: absolute; left: 0; top: 0; bottom: 0; width: var(--at, 50%);
+  border-radius: 999px; background: var(--blue);
+}
+.c-track-knob {
+  position: absolute; top: 50%; left: var(--at, 50%); width: 20px; height: 20px;
+  margin: -10px 0 0 -10px; border-radius: 50%;
+  background: var(--surface); border: 2.5px solid var(--blue);
+  box-shadow: 0 3px 0 var(--blue-deep);
+}
+.c-viz-light .c-view { padding: 18px 16px 16px; display: flex; align-items: center; }
+.c-viz-light .c-sliders { width: 100%; }
+
+/* c. Framing: viewport with crop marks and a centre axis */
+.c-viz-frame .c-view {
+  background:
+    radial-gradient(70% 60% at 50% 60%, var(--tile-lilac), transparent 80%),
+    var(--sunken);
+}
+.c-axis {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent calc(50% - 1px), var(--line-2) calc(50% - 1px), var(--line-2) calc(50% + 1px), transparent calc(50% + 1px)),
+    linear-gradient(180deg, transparent calc(50% - 1px), var(--line-2) calc(50% - 1px), var(--line-2) calc(50% + 1px), transparent calc(50% + 1px));
+  -webkit-mask: repeating-linear-gradient(90deg, #000 0 6px, transparent 6px 12px),
+                repeating-linear-gradient(180deg, #000 0 6px, transparent 6px 12px);
+          mask: repeating-linear-gradient(90deg, #000 0 6px, transparent 6px 12px),
+                repeating-linear-gradient(180deg, #000 0 6px, transparent 6px 12px);
+  -webkit-mask-composite: source-over; mask-composite: add;
+}
+.c-crop { position: absolute; width: 22px; height: 22px; }
+.c-crop::before, .c-crop::after {
+  content: ""; position: absolute; background: var(--blue); border-radius: 2px;
+}
+.c-crop::before { width: 100%; height: 3px; }
+.c-crop::after { width: 3px; height: 100%; }
+.c-crop.tl { top: 10px; left: 10px; }
+.c-crop.tr { top: 10px; right: 10px; transform: scaleX(-1); }
+.c-crop.bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
+.c-crop.br { bottom: 10px; right: 10px; transform: scale(-1); }
+.c-viz-frame .c-sil-wrap { position: absolute; inset: auto 0 0 0; height: 82%; }
+.c-viz-frame .c-sil-wrap svg { width: 100%; height: 100%; }
+
+/* d. Presence: dark "be right back" card */
+.c-brb {
+  position: relative; flex: 1 1 auto; min-height: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  border-radius: 14px; padding: 18px;
+  background: var(--ink); color: var(--canvas);
+  border: 1.5px solid var(--line-2); box-shadow: 0 4px 0 var(--line);
+  text-align: center;
+}
+/* The card stands in for a video frame, so it stays dark on both themes:
+   in dark mode the canvas token is the dark one and ink is the light one. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .c-brb { background: var(--canvas); color: var(--ink); }
+}
+:root[data-theme="dark"] .c-brb { background: var(--canvas); color: var(--ink); }
+.c-brb-cup { width: 44px; height: 44px; margin-bottom: 4px; }
+.c-brb-cup .c-cup { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.c-brb-cup .c-steam { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; opacity: .7; }
+.c-brb-title { font-size: 20px; font-weight: 750; letter-spacing: -0.02em; line-height: 1.1; }
+.c-brb-sub { font-size: 12.5px; opacity: .72; }
+.c-brb-dot {
+  position: absolute; top: 12px; right: 12px; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--blue); box-shadow: 0 0 0 3px var(--wash);
+}
+
+/* e. Overlays: name tag, clock, logo mark inside a viewport */
+.c-viz-overlay .c-view {
+  background:
+    radial-gradient(60% 60% at 50% 70%, var(--tile-mint), transparent 80%),
+    linear-gradient(180deg, var(--surface), var(--sunken));
+}
+.c-viz-overlay .c-sil-wrap { position: absolute; inset: auto 0 0 0; height: 78%; }
+.c-viz-overlay .c-sil-wrap svg { width: 100%; height: 100%; }
+.c-ov {
+  position: absolute; display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; line-height: 1.2; letter-spacing: -0.005em;
+  background: var(--surface); color: var(--ink); border: 1.5px solid var(--line-2);
+  box-shadow: 0 2px 0 var(--line-2);
+}
+.c-ov-name { left: 10px; bottom: 10px; }
+.c-ov-name small { font-weight: 550; color: var(--ink-3); font-size: 11px; }
+.c-ov-clock { right: 10px; top: 10px; font-variant-numeric: tabular-nums; }
+.c-ov-clock::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--blue);
+}
+.c-ov-logo {
+  left: 10px; top: 10px; width: 30px; height: 30px; padding: 0; justify-content: center;
+  border-radius: 9px;
+}
+.c-ov-logo svg { width: 18px; height: 18px; }
+
+/* Cam360 mark drawn in markup: ring with one gap around a centre dot. */
+.c-mark-ring { fill: none; stroke: var(--blue); stroke-width: 2.6; stroke-linecap: round; }
+.c-mark-dot { fill: var(--blue); }
+
+/* ----------------------------------------------------------- how it works */
+.c-flow {
+  display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: stretch; gap: 0;
+}
+.c-flow-node {
+  position: relative; display: flex; flex-direction: column; gap: 12px; min-width: 0;
+  padding: 24px 22px 26px;
+  background: var(--surface); border: 1.5px solid var(--line-2);
+  border-radius: 22px; box-shadow: 0 4px 0 var(--line-2);
+}
+.c-flow-node.is-core {
+  border-color: var(--blue); box-shadow: 0 4px 0 var(--blue-deep);
+  background: linear-gradient(180deg, var(--wash), transparent 60%), var(--surface);
+}
+.c-flow-head { display: flex; align-items: center; gap: 12px; }
+.c-flow-num {
+  display: inline-grid; place-items: center; flex: 0 0 auto;
+  width: 34px; height: 34px; border-radius: 50%;
+  font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums;
+  background: var(--blue); color: var(--on-accent); box-shadow: 0 3px 0 var(--blue-deep);
+}
+.c-flow-icon {
+  display: grid; place-items: center; width: 44px; height: 44px; border-radius: 13px;
+  background: var(--sunken); border: 1px solid var(--line);
+}
+.c-flow-node.is-core .c-flow-icon { background: var(--tile-blue); }
+.c-flow-icon svg { width: 22px; height: 22px; fill: none; stroke: var(--ink); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.c-flow-node h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; }
+.c-flow-node p { font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+.c-flow-node .c-chips { margin-top: auto; padding-top: 4px; }
+.c-flow-link {
+  display: grid; place-items: center; width: 56px; color: var(--blue);
+}
+.c-flow-link svg { width: 56px; height: 24px; overflow: visible; }
+.c-flow-link .c-flow-line { fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 5 7; }
+.c-flow-link .c-flow-tip { fill: currentColor; }
+@media (prefers-reduced-motion: no-preference) {
+  .c-flow-link .c-flow-line { animation: c-dash 1.4s linear infinite; }
+  @keyframes c-dash { to { stroke-dashoffset: -12; } }
+}
+@media (max-width: 860px) {
+  .c-flow { grid-template-columns: 1fr; }
+  .c-flow-link { width: auto; height: 52px; }
+  .c-flow-link svg { transform: rotate(90deg); }
+}
+
+/* ------------------------------------------------------------ trust facts */
+.c-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.c-fact {
+  padding: 30px 26px 28px; text-align: center;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius-lg, 24px); box-shadow: var(--shadow-card);
+}
+.c-fact-num {
+  display: block; font-size: 56px; font-weight: 800; letter-spacing: -0.04em; line-height: 1;
+  color: var(--blue); font-variant-numeric: tabular-nums;
+}
+.c-fact-label { display: block; margin-top: 12px; font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+.c-fact p { margin-top: 8px; font-size: 14.8px; line-height: 1.6; color: var(--ink-2); }
+
+/* -------------------------------------------------------------------- CTA */
+.c-cta {
+  position: relative; overflow: hidden; text-align: center;
+  padding: 56px 28px 52px;
+  background: var(--sunken); border: 1.5px solid var(--tile-amber);
+  border-radius: 28px; box-shadow: 0 4px 0 var(--tile-amber);
+}
+.c-cta::before, .c-cta::after {          /* two soft blobs, decoration only */
+  content: ""; position: absolute; border-radius: 50%; pointer-events: none;
+  width: 320px; height: 320px; opacity: .55;
+}
+.c-cta::before { left: -120px; top: -160px; background: radial-gradient(circle, var(--tile-amber), transparent 70%); }
+.c-cta::after  { right: -140px; bottom: -180px; background: radial-gradient(circle, var(--tile-blue), transparent 70%); }
+.c-cta > * { position: relative; }
+.c-cta h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; max-width: 18ch; margin: 0 auto; }
+.c-cta p { margin: 14px auto 0; font-size: 17px; line-height: 1.6; color: var(--ink-2); max-width: 46ch; }
+.c-cta-actions { margin-top: 28px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.c-cta-alt {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 8px;
+  font-size: 14.5px; font-weight: 600; color: var(--ink-2);
+  text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 4px;
+  border-radius: 8px;
+}
+.c-cta-alt:hover { color: var(--blue); text-decoration-color: var(--blue); }
+
+/* ------------------------------------------------------------- works on */
+.c-works { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 12px; }
+.c-works-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-3); margin-right: 6px;
+}
+.c-pill {
+  display: inline-flex; align-items: center; gap: 9px; min-height: 44px;
+  padding: 8px 16px 8px 10px; border-radius: 999px;
+  font-size: 14.5px; font-weight: 650; letter-spacing: -0.005em; color: var(--ink);
+  background: var(--surface); border: 1.5px solid var(--line-2); box-shadow: 0 3px 0 var(--line-2);
+}
+.c-pill-mark {
+  display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px;
+  background: var(--sunken); border: 1px solid var(--line); overflow: hidden;
+}
+.c-pill-mark svg, .c-pill-mark img { width: 16px; height: 16px; }
+.c-pill-mark.is-tile { background: var(--tile-blue); border-color: transparent; }
+.c-pill-mark.is-mint { background: var(--tile-mint); border-color: transparent; }
+.c-pill-mark.is-lilac { background: var(--tile-lilac); border-color: transparent; }
+.c-pill-mark.is-amber { background: var(--tile-amber); border-color: transparent; }
+.c-pill-mark.is-mono { font-size: 12px; font-weight: 800; color: var(--ink); }
+.c-works-more { font-size: 14.5px; color: var(--ink-2); }
+
+/* --------------------------------------------------------- badges, kbd */
+.c-badge {
+  display: inline-flex; align-items: center; gap: 7px; min-height: 30px;
+  padding: 4px 12px; border-radius: 999px;
+  font-size: 13px; font-weight: 650; line-height: 1.3; letter-spacing: -0.005em;
+  background: var(--sunken); color: var(--ink-2); border: 1px solid var(--line-2);
+}
+.c-badge-live { color: var(--ink); background: var(--surface); }
+.c-badge-live .c-dot {
+  --c-green: #1f9d55;                    /* no token covers green; one value works on both themes */
+  width: 8px; height: 8px; border-radius: 50%; background: var(--c-green);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-green) 22%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .c-badge-live .c-dot { animation: c-pulse 2s ease-in-out infinite; }
+  @keyframes c-pulse {
+    0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-green) 22%, transparent); }
+    50%      { box-shadow: 0 0 0 6px color-mix(in srgb, var(--c-green) 10%, transparent); }
+  }
+}
+.c-badge-blue { color: var(--blue); background: var(--wash); border-color: transparent; }
+.c-kbds { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: var(--ink-3); }
+.c-kbd {
+  display: inline-grid; place-items: center; min-width: 28px; height: 28px; padding: 0 8px;
+  font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--ink);
+  background: var(--surface); border: 1.5px solid var(--line-2); border-radius: 8px;
+  box-shadow: 0 2px 0 var(--line-2);
+}
+
+/* ---------------------------------------------------------- responsive */
+@media (max-width: 1000px) {
+  .c-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .c-card-wide { grid-column: span 2; }
+}
+@media (max-width: 720px) {
+  .c-facts { grid-template-columns: 1fr; }
+  .c-cta { padding: 44px 22px 40px; border-radius: 24px; }
+  .c-cta h2 { font-size: 29px; }
+  .c-cta p { font-size: 16px; }
+  .c-fact-num { font-size: 48px; }
+}
+@media (max-width: 600px) {
+  .c-cards { grid-template-columns: 1fr; }
+  .c-card-wide { grid-column: auto; }
+  .c-card-wide .c-viz { aspect-ratio: 16 / 10; min-height: 0; }
+  .c-viz { padding: 14px; }
+  .c-slider { grid-template-columns: 64px 1fr 34px; }
+}
+
+/* ---------- Page glue for the component library ---------- */
+.c-list { list-style: none; margin-top: 14px; display: grid; gap: 7px; }
+.c-list li { position: relative; padding-left: 20px; font-size: 14.8px; line-height: 1.5; color: var(--ink-2); }
+.c-list li::before {
+  content: ""; position: absolute; left: 0; top: 0.62em; width: 9px; height: 9px;
+  border-radius: 50%; background: var(--blue); opacity: 0.75;
+}
+.c-fine { margin-top: 14px; font-size: 13.5px; line-height: 1.5; color: var(--ink-3); }
+.c-card-body p + .c-fine { border-top: 1px solid var(--line); padding-top: 12px; }
+.bridge { margin: 40px auto 0; max-width: 60ch; text-align: center; font-size: 15.5px; font-weight: 600; color: var(--ink-2); }
+#how .c-facts { margin-bottom: 40px; }
+
+.support { padding-top: 0; }
+.support-band {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 40px; align-items: center;
+  padding: 30px 34px; border-radius: var(--radius-lg);
+  background: var(--surface); border: 2px solid var(--line); box-shadow: var(--shadow-card);
+}
+.support-copy h2 { font-size: 24px; }
+.support-copy p { margin-top: 8px; font-size: 15px; line-height: 1.6; color: var(--ink-2); max-width: 58ch; }
+.support-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; }
+@media (max-width: 860px) {
+  .support-band { grid-template-columns: 1fr; padding: 26px 24px; }
+  .support-actions { justify-content: flex-start; }
+}
+@media (max-width: 430px) {
+  .support-actions { flex-direction: column; align-items: stretch; }
+}
+/* Cam360 motion layer. Drop-in, additive.
+   Load AFTER styles.css. Adds new selectors and transition tuning only;
+   it never redefines colours, layout or the resting look of anything.
+   All colours come from the tokens already in styles.css, so the
+   three-state theme (system / light / dark) is untouched.
+
+   Reduced motion: styles.css already zeroes every transition and animation
+   under prefers-reduced-motion. On top of that, the only rule here that
+   hides anything is wrapped in (prefers-reduced-motion: no-preference), so
+   reduced-motion visitors never see a hidden state at all.
+
+   No JS: motion.js adds class "js" to <html>. The hidden reveal state is
+   scoped to html.js, so without the script every element renders exactly
+   as styles.css draws it. */
+
+/* ---------- 1. Reveal on scroll ----------
+   Put data-reveal on section heads, cards, facts, FAQ items and so on.
+   Do not put it on the hero; above-the-fold content should be there on
+   first paint. motion.js sets --reveal-delay per sibling for the stagger
+   and removes the attribute once the element has settled, which hands the
+   element's own transitions (card hover, etc.) back to styles.css. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity .6s cubic-bezier(.2, .65, .2, 1),
+      transform .6s cubic-bezier(.2, .65, .2, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  html.js [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Belt and braces: even if the media query above is somehow bypassed,
+   reduced-motion visitors get everything visible. */
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] { opacity: 1; transform: none; }
+}
+
+/* ---------- 2. Button press feel ----------
+   styles.css owns the states (rest, :hover, :active with translateY(3px)
+   and the shortened 0 1px 0 drop). This only tunes the curves so the
+   press is a quick, decelerating "thunk" and the release springs back with
+   a hair of overshoot. Transform and shadow share one curve so the base
+   never visibly detaches from the button. */
+.btn, .bmc {
+  transition-property: transform, box-shadow, background-color, border-color, color;
+  transition-duration: .24s, .24s, .15s, .15s, .15s;
+  transition-timing-function:
+    cubic-bezier(.34, 1.45, .64, 1),   /* release: spring with slight overshoot */
+    cubic-bezier(.34, 1.45, .64, 1),
+    ease, ease, ease;
+}
+.btn:active, .bmc:active {
+  transition-duration: .07s, .07s, .15s, .15s, .15s;
+  transition-timing-function:
+    cubic-bezier(.3, 0, .6, 1),        /* press: fast in, lands firmly */
+    cubic-bezier(.3, 0, .6, 1),
+    ease, ease, ease;
+}
+/* The step-number chips and theme switch get the same release curve so
+   nothing on the page snaps linearly. */
+.seg-theme button { transition-timing-function: cubic-bezier(.2, .7, .2, 1); }
+
+/* ---------- 3. Card hover lift ----------
+   styles.css already lifts .card by 4px and swaps its shadow inside
+   (hover: hover) and (pointer: fine). Here: a slower, eased curve for the
+   lift so it glides instead of popping, and a small tile nudge that only
+   exists on pointer devices. */
+.card {
+  transition-property: transform, box-shadow, border-color;
+  transition-duration: .28s, .28s, .2s;
+  transition-timing-function: cubic-bezier(.2, .7, .2, 1);
+}
+.tile {
+  transition: transform .32s cubic-bezier(.34, 1.4, .64, 1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .card:hover .tile { transform: translateY(-2px) scale(1.04); }
+}
+
+/* ---------- 4. Sticky nav on scroll ----------
+   motion.js toggles .is-scrolled on .nav once the page has moved 8px.
+   At rest (with JS) the bar is transparent and ruleless, so the hero
+   starts flush under the wordmark; once scrolled it takes the translucent
+   background and rule that styles.css already defines, plus a 2px solid
+   drop in the same language as the cards. Without JS, .nav:not(.is-scrolled)
+   is guarded by html.js so the default styles.css look applies. */
+.nav {
+  transition:
+    background-color .28s ease,
+    border-color .28s ease,
+    box-shadow .28s ease;
+}
+html.js .nav:not(.is-scrolled) {
+  background-color: transparent;
+  border-bottom-color: transparent;
+}
+.nav.is-scrolled {
+  box-shadow: var(--shadow-card);
+}
+
+/* ---------- 5. FAQ and install details ----------
+   Done in CSS only, via ::details-content and interpolate-size, so the
+   native <details> semantics, keyboard handling and screen-reader
+   announcements are untouched. Chromium 131+ and recent Safari animate the
+   height; Firefox and older engines ignore these rules and snap open as
+   they do today. No JavaScript is involved, so nothing here can break
+   accessibility. The answer text fades and rises a few px after the box
+   has started to grow. */
+.faq details::details-content,
+.devinstall::details-content {
+  interpolate-size: allow-keywords;
+  height: 0;
+  overflow: clip;
+  transition:
+    height .34s cubic-bezier(.2, .7, .2, 1),
+    content-visibility .34s allow-discrete;
+}
+.faq details[open]::details-content,
+.devinstall[open]::details-content {
+  height: auto;
+}
+.faq details[open] > p,
+.devinstall[open] > .steps {
+  animation: cam360-fade-in .36s cubic-bezier(.2, .7, .2, 1) both;
+}
+@keyframes cam360-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+/* Chevrons already rotate in styles.css; give them a matching curve. */
+.faq summary::after,
+.devinstall > summary::after {
+  transition-duration: .28s;
+  transition-timing-function: cubic-bezier(.2, .7, .2, 1);
 }
