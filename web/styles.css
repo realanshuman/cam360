@@ -995,6 +995,12 @@ footer { border-top: 1px solid var(--line); padding: 56px 0 calc(48px + env(safe
   .c-fact-num { font-size: 48px; }
 }
 @media (max-width: 600px) {
+  /* No burger on a phone. It holds four anchors on a single page story, the
+     footer carries the same links, and it was competing with the install
+     button for the most valuable pixels on the screen. Tablets keep it, since
+     the inline links are already hidden below 900px and there is room. */
+  .menu { display: none; }
+
   .c-cards { grid-template-columns: 1fr; }
   .c-card-wide { grid-column: auto; }
   .c-card-wide .c-viz { aspect-ratio: 16 / 10; min-height: 0; }
