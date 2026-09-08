@@ -1,252 +1,168 @@
-# Cam360 — Virtual Camera Studio (Chrome Extension)
+# Cam360
 
-Cam360 plugs into your webcam **inside Chrome** and lets you enhance it live on any
-website that uses the camera — Google Meet, Discord (web), Zoom (web), Whereby,
-Jitsi, and so on. Flip / mirror, rotate, adjust lighting (brightness, contrast,
-saturation, hue), soften with blur, and digitally zoom — all in real time, with
-your changes appearing directly in the call.
+Virtual backgrounds and webcam effects for any video call in your browser.
 
-No account, no server, no data leaves your machine. Everything runs locally in the
-browser.
+[**Add to Chrome**](https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe)
+· [Website](https://fuckwebcam.xyz)
+· [Report a bug](https://github.com/realanshuman/cam360/issues/new/choose)
 
----
+Cam360 sits between your webcam and the website asking for it. Blur or replace
+your background, fix bad lighting, and get your framing right, using the same
+controls on every site rather than whatever each meeting app happens to offer.
 
-## What it does
+Everything runs on your own machine. The extension makes no network requests,
+has no account, and never uploads a frame.
 
-When a website asks for your camera (`getUserMedia`), Cam360 intercepts the request,
-routes your real camera through an off-screen `<canvas>` where your adjustments are
-applied frame-by-frame, and hands the *processed* stream back to the site. Audio
-passes through untouched. If anything goes wrong, it silently falls back to your
-raw camera so it never breaks a call.
-
-Two ways to control it:
-
-- **Popup** (toolbar icon) — presets, toggles, and sliders, plus a **live self
-  preview**: click "Preview my camera" at the top of the popup and you see your
-  processed feed exactly as a call would receive it, updating live as you move
-  any slider. The preview runs the same engine as the real pipeline, so it
-  cannot drift from what sites actually get.
-  The popup itself is resizable: drag the grip in its bottom corner to any size
-  up to Chrome's 800x600 popup limit (remembered for next time), or click the
-  arrow in the header to open the same controls as a real window you can resize
-  freely. The layout adapts as it grows: side by side panes past 560px, and the
-  controls flow into two then three columns in a wide window.
-- **In-call panel** — a draggable overlay you pop up *during* a call with
-  `Alt`+`Shift`+`C` (or the popup's "Show in-call panel" button), so you can adjust
-  lighting on the fly without leaving the meeting.
-
-Both stay in sync because they share the same stored settings.
-
-## Features
-
-| Control | Range |
-| --- | --- |
-| Enable / disable | on / off (falls back to raw camera when off) |
-| Mirror (horizontal flip) | toggle |
-| Flip (vertical) | toggle |
-| Rotate | 0° / 90° / 180° / 270° |
-| Brightness / Contrast / Saturation | 0–200% |
-| Hue rotate | 0–360° |
-| Blur (soft focus) | 0–20px |
-| Beautify (skin smoothing) | 0–100 |
-| Low-light boost | toggle (lifts exposure in dim rooms) |
-| Digital zoom | 100–250% |
-| Presets | Warm · Cool · Bright · B&W · Soft focus |
-| **Background — Blur** | 2–30px blur |
-| **Background — Colour** | any solid colour |
-| **Background — Scene** | 5 built-in gradient scenes + upload your own image |
-| **Background — Video** | animated built-ins (aurora, waves) + upload your own video loop |
-| **Cut-out method (keyer)** | AI segmentation **or** green-screen (chroma key) |
-| Edge feather | 0–12px (softens the AI cut-out edge) |
-| Green-screen key colour / strength / softness | pick colour, tune threshold & edge |
-| **Freeze frame** | hold your last frame instantly |
-| **Be right back card** | show a custom image or text card without cutting video |
-| **Snapshot** | save the processed feed to a PNG |
-| **Overlays** | name lower-third, logo watermark, live clock |
-
-### AI background (MediaPipe)
-
-Background blur/replacement uses Google's **MediaPipe Selfie Segmentation** model,
-bundled **locally** in `vendor/mediapipe/` — no network calls, nothing loaded from a
-CDN at runtime. When you pick a background mode the engine loads the WebAssembly
-model once, then per frame it separates you from your background and composites you
-over a blurred feed, a solid colour, a gradient scene, or your own uploaded image.
-It runs on the GPU when available and falls back to CPU.
-
-The engine only loads while a background mode is active, so there's no cost when
-you're just using the lighting/flip controls.
-
-### Two ways to remove your background (keyer)
-
-Once you choose a background (blur / colour / scene / video) you pick **how** you're
-separated from it:
-
-- **AI** — MediaPipe segmentation. Best quality, no green screen needed. Blocked on
-  a few strict-CSP sites (Google Meet).
-- **Green screen (chroma key)** — pure JavaScript colour keying that runs **on every
-  site, including Google Meet**. Sit in front of a solid-colour backdrop, pick the
-  key colour (defaults to green), and tune *key strength* / *key softness*. This is
-  the reliable path where the AI model can't load.
-
-### Background content
-
-- **Blur** — a blurred version of your real background.
-- **Colour** — any solid colour.
-- **Scene** — 5 gradient scenes, or upload your own image.
-- **Video** — built-in animated backdrops (aurora, waves) drawn in real time, or
-  upload your own looping video.
-
-### Presence & overlays
-
-- **Freeze** holds your last frame; **Be right back** shows a custom image or text
-  card — both without dropping your video track, so the call keeps you "on".
-- **Snapshot** saves the exact processed frame others see to a PNG.
-- **Overlays** burn a name lower-third, a logo watermark (top-right), and/or a live
-  clock into the outgoing feed. Name and logo text/images are set in the popup;
-  quick on/off toggles live in the in-call panel too.
+<img src="web/assets/popup-light.png" alt="The Cam360 popup, showing a live camera preview, transform toggles, lighting sliders and background controls" width="300">
 
 ## Install
 
-**From the Chrome Web Store (recommended):** [Add Cam360 to Chrome](https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe).
+**From the Chrome Web Store**, which is the easy path:
+[Add Cam360 to Chrome](https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe).
 
-**From source (developer / unpacked):**
+**From source**, if you would rather run the code in front of you:
 
-1. Open `chrome://extensions` in Chrome (or any Chromium browser: Edge, Brave, Arc).
-2. Turn on **Developer mode** (top-right).
-3. Click **Load unpacked** and select this folder (the one containing `manifest.json`).
-4. Pin the Cam360 plugin icon from the puzzle-piece menu.
+1. Clone or download this repository.
+2. Open `chrome://extensions` and turn on Developer mode, top right.
+3. Choose Load unpacked and select the project folder, the one holding `manifest.json`.
+4. Pin Cam360 to the toolbar.
 
-Then open a camera site (e.g. https://meet.google.com), start your video, and open
-the Cam360 popup to adjust. Changes on an *already-running* camera apply instantly;
-if a site grabbed the camera before the extension loaded, just toggle your camera
-off/on in that site once.
+Then open any site that uses your camera and click the icon. Changes apply to a
+running camera straight away. If a site grabbed the camera before the extension
+loaded, toggle your camera off and on once in that site.
 
-## Quick local test
+## What you can do
 
-Open `test/test.html` in Chrome to confirm the pipeline without joining a real call:
-it requests your camera and shows the processed output. For `file://` pages you must
-enable **"Allow access to file URLs"** on the Cam360 card in `chrome://extensions`.
+- **Background.** Blur it, fill it with a colour, or replace it with an image or
+  a looping video. You are cut out either by an AI model running on your device
+  or by green screen keying.
+- **Lighting.** Brightness, contrast, saturation and hue, a low light boost for
+  dim rooms, six one click presets, and skin smoothing.
+- **Framing.** Mirror, flip, rotate, and zoom up to 250 percent.
+- **Stepping away.** Freeze the frame or show a be right back card, so the call
+  still counts you as present. Save the current frame as a PNG.
+- **Overlays.** A name tag, a logo watermark and a live clock, drawn into the
+  outgoing video rather than added by the meeting app.
+- **Mid call.** Press <kbd>Alt</kbd> <kbd>Shift</kbd> <kbd>C</kbd> for a
+  draggable panel, so you can adjust without leaving the meeting.
 
-## How it's built
+The popup also has a live preview that runs the real pipeline, so what you see
+there is what the call receives.
 
-```
-manifest.json          MV3 manifest (content scripts in MAIN + ISOLATED worlds)
-src/engine.js          the shared frame pipeline (effects, keyers, overlays)
-src/inject.js          MAIN world  — getUserMedia override wired to the engine
-src/bridge.js          ISOLATED    — chrome.storage <-> page bridge, draggable overlay
-src/background.js       service worker — keyboard-shortcut relay
-popup/                 toolbar popup UI, runs the engine for the live preview
-vendor/mediapipe/      bundled MediaPipe vision WASM + selfie segmentation model
-icons/                 generated PNG icons
-test/test.html         standalone verification page
-```
+## What it cannot do
 
-The processing pipeline lives in one file, `src/engine.js`, used by both the
-page pipeline and the popup preview. That is deliberate: a preview drawn by a
-second implementation would drift from the real output and stop being a
-preview.
+Worth knowing before you install.
 
-The MAIN-world script does the camera override (it needs to run in the page's own
-JS context to patch `navigator.mediaDevices.getUserMedia`), but MAIN-world scripts
-can't read `chrome.storage`. So the ISOLATED-world `bridge.js` owns storage and
-forwards settings across via `window.postMessage`. Both content scripts run at
-`document_start` so the hook is installed before any site can call the camera.
-
-## Scope & limits (please read)
-
-- **Websites only.** A Chrome extension lives inside Chrome, so Cam360 enhances the
-  camera on **web pages**. It works on Google Meet, Discord-in-browser, Zoom web
-  client, etc.
-- **Native desktop apps are out of reach for a browser extension.** The Discord
-  *desktop app*, the Zoom *desktop app*, OBS, Teams desktop, FaceTime, etc. do not
-  run inside Chrome, so no extension (this one or any other) can inject video into
-  them. Reaching those requires a **system-level virtual camera** — a native driver
-  that registers a fake webcam the OS sees everywhere. The proven open path is
-  [OBS Studio](https://obsproject.com/) + its built-in Virtual Camera (with OBS
-  filters for the same lighting/flip effects), or building a native virtual-camera
-  module (macOS: CoreMediaIO / a Core Media I/O extension; Windows: a DirectShow /
-  Media Foundation virtual camera; Linux: `v4l2loopback`). That's a separate native
-  project, not a browser extension. See "Going system-wide" below.
-- **Background effects need to load a WebAssembly model into the page.** On most
-  sites this just works. A few sites with a very strict Content-Security-Policy
-  (Google Meet is the notable one) block extensions from loading WASM into their
-  page — there, the background feature disables itself and shows a short notice,
-  while **every other effect (flip, lighting, zoom, blur, beautify) keeps working**.
-  Meet also has its own built-in background blur you can use alongside Cam360's
-  lighting tweaks. On Discord-in-browser, Whereby, Jitsi, most custom video apps,
-  and the local test page, Cam360's own background effects run fine.
-
-### Going system-wide (roadmap)
-
-If you later want Cam360 to work in native apps too, the architecture would be:
-
-1. A native helper app that registers an OS virtual camera device.
-2. The same canvas/effects pipeline running in that helper (or piped from a local
-   web view).
-3. Optional: this extension continues to cover in-browser calls.
-
-OBS Virtual Camera already gives you 90% of this today for free; Cam360 focuses on
-making the *in-browser* experience one-click.
+- **Desktop apps are out of reach.** A browser extension only sees video inside
+  the browser, so the Discord and Zoom desktop clients cannot be touched. That
+  needs an operating system level virtual camera driver, which no extension can
+  install. Use the web version of those apps, or pair Cam360 with
+  [OBS Virtual Camera](https://obsproject.com/).
+- **Google Meet blocks the AI background.** Meet sets a content security policy
+  that stops extensions loading WebAssembly into its page, and the segmentation
+  model needs it. Switch the cut out method to green screen and background
+  replacement works there too. Every other effect is unaffected.
+- **Chromium browsers only.** Chrome, Edge, Brave and Arc. Firefox and Safari
+  use a different extension model.
 
 ## Privacy
 
-All processing is local. No network requests, no telemetry, no external libraries.
-Settings are stored only in `chrome.storage.local` on your machine.
+No network requests, no telemetry, no analytics, no account. Your settings live
+in `chrome.storage.local` on your machine, and the AI model ships inside the
+extension instead of being downloaded. Full policy: [fuckwebcam.xyz/privacy](https://fuckwebcam.xyz/privacy).
+
+---
+
+# For developers
+
+## How it works
+
+When a page calls `navigator.mediaDevices.getUserMedia`, Cam360 answers first.
+It takes the real camera track, draws every frame through an offscreen canvas
+where the effects are applied, and hands back a `canvas.captureStream()` in its
+place. Audio passes through untouched, and if anything fails it falls back to
+the raw camera so a call never breaks.
+
+Two content scripts, because they need different powers:
+
+- `src/inject.js` runs in the **MAIN** world, since patching `getUserMedia`
+  means living in the page's own JavaScript context.
+- `src/bridge.js` runs in the **ISOLATED** world, because MAIN world scripts
+  cannot read `chrome.storage`. It owns settings and forwards them across with
+  `window.postMessage`, and it draws the in-call panel.
+
+Both run at `document_start`, so the hook is installed before any site can ask
+for the camera.
+
+The frame pipeline lives in one file, `src/engine.js`, used by both the page
+pipeline and the popup preview. That is deliberate. A preview drawn by a second
+implementation would drift from the real output and stop being a preview.
+
+## Project layout
+
+```
+manifest.json          MV3 manifest, content scripts in MAIN and ISOLATED worlds
+src/engine.js          the shared frame pipeline: effects, keyers, overlays
+src/inject.js          MAIN world, the getUserMedia override
+src/bridge.js          ISOLATED world, storage bridge and the in-call panel
+src/background.js      service worker, relays the keyboard shortcut
+popup/                 toolbar popup, runs the engine for the live preview
+vendor/mediapipe/      bundled selfie segmentation model and WASM
+test/test.html         standalone page to check the pipeline without a call
+web/                   the marketing site, static, no build step
+brand/                 brand guide and logo source
+docs/seo-plan.md       search and answer engine plan
+scripts/package.sh     builds the Chrome Web Store zip
+```
+
+## Working on it
+
+Load the extension unpacked as described above, then reload it from
+`chrome://extensions` after each change. Content script changes also need the
+target tab reloaded.
+
+`test/test.html` exercises the pipeline without joining a real call. Opening it
+over `file://` requires "Allow access to file URLs" on the Cam360 card in
+`chrome://extensions`.
+
+The popup is resizable. Drag the grip in its corner, within Chrome's 800x600
+popup ceiling, or use the arrow in the header to open the same UI as a real
+window. The layout switches to two panes past 560px and flows into more columns
+as it grows.
+
+## Building a release
+
+```bash
+./scripts/package.sh
+```
+
+This writes `dist/cam360-<version>.zip` with `manifest.json` at the zip root,
+which is what the Chrome Web Store requires. Bump `version` in `manifest.json`
+first.
+
+## The website
+
+`web/` is a single static page with no build step and no framework. Every
+product image on it is a real screenshot rendered from this code, never a
+mockup. `vercel.json` points Vercel at `web/` as the output directory, so a
+static deploy needs no dashboard configuration.
+
+If you move it to a different domain, update the absolute URLs in
+`web/index.html` (canonical, `og:url`, `og:image`, `twitter:image`, and the
+JSON-LD block), `web/privacy.html`, `web/sitemap.xml` and `web/robots.txt`.
 
 ## Support
 
-Questions, bugs, and feature requests all go through
+Questions, bugs and ideas all go to
 [GitHub issues](https://github.com/realanshuman/cam360/issues/new/choose).
-There is no support inbox, so asking here keeps the answer public for the next
-person. The popup links to the same place under "Get help", and so does the
-[Support section](https://fuckwebcam.xyz/#support) on the site.
-
-When reporting a problem, include the site you were on, your browser version,
+There is no support inbox, so asking here keeps the answer public for whoever
+hits the same thing next. Include the site you were on, your browser version,
 and the Cam360 version from `chrome://extensions`.
 
-## Brand and landing page
+## License
 
-The brand identity lives in [`brand/`](brand/): `BRAND.md` covers positioning,
-logo usage, colour, type, and voice, alongside the mark as SVG. The extension
-icons are generated from that same mark, so the product and the site match.
+[MIT](LICENSE). Use it, change it, ship it, just keep the copyright notice.
 
-The marketing site is a single static page in [`web/`](web/). It has no build
-step, no framework, and no external requests. Every product image on it is a real
-screenshot rendered from the code in this repository rather than a mockup. The
-only script is a handful of inline lines that close the mobile menu.
-
-It is built for phones as much as desktop: safe area insets for the iPhone notch
-and home indicator, 44px minimum touch targets, hover effects gated behind
-`@media (hover: hover)` so a tap never leaves a stuck hover state, fluid type via
-`clamp()`, and a disclosure menu in place of the desktop nav below 900px. Checked
-for horizontal overflow and target sizes from 320px through 1440px, including
-landscape.
-
-```
-web/index.html        the page
-web/styles.css        design tokens and layout
-web/assets/           product screenshots and the social image
-brand/                brand guide and logo source
-```
-
-### Deploying to Vercel
-
-`vercel.json` at the repository root points Vercel at `web/` as the output
-directory, so a static deploy works with no configuration in the dashboard.
-
-```bash
-npm i -g vercel
-vercel          # preview deployment
-vercel --prod   # production
-```
-
-You can also import the repository at vercel.com and accept the defaults. If you
-prefer to configure it by hand instead, set Framework Preset to Other, leave the
-build command empty, and set the Root Directory to `web`.
-
-`.vercelignore` keeps the extension source and the bundled model out of the
-upload, so only the 600KB site is deployed.
-
-After pointing a custom domain at the deployment, update the absolute URLs in
-`web/index.html` (`og:image`, `twitter:image`, and the canonical link) and the
-`Sitemap:` line in `web/robots.txt`, since social crawlers need absolute URLs.
+The bundled MediaPipe selfie segmentation model and WASM runtime in
+`vendor/mediapipe/` are Google's, under the Apache License 2.0, and are
+redistributed here unchanged.
