@@ -1166,3 +1166,49 @@ html.js .nav:not(.is-scrolled) {
   transition-duration: .28s;
   transition-timing-function: cubic-bezier(.2, .7, .2, 1);
 }
+
+/* ---------- Phone refinements ----------
+   Placed last so it wins over the earlier breakpoints at equal specificity.
+   Everything here is about density and hierarchy on a narrow screen, not new
+   behaviour: the page is ten screens tall on a phone and the footer alone was
+   678px of it. */
+@media (max-width: 600px) {
+  /* Footer. The link list was wrapping into two ragged rows with uneven gaps,
+     which read as broken rather than designed. A two column grid aligns them. */
+  footer { padding: 40px 0 calc(32px + env(safe-area-inset-bottom)); }
+  .foot-top { gap: 18px; }
+  /* max-content columns sit the pairs together instead of splitting the row
+     in half and leaving a third of it empty. */
+  .foot-links { margin-left: -10px; display: grid; grid-template-columns: repeat(2, max-content); gap: 0 18px; }
+  .foot-links a { padding: 10px; }
+  .bmc-row, .foot-theme, .foot-built { margin-top: 24px; }
+  /* A full width yellow slab made the smallest ask on the page the loudest
+     thing in the footer. Content width keeps the hierarchy honest and still
+     clears the 44px tap target. */
+  .bmc { width: auto; justify-content: flex-start; }
+  .bmc-note { margin-top: 10px; font-size: 13.5px; }
+  .foot-note { margin-top: 12px; font-size: 12.5px; }
+  .themeswitch { gap: 8px; }
+  .themeswitch .label { font-size: 13.5px; }
+
+  /* Feature cards: the body was set at desktop measure inside a 350px column. */
+  .c-cards { gap: 16px; }
+  .c-card-body { padding: 18px 18px 20px; }
+  .c-card h3 { font-size: 18px; }
+  .c-card p { margin-top: 8px; font-size: 15px; }
+  .c-list { margin-top: 12px; gap: 6px; }
+  .c-list li { padding-left: 18px; font-size: 14.4px; }
+  .c-list li::before { width: 7px; height: 7px; top: 0.58em; }
+  .c-fine { margin-top: 12px; font-size: 13px; }
+  .c-card-body p + .c-fine { padding-top: 10px; }
+
+  /* Trust facts and the pipeline carried desktop padding into a narrow column. */
+  .c-facts { gap: 16px; }
+  .c-fact { padding: 24px 20px; }
+  .c-flow { gap: 12px; }
+
+  /* The hero screenshot was 530px tall before anything else could be reached. */
+  .shot-card { padding: 10px; }
+  .shot-card img { width: min(248px, 66vw); }
+  .bridge { margin-top: 28px; font-size: 15px; }
+}
