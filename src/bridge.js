@@ -154,7 +154,7 @@
     els.power = document.createElement("button");
     els.power.onclick = () => save({ enabled: !current.enabled });
     const close = document.createElement("button");
-    close.textContent = "✕"; close.title = "Hide (Alt+Shift+C to reopen)";
+    close.textContent = "✕"; close.title = "Hide the panel";
     close.style.cssText = `border:none;background:transparent;color:${C.muted};font-size:13px;cursor:pointer;padding:2px 4px;border-radius:5px`;
     close.onclick = () => save({ overlayVisible: false });
     header.append(els.power, close);
