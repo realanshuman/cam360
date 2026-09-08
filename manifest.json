@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Cam360",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Look better on every video call. Blur or swap your background, fix lighting, mirror and zoom. Works on Meet, Discord, Zoom & more.",
   "homepage_url": "https://fuckwebcam.xyz",
   "permissions": [
