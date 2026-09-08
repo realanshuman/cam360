@@ -1,6 +1,8 @@
 /* Cam360 motion layer. No dependencies. Pair with motion.css.
    Load at the end of <body>, or in <head> with defer. */
 (function () {
+  /* Tells the inline head failsafe that this script arrived. Must stay first. */
+  window.__cam360Motion = true;
   var root = document.documentElement;
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
