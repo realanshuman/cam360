@@ -105,3 +105,79 @@ on the item's Privacy practices tab except the last one.
 - Support URL: https://github.com/realanshuman/cam360/issues
 - Mature content: No
 - Ads: No
+
+---
+
+# Proposed revision (September 2026, from the SEO work)
+
+Not yet applied to the live listing. Rationale and evidence are in
+[`docs/seo-plan.md`](../../docs/seo-plan.md), section 5. Apply these by editing
+the item in the developer dashboard.
+
+Google's documented ranking sentence puts **item name** first: "Search ranking
+and recommendations are ordered based on the item name, description relevancy,
+popularity, and user experience." There is no keywords field, and at the
+current install count every popularity signal is near zero, so the text fields
+are the only lever. The title is also the `<title>` of the Google indexed store
+page, so one edit improves store rank and Google rank together.
+
+## Item title (75 char limit, but search cards truncate near 45)
+
+```
+Cam360: Virtual Background & Webcam Effects
+```
+
+43 characters. The current title is `Cam360` alone: six characters carrying no
+searchable term in the highest weighted field, and "360" misdirects toward
+panoramic cameras. "Virtual background" is the phrase Zoom and Meet teach
+users in their own interfaces.
+
+## Summary (132 char limit)
+
+```
+Virtual background, background blur and webcam effects for any video call. Runs fully on your device. Free and open source.
+```
+
+123 characters. Dropping the third party brand names removes the entire
+trademark risk surface described below and reclaims 35 characters for category
+terms.
+
+## Description additions
+
+Add a compatibility line in the form the Branding Guidelines prescribe:
+
+```
+Works with browser based video calls, including Google Meet(TM), Discord, Zoom and Whereby.
+```
+
+Add an accuracy disclosure, which is both a policy safeguard and good answer
+engine content:
+
+```
+On Google Meet, the AI background is blocked by Meet's own security policy, so Cam360 falls back to green screen keying there. Every other effect works normally.
+```
+
+Keep the existing non affiliation sentence at the bottom.
+
+## Trademark compliance notes
+
+The governing document is the Chrome Web Store Branding Guidelines
+(`developer.chrome.com/docs/webstore/branding`). It requires compatibility
+claims to use "for", "for use with", or "compatible with", to carry the
+trademark symbol, and to give attribution.
+
+The current summary's "Works on Meet, Discord, Zoom" matches none of the three
+prescribed phrasings, omits the symbol, gives no attribution, and bare "Meet"
+is worse than "Google Meet" because it drops the disambiguator. This is not a
+takedown risk. The concern is that the Impersonation policy's stated remedy is
+that Google "reserves the right to reduce visibility" of items that potentially
+violate IP protections, which is a silent ranking penalty rather than a notice.
+
+Two hard limits: do not list more than five supported brands in the
+description, and do not repeat any keyword more than five times. Keyword
+stuffing has its own rejection code.
+
+## Also worth doing
+
+The Promotional Video field is empty. That asset gets reused across every other
+channel, so it is the highest leverage missing item after the title.

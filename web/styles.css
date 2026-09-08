@@ -317,6 +317,8 @@ code.block {
   display: flex; align-items: center; justify-content: space-between; gap: 20px;
 }
 .faq summary::-webkit-details-marker { display: none; }
+/* The question is a real heading; it should not look like one. */
+.faq summary h3 { font-size: inherit; font-weight: inherit; letter-spacing: inherit; margin: 0; }
 .faq summary::after {
   content: ""; flex: 0 0 auto; width: 9px; height: 9px; margin-right: 4px;
   border-right: 1.75px solid var(--ink-3); border-bottom: 1.75px solid var(--ink-3);
