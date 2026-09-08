@@ -199,7 +199,7 @@ Questions, bugs, and feature requests all go through
 [GitHub issues](https://github.com/realanshuman/cam360/issues/new/choose).
 There is no support inbox, so asking here keeps the answer public for the next
 person. The popup links to the same place under "Get help", and so does the
-[Support section](https://cam360.vercel.app/#support) on the site.
+[Support section](https://fuckwebcam.xyz/#support) on the site.
 
 When reporting a problem, include the site you were on, your browser version,
 and the Cam360 version from `chrome://extensions`.

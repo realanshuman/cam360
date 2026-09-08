@@ -21,7 +21,7 @@ Measured from the source files and from live searches.
 | Sitemap | Lists `/` only. No `/privacy`, no `lastmod`. |
 | Images | 450KB of PNG. `og.png` 158KB, `panel.png` 134KB. |
 | Store listing | Title is `Cam360`. Zero keywords in the highest weighted field. |
-| GitHub repo | 1 star, no description, no topics, homepage set to a placeholder domain. |
+| GitHub repo | 1 star, no description, no topics. Homepage field is correct. |
 
 Already correct: `lang="en"`, canonicals on both pages, descriptive alt text,
 clean URLs, sane heading order, and a `robots.txt` that allows AI crawlers.
@@ -190,23 +190,18 @@ This is both a policy safeguard and, per section 4, good AEO content.
 ## 6. GitHub repo
 
 Verified against the GitHub API on 4 September 2026: 1 star, **no description
-set**, no topics, and `homepage` is `fuckwebcam.xyz`.
-
-The store listing's Support URL points at this repo, so reviewers and users
-land there. That homepage field is also on the wrong side of the "non family
-friendly content" exclusion used for Featured badges, and curated lists will
-reject a repo carrying it.
+set**, and no topics. The `homepage` field is `fuckwebcam.xyz`, which is the
+live production domain and therefore correct.
 
 Actions, all one click each:
 
-1. Set homepage to `https://cam360.vercel.app`.
-2. Write a description that reads as an answer: "Chrome extension that adds
+1. Write a description that reads as an answer: "Chrome extension that adds
    virtual backgrounds, background blur and webcam effects to any video call
    in your browser. Runs fully on device."
-3. Add topics: `chrome-extension`, `webcam`, `virtual-background`,
+2. Add topics: `chrome-extension`, `webcam`, `virtual-background`,
    `background-blur`, `mediapipe`, `getusermedia`, `video-conferencing`,
    `privacy`, `manifest-v3`.
-4. Cut a tagged release so there is a dated artifact.
+3. Cut a tagged release so there is a dated artifact.
 
 GitHub repos rank well for open-source queries in this category, and every
 open-source competitor found is Linux-only or an OBS plugin.
@@ -306,6 +301,27 @@ of interest likely to be deleted).
 
 Localization was flagged as the biggest untapped lever, outranking most of
 Tier 2.
+
+---
+
+## 8b. One note on the domain
+
+The site is served from `fuckwebcam.xyz`. Two factual consequences for this
+plan, neither of which is a blocker:
+
+- "Non family friendly content" appears on the Chrome Web Store's exclusion
+  list for the Featured badge, and several curated lists and awesome-lists
+  screen submissions on the same basis. That mainly affects Tier 2 and Tier 3
+  in section 8, not indexing or ranking.
+- A custom domain is better for SEO than the `vercel.app` subdomain it
+  replaced, because a shared subdomain carries no independent authority. That
+  part is a straightforward improvement.
+
+If the domain is ever changed, the swap points are: `web/index.html`
+(canonical, `og:url`, `og:image`, `twitter:image`, and five URLs in the JSON-LD
+graph), `web/privacy.html` (canonical), `web/sitemap.xml`, `web/robots.txt`,
+`README.md`, both files in `.github/ISSUE_TEMPLATE/`, and the Homepage and
+Privacy policy fields in the Chrome Web Store dashboard.
 
 ---
 
