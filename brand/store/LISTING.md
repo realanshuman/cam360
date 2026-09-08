@@ -97,11 +97,11 @@ on the item's Privacy practices tab except the last one.
 7. Contact email: Settings, then Account. Add an email, send the verification,
    click the link in the email, come back and Save draft.
 
-- Privacy policy URL: https://cam360.vercel.app/privacy
+- Privacy policy URL: https://fuckwebcam.xyz/privacy
 
 ## Additional fields
 
-- Homepage URL: https://cam360.vercel.app
+- Homepage URL: https://fuckwebcam.xyz
 - Support URL: https://github.com/realanshuman/cam360/issues
 - Mature content: No
 - Ads: No
