@@ -255,7 +255,7 @@ can, because it sits inside the call's own stream.
 ### Phase 1, technical (no decisions needed)
 
 - Rewrite `<title>` and meta description to lead with category terms.
-- Rewrite the H1 to carry a searchable term.
+- ~~Rewrite the H1 to carry a searchable term.~~ Declined, see Decisions.
 - Add JSON-LD: `SoftwareApplication`, `WebSite`, `Organization`. Purpose is
   entity disambiguation given section 2, not rich results.
 - Add `FAQPage` as machine-readable context only.
@@ -340,6 +340,31 @@ Set up first, then act:
 
 Expect nothing for the first several weeks. A new domain with one page and a
 new store listing has no history for any engine to weigh.
+
+---
+
+## Decisions taken
+
+Recorded so the reasoning is not re-litigated later.
+
+**The H1 and hero lede stay as they were.** The proposed replacement was
+"Virtual backgrounds for any video call in your browser." It was reverted. The
+`<title>` tag carries the ranking weight and it was changed; H1 is a much
+weaker signal and pages rank without a keyword in it. The only thing forgone is
+that a visitor arriving from a category search does not see matching words
+immediately. Everything invisible to visitors (title, meta description, social
+tags, JSON-LD, sitemap) was kept.
+
+**Search engine submission is not being done for now.** Section 9 stands as a
+recommendation rather than a completed step. Worth knowing what that defers:
+a new domain with no inbound links can take weeks or months to be discovered,
+Search Console is the only way to see whether the site is indexed or which
+queries it appears for, and per section 3 the eligibility bar for AI Overviews
+is simply being indexed. Nothing else in this plan can be measured until it is
+done.
+
+The FAQ copy on the landing page was kept, because the visible text has to
+match the `FAQPage` markup word for word for the markup to be legitimate.
 
 ---
 

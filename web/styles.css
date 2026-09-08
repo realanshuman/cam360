@@ -189,7 +189,7 @@ a { color: inherit; text-decoration: none; }
 h1 {
   font-size: clamp(2.05rem, 7.4vw, 3.25rem);
   line-height: 1.08; font-weight: 600; letter-spacing: -0.033em;
-  margin-bottom: 20px; max-width: 17ch;
+  margin-bottom: 20px; max-width: 15ch;
 }
 .lede { font-size: clamp(1rem, 3.9vw, 1.125rem); color: var(--ink-2); max-width: 46ch; margin-bottom: 30px; }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
