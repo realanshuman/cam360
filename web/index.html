@@ -104,7 +104,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/styles.css?v=2">
 <script>
 // Applied before first paint so a dark visitor never sees a white flash.
 (function () {
@@ -112,10 +112,15 @@
     var t = localStorage.getItem("cam360-theme");
     if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
   } catch (e) {}
-  document.documentElement.classList.add("js");
+  // The reveal layer hides blocks until motion.js shows them. Claim "js" now so
+  // nothing flashes, then drop it if motion.js never runs, so a blocked, failed
+  // or stale script can never leave half the page invisible.
+  var d = document.documentElement;
+  d.classList.add("js");
+  setTimeout(function () { if (!window.__cam360Motion) d.classList.remove("js"); }, 2500);
 })();
 </script>
-<script src="/motion.js" defer></script>
+<script src="/motion.js?v=2" defer onerror="document.documentElement.classList.remove('js')"></script>
 </head>
 <body>
 
