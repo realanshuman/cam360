@@ -104,7 +104,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="/styles.css?v=5">
+<link rel="stylesheet" href="/styles.css?v=6">
 <script>
 // Applied before first paint so a dark visitor never sees a white flash.
 (function () {
@@ -120,7 +120,8 @@
   setTimeout(function () { if (!window.__cam360Motion) d.classList.remove("js"); }, 2500);
 })();
 </script>
-<script src="/motion.js?v=5" defer onerror="document.documentElement.classList.remove('js')"></script>
+<script src="/motion.js?v=6" defer onerror="document.documentElement.classList.remove('js')"></script>
+<script src="/theme.js?v=6" defer></script>
 </head>
 <body>
 
@@ -396,22 +397,39 @@
 
 <footer>
   <div class="wrap">
-    <div class="foot-top">
-      <a class="brand" href="#top"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#2383E2"/><circle cx="24" cy="24" r="11" fill="none" stroke="#fff" stroke-width="3.25" stroke-linecap="round" stroke-dasharray="57 12.1" transform="rotate(-14 24 24)"/><circle cx="24" cy="24" r="4.25" fill="#fff"/></svg> Cam360</a>
-      <div class="foot-links">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#2383E2"/><circle cx="24" cy="24" r="11" fill="none" stroke="#fff" stroke-width="3.25" stroke-linecap="round" stroke-dasharray="57 12.1" transform="rotate(-14 24 24)"/><circle cx="24" cy="24" r="4.25" fill="#fff"/></svg> Cam360</a>
+        <p class="foot-tag">Virtual backgrounds and webcam effects for any video call in your browser. Free, open source, and every frame stays on your own device.</p>
+        <a class="bmc" href="https://buymeacoffee.com/realanshuman" target="_blank" rel="noopener noreferrer"><span class="bmc-cup" aria-hidden="true">&#9749;</span> Buy me a coffee</a>
+        <p class="bmc-note">Cam360 stays free. If it made a call better, a coffee keeps it going.</p>
+      </div>
+
+      <nav class="foot-col" aria-labelledby="fc-product">
+        <p class="foot-h" id="fc-product">Product</p>
         <a href="#features">Features</a>
         <a href="#how">How it works</a>
+        <a href="#install">Install</a>
+        <a href="https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe" rel="noopener">Chrome Web Store</a>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="fc-help">
+        <p class="foot-h" id="fc-help">Help</p>
         <a href="#faq">FAQ</a>
         <a href="#support">Support</a>
-        <a href="https://github.com/realanshuman/cam360">GitHub</a>
+        <a href="https://github.com/realanshuman/cam360/issues/new/choose" target="_blank" rel="noopener noreferrer">Report a bug</a>
+      </nav>
+
+      <nav class="foot-col" aria-labelledby="fc-project">
+        <p class="foot-h" id="fc-project">Project</p>
+        <a href="https://github.com/realanshuman/cam360" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://github.com/realanshuman/cam360/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">License</a>
         <a href="/privacy">Privacy</a>
-      </div>
+      </nav>
     </div>
-    <div class="bmc-row">
-      <a class="bmc" href="https://buymeacoffee.com/realanshuman" target="_blank" rel="noopener noreferrer"><span class="bmc-cup" aria-hidden="true">&#9749;</span> Buy me a coffee</a>
-      <p class="bmc-note">Cam360 stays free. If it made a call better, a coffee keeps it going.</p>
-    </div>
-    <div class="foot-theme">
+
+    <div class="foot-bar">
+      <p class="foot-built">&#169; 2026 Cam360. Built by <a href="https://realanshuman.com" target="_blank" rel="noopener noreferrer">Ansh</a>.</p>
       <div class="themeswitch">
         <span class="label" id="themeLabel">Appearance</span>
         <div class="seg-theme" role="group" aria-labelledby="themeLabel">
@@ -421,7 +439,7 @@
         </div>
       </div>
     </div>
-    <p class="foot-built">Built by <a href="https://realanshuman.com" target="_blank" rel="noopener noreferrer">Ansh</a></p>
+
     <p class="foot-note">Cam360 is an independent project and is not affiliated with, endorsed by, or sponsored by Google, Discord, Zoom, Whereby, or Jitsi. Product names are used only to describe where the extension runs.</p>
   </div>
 </footer>
@@ -441,43 +459,6 @@
   });
 })();
 
-/* Theme switch: light, dark, or follow the system. */
-(function () {
-  var root = document.documentElement;
-  var buttons = [].slice.call(document.querySelectorAll("[data-theme-set]"));
-  var shot = document.getElementById("heroShot");
-  var meta = document.querySelector('meta[name="theme-color"]');
-  var mq = window.matchMedia("(prefers-color-scheme: dark)");
-
-  function current() {
-    try { return localStorage.getItem("cam360-theme") || "system"; } catch (e) { return "system"; }
-  }
-  function isDark() {
-    var c = current();
-    return c === "dark" || (c === "system" && mq.matches);
-  }
-  function paint() {
-    var choice = current();
-    buttons.forEach(function (b) {
-      b.setAttribute("aria-pressed", String(b.dataset.themeSet === choice));
-    });
-    var dark = isDark();
-    // The <picture> handles the system case; override it when the user chose.
-    if (shot) shot.src = dark ? "/assets/popup-dark.png" : "/assets/popup-light.png";
-    if (meta) meta.setAttribute("content", dark ? "#14120e" : "#fffdf8");
-  }
-  function apply(choice) {
-    try { localStorage.setItem("cam360-theme", choice); } catch (e) {}
-    if (choice === "system") delete root.dataset.theme;
-    else root.dataset.theme = choice;
-    paint();
-  }
-  buttons.forEach(function (b) {
-    b.addEventListener("click", function () { apply(b.dataset.themeSet); });
-  });
-  if (mq.addEventListener) mq.addEventListener("change", paint);
-  paint();
-})();
 </script>
 </body>
 </html>
