@@ -421,46 +421,113 @@ code.block {
    Standard product footer: a brand column, grouped link columns, and a
    separated bottom bar. Tinted so it reads as a distinct zone rather than
    more page. */
-footer {
-  border-top: 1px solid var(--line);
+/* ===========================================================================
+   Footer
+
+   One slab, four lines: the ask, every link in a single row, the baseline,
+   the small print. No column headings, because three headings over three
+   short lists is scaffolding for a structure this size does not have.
+   =========================================================================== */
+.foot {
+  position: relative;
+  overflow: hidden;                 /* crops the watermark to the slab */
+  border-top: 2px solid var(--line);
   background: var(--sunken);
-  padding: 64px 0 calc(36px + env(safe-area-inset-bottom));
+  padding: 52px 0 calc(30px + env(safe-area-inset-bottom));
 }
-.foot-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.7fr) repeat(3, minmax(0, 1fr));
-  gap: 44px 32px;
+.foot-in { position: relative; z-index: 1; }
+
+/* The aperture from the logo, drawn as a thin stamp rather than a scaled up
+   copy of the mark: at this size the logo's own 3.25 stroke becomes a 40px
+   band and its inner dot a floating blob. Ring only, hairline weight. */
+.foot-mark {
+  position: absolute;
+  right: -84px;
+  bottom: -132px;
+  width: 300px;
+  height: 300px;
+  color: var(--line-2);
+  opacity: 0.55;
+  pointer-events: none;
 }
-.foot-brand { max-width: 36ch; }
-.foot-brand .brand { margin-bottom: 14px; }
-.foot-tag { font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+
+/* ---- Line 1: who this is, and the one ask ---- */
+.foot-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px 40px;
+}
+.foot-id .brand { margin-bottom: 12px; }
+.foot-say {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 44ch;
+}
+.foot-ask { text-align: right; }
+.foot-ask-why {
+  margin-bottom: 10px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
 .bmc {
-  display: inline-flex; align-items: center; gap: 10px;
-  margin-top: 22px; padding: 13px 22px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 12px 20px; border-radius: 999px;
   background: var(--honey); color: #14100a;
-  font-size: 15.5px; font-weight: 700; line-height: 1;
+  font-size: 15px; font-weight: 700; line-height: 1;
+  min-height: var(--tap);
   border: 2px solid rgba(20, 16, 10, 0.12);
   box-shadow: 0 4px 0 var(--honey-deep);
   transition: transform .1s, box-shadow .1s;
 }
 .bmc:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--honey-deep); }
-.bmc-cup { font-size: 18px; line-height: 1; }
-.bmc-note { margin-top: 10px; font-size: 13px; line-height: 1.55; color: var(--ink-3); max-width: 42ch; }
 
-.foot-col { display: flex; flex-direction: column; align-items: flex-start; }
-.foot-h {
-  margin-bottom: 6px; font-size: 12px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3);
+/* ---- Line 2: every link, one row ---- */
+.foot-nav {
+  margin-top: 34px;
+  padding-top: 26px;
+  border-top: 2px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 26px;
 }
-.foot-col a {
-  display: flex; align-items: center; min-height: 38px;
-  font-size: 14.8px; color: var(--ink-2); transition: color .15s;
+.foot-nav a {
+  position: relative;
+  display: inline-flex; align-items: center;
+  min-height: 36px;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--ink-2);
+  transition: color .15s;
 }
+/* A rule that grows from the left on hover, rather than a colour change
+   alone. It is drawn inside the padding so it tracks the word, not the box. */
+.foot-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 7px;
+  height: 2px; border-radius: 2px;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s cubic-bezier(.2, .7, .2, 1);
+}
+.foot-nav a:active { color: var(--ink); }
+.foot-nav a:active::after { transform: scaleX(1); }
 
-.foot-bar {
-  margin-top: 52px; padding-top: 26px; border-top: 1px solid var(--line);
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-  gap: 18px 24px;
+/* ---- Line 3: the baseline, with the appearance control ---- */
+.foot-base {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 2px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
 }
 .foot-built { font-size: 14px; color: var(--ink-2); }
 .foot-built a {
@@ -474,40 +541,90 @@ footer {
   content: ""; position: absolute; left: -4px; right: -4px; top: 50%;
   transform: translateY(-50%); height: var(--tap);
 }
-/* Theme switch. The track uses the page canvas, not the sunken tint, because
-   the footer itself is now sunken and a tinted track on a tinted ground has
-   no edge. */
-.themeswitch { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.themeswitch .label { font-size: 13.5px; font-weight: 600; color: var(--ink-3); }
-.seg-theme {
-  display: inline-flex; padding: 4px; gap: 3px;
-  border-radius: 999px; border: 2px solid var(--line); background: var(--canvas);
-}
-.seg-theme button {
-  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-  min-height: 38px; padding: 0 14px; border: none; border-radius: 999px;
-  background: transparent; color: var(--ink-2);
-  font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
-  transition: background .15s, color .15s;
-}
-.seg-theme button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-card); }
-.seg-theme svg { flex: 0 0 auto; }
 
-.foot-note { margin-top: 20px; font-size: 12.5px; line-height: 1.6; color: var(--ink-3); max-width: 76ch; }
-
-/* Comfortable rows wherever the pointer is a finger. */
-@media (pointer: coarse) { .foot-col a { min-height: var(--tap); } }
-
-/* Tablet: the three link columns hold, the brand takes the full row above. */
-@media (max-width: 900px) {
-  .foot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 24px; }
-  .foot-brand { grid-column: 1 / -1; max-width: 48ch; }
+/* ---- Line 4: the small print ---- */
+.foot-fine {
+  margin-top: 20px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-3);
+  max-width: 76ch;
 }
 
+/* ===========================================================================
+   Appearance switch
+
+   Icon only and the size of a chip: it is a preference, not a feature, and
+   the words Light, Auto and Dark were taking more room in the baseline than
+   the copyright beside them. The thumb slides between the three positions,
+   driven by the same aria-pressed the script already sets.
+   =========================================================================== */
+.tsw {
+  --tsw-size: 30px;
+  position: relative;
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  /* the footer itself is sunken, so a sunken track on it would have no edge */
+  background: var(--canvas);
+  border: 2px solid var(--line);
+}
+.tsw-thumb {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: var(--tsw-size); height: var(--tsw-size);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  transition: transform .24s cubic-bezier(.2, .7, .2, 1);
+}
+.tsw:has([data-theme-set="system"][aria-pressed="true"]) .tsw-thumb { transform: translateX(var(--tsw-size)); }
+.tsw:has([data-theme-set="dark"][aria-pressed="true"])   .tsw-thumb { transform: translateX(calc(var(--tsw-size) * 2)); }
+/* Without :has the thumb would sit under Light for every choice, so hide it
+   and let the pressed button carry its own plate instead. */
+@supports not selector(:has(*)) {
+  .tsw-thumb { display: none; }
+  .tsw-btn[aria-pressed="true"] { background: var(--surface); box-shadow: var(--shadow-card); }
+}
+.tsw-btn {
+  position: relative; z-index: 1;
+  width: var(--tsw-size); height: var(--tsw-size);
+  display: grid; place-items: center;
+  padding: 0; border: 0; border-radius: 999px;
+  background: transparent; color: var(--ink-3);
+  cursor: pointer;
+  transition: color .15s;
+}
+.tsw-btn[aria-pressed="true"] { color: var(--ink); }
+/* A finger needs more than 30px, so the hit area grows without the chip
+   growing with it. */
+@media (pointer: coarse) {
+  .tsw-btn::after {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: var(--tap); height: var(--tap);
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* The slab is shorter here, so the stamp has to come down with it. */
+@media (max-width: 1000px) {
+  .foot-mark { right: -70px; bottom: -112px; width: 250px; height: 250px; }
+}
+
+/* Tablet and below: the ask drops under the brand and both align left. */
+@media (max-width: 700px) {
+  .foot { padding-top: 44px; }
+  .foot-top { align-items: flex-start; gap: 24px; }
+  .foot-ask { text-align: left; }
+  .foot-mark { display: none; }
+}
 
 /* ---------- Pointer capable devices only ---------- */
 @media (hover: hover) and (pointer: fine) {
-  .foot-col a:hover { color: var(--ink); }
+  .foot-nav a:hover { color: var(--ink); }
+  .foot-nav a:hover::after { transform: scaleX(1); }
   .nav-links a:hover { color: var(--ink); background: var(--sunken); }
   .menu-panel a:hover { background: var(--sunken); }
   .btn-primary:hover { background: var(--blue-press); transform: translateY(-1px); box-shadow: 0 5px 0 var(--blue-deep); }
@@ -516,13 +633,14 @@ footer {
   .faq summary:hover { background: var(--sunken); }
   .devinstall > summary:hover { color: var(--ink); }
   .foot-built a:hover { color: var(--blue); border-color: var(--blue); }
-  .seg-theme button:hover { color: var(--ink); }
+  .tsw-btn:hover { color: var(--ink); }
   .bmc:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--honey-deep); }
 }
 
 @media (pointer: coarse) {
-  .seg-theme button { min-height: var(--tap); }
   .nav-links a { padding: 11px 13px; }
+  .foot-nav { gap: 0 26px; }
+  .foot-nav a { min-height: var(--tap); }
 }
 
 /* ---------- Responsive ---------- */
@@ -538,7 +656,6 @@ footer {
   .menu { display: block; }
   .btn-lg { min-height: 52px; }
   .brand { min-height: var(--tap); }
-  .seg-theme button { min-height: var(--tap); padding: 0 18px; }
   .split { grid-template-columns: minmax(0, 1fr); gap: 44px; }
   .sec-head-left { text-align: center; margin-left: auto; margin-right: auto; max-width: 640px; }
   .split-copy { text-align: center; }
@@ -584,10 +701,6 @@ footer {
   .tile { width: 52px; height: 52px; font-size: 24px; border-radius: 16px; }
   .faq summary { padding: 18px 46px 18px 18px; }
   .faq summary h3 { font-size: 16px; }
-  .themeswitch { width: 100%; flex-direction: column; align-items: flex-start; gap: 10px; }
-  .seg-theme { width: 100%; }
-  .seg-theme button { flex: 1; min-height: var(--tap); padding: 0 8px; }
-  .bmc { width: 100%; justify-content: center; }
 }
 
 @media (max-width: 380px) {
@@ -1134,7 +1247,7 @@ footer {
 }
 /* The step-number chips and theme switch get the same release curve so
    nothing on the page snaps linearly. */
-.seg-theme button { transition-timing-function: cubic-bezier(.2, .7, .2, 1); }
+.tsw-btn { transition-timing-function: cubic-bezier(.2, .7, .2, 1); }
 
 /* ---------- 3. Card hover lift ----------
    styles.css already lifts .card by 4px and swaps its shadow inside
@@ -1216,22 +1329,15 @@ html.js .nav:not(.is-scrolled) {
    behaviour: the page is ten screens tall on a phone and the footer alone was
    678px of it. */
 @media (max-width: 600px) {
-  /* Footer. The link list was wrapping into two ragged rows with uneven gaps,
-     which read as broken rather than designed. A two column grid aligns them. */
-  footer { padding: 44px 0 calc(28px + env(safe-area-inset-bottom)); }
-  /* Three columns, brand across the top. Two would leave the third group
-     alone on its own row with a hole beside it. */
-  .foot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px 12px; }
-  .foot-brand { grid-column: 1 / -1; max-width: none; }
-  .foot-h { font-size: 12px; letter-spacing: 0.05em; }
-  .foot-col a { font-size: 14px; line-height: 1.35; }
-  .foot-bar { margin-top: 36px; padding-top: 22px; flex-direction: column; align-items: flex-start; gap: 16px; }
-  /* A full width yellow slab made the smallest ask the loudest thing here. */
-  .bmc { width: auto; justify-content: flex-start; }
-  .bmc-note { font-size: 13px; }
-  .foot-note { margin-top: 16px; }
-  .themeswitch { gap: 10px; }
-  .themeswitch .label { font-size: 13.5px; }
+  /* Footer. The link row is the only part that needs narrowing: at this width
+     it wraps to four lines, so tighten the rows and let the baseline keep the
+     copyright and the switch on one line for as long as it can. */
+  .foot { padding: 40px 0 calc(26px + env(safe-area-inset-bottom)); }
+  .foot-say { font-size: 14.5px; }
+  .foot-nav { margin-top: 28px; padding-top: 22px; gap: 0 20px; }
+  .foot-nav a { font-size: 14px; }
+  .foot-base { margin-top: 20px; padding-top: 18px; }
+  .foot-fine { margin-top: 16px; }
 
   /* Feature cards: the body was set at desktop measure inside a 350px column. */
   .c-cards { gap: 16px; }
