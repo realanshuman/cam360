@@ -127,12 +127,12 @@
 
     <section class="section">
       <div class="section-label">Overlays</div>
-      <div class="row"><span class="row-label">🏷&nbsp; Name tag</span><button class="sw" data-toggle="showName" role="switch"></button></div>
+      <div class="row"><span class="row-label">🏷&nbsp; Name tag</span><div class="corners" role="group" aria-label="Name tag position"><button type="button" data-pos="namePos" data-val="tl" title="Top left" aria-label="Name tag: top left"></button><button type="button" data-pos="namePos" data-val="tr" title="Top right" aria-label="Name tag: top right"></button><button type="button" data-pos="namePos" data-val="bl" title="Bottom left" aria-label="Name tag: bottom left"></button><button type="button" data-pos="namePos" data-val="br" title="Bottom right" aria-label="Name tag: bottom right"></button></div><button class="sw" data-toggle="showName" role="switch"></button></div>
       <input type="text" id="nameText" class="txt" placeholder="Your name" maxlength="40">
-      <div class="row"><span class="row-label">★&nbsp; Logo</span><button class="sw" data-toggle="showLogo" role="switch"></button></div>
+      <div class="row"><span class="row-label">★&nbsp; Logo</span><div class="corners" role="group" aria-label="Logo position"><button type="button" data-pos="logoPos" data-val="tl" title="Top left" aria-label="Logo: top left"></button><button type="button" data-pos="logoPos" data-val="tr" title="Top right" aria-label="Logo: top right"></button><button type="button" data-pos="logoPos" data-val="bl" title="Bottom left" aria-label="Logo: bottom left"></button><button type="button" data-pos="logoPos" data-val="br" title="Bottom right" aria-label="Logo: bottom right"></button></div><button class="sw" data-toggle="showLogo" role="switch"></button></div>
       <button id="logoUploadBtn" class="tbtn full">Upload logo…</button>
       <input type="file" id="logoUpload" accept="image/*" hidden>
-      <div class="row"><span class="row-label">🕐&nbsp; Live clock</span><button class="sw" data-toggle="showClock" role="switch"></button></div>
+      <div class="row"><span class="row-label">🕐&nbsp; Live clock</span><div class="corners" role="group" aria-label="Live clock position"><button type="button" data-pos="clockPos" data-val="tl" title="Top left" aria-label="Live clock: top left"></button><button type="button" data-pos="clockPos" data-val="tr" title="Top right" aria-label="Live clock: top right"></button><button type="button" data-pos="clockPos" data-val="bl" title="Bottom left" aria-label="Live clock: bottom left"></button><button type="button" data-pos="clockPos" data-val="br" title="Bottom right" aria-label="Live clock: bottom right"></button></div><button class="sw" data-toggle="showClock" role="switch"></button></div>
     </section>
   </div>
 
@@ -165,6 +165,7 @@
     <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="8.5" cy="1.5" r="1.1"/><circle cx="8.5" cy="5" r="1.1"/><circle cx="5" cy="5" r="1.1"/><circle cx="8.5" cy="8.5" r="1.1"/><circle cx="5" cy="8.5" r="1.1"/><circle cx="1.5" cy="8.5" r="1.1"/></svg>
   </div>
 
+  <script src="../src/settings.js"></script>
   <script src="../src/engine.js"></script>
   <script src="popup.js"></script>
 </body>

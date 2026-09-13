@@ -18,32 +18,32 @@
   "use strict";
   if (window.Cam360Engine) return;
 
-  const DEFAULTS = {
-    enabled: true,
-    mirror: false, flipV: false, rotate: 0,
-    brightness: 100, contrast: 100, saturation: 100,
-    blur: 0, grayscale: 0, sepia: 0, hue: 0, zoom: 100,
-    lowLight: false, beautify: 0,
-    bg: "off",          // off | blur | color | scene | video
-    keyer: "ai",        // ai | chroma
-    bgBlur: 14, bgColor: "#0b1020", bgImage: "", bgVideo: "", feather: 4,
-    chromaColor: "#00c000", chromaThreshold: 42, chromaSmooth: 14,
-    freeze: false, brb: false, brbText: "Be right back", brbImage: "",
-    showName: false, nameText: "", showLogo: false, logoImage: "", showClock: false
-  };
+  /* The settings shape is defined once, in settings.js.
+     In the popup that file is loaded alongside this one and can be read
+     directly. In a page's MAIN world it cannot be: Chrome injects a content
+     script file once per document, so settings.js goes to the ISOLATED world
+     where chrome.storage is, and bridge.js hands the shape across with
+     setDefaults() before any camera is opened. */
+  let DEFAULTS = window.Cam360Settings ? window.Cam360Settings.DEFAULTS : null;
+
+  function setDefaults(d) { if (d && !DEFAULTS) DEFAULTS = d; }
 
   function normalize(value) {
-    const s = { ...DEFAULTS, ...(value || {}) };
-    if (s.bg === "image") s.bg = "scene";   // migrate a value stored by an older build
+    const s = { ...(DEFAULTS || {}), ...(value || {}) };
+    if (s.bg === "image") s.bg = "scene";   // a value stored by an older build
     return s;
   }
+
+  /* True once the engine knows the full shape and can safely render. */
+  function ready() { return !!DEFAULTS; }
 
   /* ----------------------- MediaPipe segmenter -----------------------
    * One segmenter per JS context, shared by every renderer in it. The
    * timestamp it is fed must increase monotonically, so that counter is
    * shared too rather than kept per renderer.
    */
-  let segmenter = null, segLoading = false, lastTs = 0;
+  let segmenter = null, segLoading = false, lastTs = 0, lastSegAt = 0;
+  const SEG_INTERVAL_MS = 66;   /* about 15 mask updates a second */
 
   async function initSegmenter(baseURL, onStatus) {
     if (segmenter || segLoading || !baseURL) return segmenter;
@@ -188,6 +188,12 @@
     const cut = document.createElement("canvas"), cutCtx = cut.getContext("2d", { willReadFrequently: true });
     const maskCanvas = document.createElement("canvas"), maskCtx = maskCanvas.getContext("2d");
     const segInput = document.createElement("canvas"), segCtx = segInput.getContext("2d");
+    /* No willReadFrequently here on purpose: the downscale is a GPU draw and
+       only the small result is read back, so forcing this canvas onto the CPU
+       would pull the full size frame across the boundary and undo the saving. */
+    const keyIn = document.createElement("canvas"), keyInCtx = keyIn.getContext("2d");
+    const keyMask = document.createElement("canvas"), keyMaskCtx = keyMask.getContext("2d");
+    const soft = document.createElement("canvas"), softCtx = soft.getContext("2d");
 
     let running = false, maskData = null;
 
@@ -207,8 +213,16 @@
       maskCtx.putImageData(maskData, 0, 0);
     }
 
+    /* The model is the most expensive thing in the frame and the mask it
+       returns barely changes between neighbouring frames, so run it at a
+       fraction of the frame rate and keep using the last mask in between.
+       At 30fps that is one run in two; the edge is blurred by the feather
+       either way, so the saving does not show. */
     function runSegmentation(w, h) {
       if (!segmenter) return;
+      const now = performance.now();
+      if (now - lastSegAt < SEG_INTERVAL_MS) return;
+      lastSegAt = now;
       const scale = Math.min(1, 320 / Math.max(w, h));
       const sw = Math.max(2, Math.round(w * scale)), sh = Math.max(2, Math.round(h * scale));
       if (segInput.width !== sw || segInput.height !== sh) { segInput.width = sw; segInput.height = sh; }
@@ -222,10 +236,39 @@
       } catch (_) {}
     }
 
-    function chromaCut(w, h, s) {
-      if (cut.width !== w || cut.height !== h) { cut.width = w; cut.height = h; }
-      cutCtx.drawImage(fg, 0, 0);
-      const id = cutCtx.getImageData(0, 0, w, h), px = id.data;
+    /* Green screen key.
+     *
+     * The mask is built at KEY_MAX on the long side rather than at frame
+     * size. getImageData and putImageData move the pixels between the GPU
+     * and JS, so a 1280x720 pass is several megabytes each way, every
+     * frame, on the one keyer that sites like Google Meet leave available.
+     * A mask is a soft edge and not detail, so it scales back up cleanly,
+     * and the blur that smooths the upscale is the same kind of feather the
+     * AI path already relies on.
+     *
+     * The per pixel green correction the full size pass used to apply is
+     * gone with it. It only ever touched pixels inside the soft band, which
+     * are part transparent and get blended with the background anyway, and
+     * the feather now averages that fringe out instead.
+     */
+    /* Half the frame, between 320 and 640 on the long side. Half is where
+       the downscale stops averaging the key colour into the subject's edge:
+       below that a green fringe appears, because every edge mask pixel is a
+       blend of green and subject and gets drawn at partial alpha over the
+       background. 640 is where a measured count of green fringe pixels on a
+       test key reaches zero, the same as the old full resolution pass. */
+    const KEY_MIN_SIDE = 320, KEY_MAX_SIDE = 640;
+    /* Squared rather than linear ramp, so a mask pixel that is still half
+       key colour resolves toward cut rather than toward kept. */
+    const KEY_GAMMA = 2;
+    function chromaMask(w, h, s) {
+      const long = Math.max(w, h);
+      const target = Math.min(KEY_MAX_SIDE, Math.max(KEY_MIN_SIDE, Math.round(long / 2)));
+      const scale = Math.min(1, target / long);
+      const kw = Math.max(2, Math.round(w * scale)), kh = Math.max(2, Math.round(h * scale));
+      if (keyIn.width !== kw || keyIn.height !== kh) { keyIn.width = kw; keyIn.height = kh; }
+      keyInCtx.drawImage(fg, 0, 0, kw, kh);
+      const id = keyInCtx.getImageData(0, 0, kw, kh), px = id.data;
       const [kr, kg, kb] = hexToRgb(s.chromaColor);
       const inner = s.chromaThreshold * 4.41;
       const outer = inner + Math.max(1, s.chromaSmooth) * 4.41;
@@ -233,44 +276,128 @@
       for (let i = 0; i < px.length; i += 4) {
         const dr = px[i] - kr, dg = px[i + 1] - kg, db = px[i + 2] - kb;
         const d2 = dr * dr + dg * dg + db * db;      // squared distance, no sqrt
-        if (d2 < inner2) px[i + 3] = 0;              // fully keyed
-        else if (d2 < outer2) {                       // edge band only: sqrt here
-          px[i + 3] = ((Math.sqrt(d2) - inner) / span) * 255;
-          if (px[i + 1] > px[i] && px[i + 1] > px[i + 2]) px[i + 1] = (px[i] + px[i + 2]) >> 1;
-        }
+        let a;
+        if (d2 < inner2) a = 0;                      // key colour: cut out
+        else if (d2 < outer2) { const t = (Math.sqrt(d2) - inner) / span; a = t * t * 255; }
+        else a = 255;                                // keep
+        px[i] = 255; px[i + 1] = 255; px[i + 2] = 255; px[i + 3] = a;
       }
-      cutCtx.putImageData(id, 0, 0);
+      if (keyMask.width !== kw || keyMask.height !== kh) { keyMask.width = kw; keyMask.height = kh; }
+      keyMaskCtx.putImageData(id, 0, 0);
+      return keyMask;
+    }
+
+    /* Soften a mask while it is still small.
+     *
+     * Both masks are built at about 320px and then stretched over the frame,
+     * so a blur applied here costs a sixteenth of the same blur applied
+     * after the stretch, and lands on the same edge. `feather` is given in
+     * output pixels, so it is scaled down to mask pixels on the way in. */
+    function softenMask(mask, outW, featherPx) {
+      const r = (featherPx * mask.width) / outW;
+      if (r < 0.3) return mask;
+      if (soft.width !== mask.width || soft.height !== mask.height) { soft.width = mask.width; soft.height = mask.height; }
+      softCtx.clearRect(0, 0, soft.width, soft.height);
+      softCtx.filter = `blur(${r}px)`;
+      softCtx.drawImage(mask, 0, 0);
+      softCtx.filter = "none";
+      return soft;
+    }
+
+    /* Cut `fg` to `mask`, stretched up to the frame, over `bgLayer`. */
+    function compose(mask, w, h) {
+      if (cut.width !== w || cut.height !== h) { cut.width = w; cut.height = h; }
+      cutCtx.clearRect(0, 0, w, h);
+      cutCtx.drawImage(fg, 0, 0);
+      cutCtx.globalCompositeOperation = "destination-in";
+      cutCtx.drawImage(mask, 0, 0, w, h);   // bilinear on the way up
+      cutCtx.globalCompositeOperation = "source-over";
+      ctx.drawImage(bgLayer, 0, 0);
+      ctx.drawImage(cut, 0, 0);
+    }
+
+    /* ---------------------------- Overlays ----------------------------
+     * These are drawn into the outgoing video, so they are the only part of
+     * Cam360 the other people on the call ever see. One plate style, the
+     * brand blue as the single accent, and each one sits in whichever corner
+     * the user picked rather than in a fixed one.
+     */
+    const OV_MARGIN = 0.03;                        /* of the short side */
+    const OV_PLATE = "rgba(12, 15, 20, 0.74)";
+    const OV_ACCENT = "#2383e2";
+    const OV_FONT = "system-ui,Segoe UI,Roboto,sans-serif";
+
+    /* Top left, top right, bottom left, bottom right. */
+    function ovPlace(pos, w, h, bw, bh) {
+      const m = Math.round(Math.min(w, h) * OV_MARGIN);
+      return {
+        x: (pos === "tr" || pos === "br") ? w - bw - m : m,
+        y: (pos === "bl" || pos === "br") ? h - bh - m : m
+      };
+    }
+
+    function ovPath(g, x, y, w, h, r) {
+      g.beginPath();
+      if (typeof g.roundRect === "function") g.roundRect(x, y, w, h, r);
+      else g.rect(x, y, w, h);
     }
 
     function drawOverlays(s, w, h) {
+      ctx.save();
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "left";
+
+      /* Logo first, so a tag sharing its corner reads on top of it. */
       if (s.showLogo && s.logoImage) {
         const logo = getImage(s.logoImage);
-        if (logo) {
-          const lw = Math.min(w * 0.18, 140), lh = lw * (logo.height / logo.width);
-          ctx.globalAlpha = 0.92; ctx.drawImage(logo, w - lw - 16, 16, lw, lh); ctx.globalAlpha = 1;
+        if (logo && logo.width) {
+          const lw = Math.min(w * 0.16, 132), lh = lw * (logo.height / logo.width);
+          const { x, y } = ovPlace(s.logoPos, w, h, lw, lh);
+          ctx.globalAlpha = 0.94;
+          ctx.drawImage(logo, x, y, lw, lh);
+          ctx.globalAlpha = 1;
         }
       }
+
       if (s.showName && s.nameText) {
-        const fsz = Math.max(14, Math.round(h * 0.045));
-        ctx.font = `600 ${fsz}px system-ui,Segoe UI,Roboto,sans-serif`;
+        const fsz = Math.max(14, Math.round(h * 0.042));
+        ctx.font = `600 ${fsz}px ${OV_FONT}`;
         const tw = ctx.measureText(s.nameText).width;
-        const padX = fsz * 0.6, barH = fsz * 1.7, y = h - barH - 16;
-        ctx.fillStyle = "rgba(20,16,40,0.72)";
-        ctx.fillRect(16, y, tw + padX * 2, barH);
-        ctx.fillStyle = "#a78bfa"; ctx.fillRect(16, y, 5, barH);
-        ctx.fillStyle = "#fff"; ctx.textBaseline = "middle";
-        ctx.fillText(s.nameText, 16 + padX, y + barH / 2);
+        const bar = Math.max(3, Math.round(fsz * 0.17));
+        const padX = Math.round(fsz * 0.62);
+        const bw = Math.round(tw + bar + padX * 2), bh = Math.round(fsz * 1.85);
+        const { x, y } = ovPlace(s.namePos, w, h, bw, bh);
+        const r = Math.round(bh * 0.3);
+        ovPath(ctx, x, y, bw, bh, r);
+        ctx.fillStyle = OV_PLATE; ctx.fill();
+        /* The accent runs down the leading edge, clipped so it keeps the
+           plate's rounded corners instead of squaring them off. */
+        ctx.save(); ctx.clip();
+        ctx.fillStyle = OV_ACCENT; ctx.fillRect(x, y, bar, bh);
+        ctx.restore();
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(s.nameText, x + bar + padX, y + bh / 2 + 1);
       }
+
       if (s.showClock) {
         const txt = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-        const fsz = Math.max(13, Math.round(h * 0.04));
-        ctx.font = `600 ${fsz}px system-ui,Segoe UI,Roboto,sans-serif`;
-        const tw = ctx.measureText(txt).width, padX = fsz * 0.5;
-        ctx.fillStyle = "rgba(20,16,40,0.6)";
-        ctx.fillRect(w - tw - padX * 2 - 16, h - fsz * 1.6 - 16, tw + padX * 2, fsz * 1.6);
-        ctx.fillStyle = "#e9d5ff"; ctx.textBaseline = "middle"; ctx.textAlign = "left";
-        ctx.fillText(txt, w - tw - padX - 16, h - fsz * 0.8 - 16);
+        const fsz = Math.max(13, Math.round(h * 0.036));
+        ctx.font = `600 ${fsz}px ${OV_FONT}`;
+        const tw = ctx.measureText(txt).width;
+        const dot = Math.round(fsz * 0.32), gap = Math.round(fsz * 0.44);
+        const padX = Math.round(fsz * 0.7);
+        const bw = Math.round(tw + dot + gap + padX * 2), bh = Math.round(fsz * 1.8);
+        const { x, y } = ovPlace(s.clockPos, w, h, bw, bh);
+        ovPath(ctx, x, y, bw, bh, bh / 2);     /* a pill, not a card */
+        ctx.fillStyle = OV_PLATE; ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x + padX + dot / 2, y + bh / 2, dot / 2, 0, Math.PI * 2);
+        ctx.fillStyle = OV_ACCENT; ctx.fill();
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(txt, x + padX + dot + gap, y + bh / 2 + 1);
       }
+
+      ctx.restore();
     }
 
     function drawBrb(s, w, h) {
@@ -279,12 +406,19 @@
         if (img) { ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h); coverDraw(ctx, img, img.width, img.height, w, h); return; }
       }
       const grad = ctx.createLinearGradient(0, 0, w, h);
-      grad.addColorStop(0, "#4f46e5"); grad.addColorStop(1, "#7c3aed");
+      grad.addColorStop(0, "#2b90ef"); grad.addColorStop(1, "#1560ad");
       ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
-      ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-      ctx.font = `700 ${Math.round(h * 0.09)}px system-ui,Segoe UI,Roboto,sans-serif`;
+      ctx.save();
+      /* A soft vignette, so the card has a centre rather than being a slab. */
+      const vig = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.1, w / 2, h / 2, Math.max(w, h) * 0.7);
+      vig.addColorStop(0, "rgba(255,255,255,0.10)");
+      vig.addColorStop(1, "rgba(0,0,0,0.18)");
+      ctx.fillStyle = vig; ctx.fillRect(0, 0, w, h);
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.font = `700 ${Math.round(h * 0.085)}px ${OV_FONT}`;
+      ctx.fillStyle = "#ffffff";
       ctx.fillText(s.brbText || "Be right back", w / 2, h / 2);
-      ctx.textAlign = "left";
+      ctx.restore();
     }
 
     function drawFrame() {
@@ -334,8 +468,9 @@
         if (bgLayer.width !== outW || bgLayer.height !== outH) { bgLayer.width = outW; bgLayer.height = outH; }
         bgCtx.clearRect(0, 0, outW, outH);
         drawBackgroundContent(bgCtx, s, outW, outH, fg);
-        chromaCut(outW, outH, s);
-        ctx.drawImage(bgLayer, 0, 0); ctx.drawImage(cut, 0, 0);
+        /* chromaSmooth already widens the key's own soft band, so the extra
+           feather here only has to hide the step from the upscale. */
+        compose(softenMask(chromaMask(outW, outH, s), outW, 3), outW, outH);
         composited = true;
       } else if (wantBg && s.keyer === "ai" && segmenter) {
         runSegmentation(outW, outH);
@@ -343,14 +478,7 @@
           if (bgLayer.width !== outW || bgLayer.height !== outH) { bgLayer.width = outW; bgLayer.height = outH; }
           bgCtx.clearRect(0, 0, outW, outH);
           drawBackgroundContent(bgCtx, s, outW, outH, fg);
-          if (cut.width !== outW || cut.height !== outH) { cut.width = outW; cut.height = outH; }
-          cutCtx.clearRect(0, 0, outW, outH);
-          cutCtx.drawImage(fg, 0, 0);
-          cutCtx.globalCompositeOperation = "destination-in";
-          cutCtx.filter = s.feather > 0 ? `blur(${s.feather}px)` : "none";
-          cutCtx.drawImage(maskCanvas, 0, 0, outW, outH);
-          cutCtx.filter = "none"; cutCtx.globalCompositeOperation = "source-over";
-          ctx.drawImage(bgLayer, 0, 0); ctx.drawImage(cut, 0, 0);
+          compose(softenMask(maskCanvas, outW, s.feather), outW, outH);
           composited = true;
         }
       }
@@ -380,5 +508,8 @@
     };
   }
 
-  window.Cam360Engine = { DEFAULTS, normalize, createRenderer, initSegmenter };
+  window.Cam360Engine = {
+    normalize, createRenderer, initSegmenter, setDefaults, ready,
+    get DEFAULTS() { return DEFAULTS; }
+  };
 })();

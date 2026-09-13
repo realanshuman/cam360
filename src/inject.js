@@ -17,9 +17,17 @@
   const engine = window.Cam360Engine;
   if (!engine) { console.warn("[Cam360] engine not loaded, camera left untouched"); return; }
 
-  let settings = engine.normalize(null);
+  let settings = engine.normalize(null);   /* refilled once bridge.js reports in */
   let baseURL = "";
-  let activeCanvas = null; // most recent output canvas, for snapshots
+  /* Output canvases that are still being drawn to. A page can hold more than
+     one camera at a time, and a snapshot should come from one that is live,
+     not from whichever was created last and may since have stopped. */
+  const liveCanvases = new Set();
+  const snapshotSource = () => {
+    let last = null;
+    liveCanvases.forEach((c) => { last = c; });
+    return last;
+  };
 
   function pushStatus(value) {
     window.postMessage({ __cam360: "status", value }, "*");
@@ -29,6 +37,7 @@
     if (e.source !== window || !e.data) return;
     const d = e.data;
     if (d.__cam360 === "settings") {
+      engine.setDefaults(d.defaults);
       settings = engine.normalize(d.value);
       if (d.baseURL) baseURL = d.baseURL;
       // Warm the model as soon as an AI background is wanted.
@@ -36,6 +45,7 @@
         engine.initSegmenter(baseURL, pushStatus);
       }
     } else if (d.__cam360 === "base") {
+      engine.setDefaults(d.defaults);
       baseURL = d.baseURL || baseURL;
     } else if (d.__cam360 === "snapshot") {
       takeSnapshot();
@@ -46,7 +56,8 @@
     // Always answer, so the popup can tell the user when there is no camera
     // here instead of failing silently.
     try {
-      const dataURL = activeCanvas ? activeCanvas.toDataURL("image/png") : null;
+      const src = snapshotSource();
+      const dataURL = src ? src.toDataURL("image/png") : null;
       window.postMessage({ __cam360: "snapshotData", dataURL }, "*");
     } catch (err) {
       console.warn("[Cam360] snapshot failed", err);
@@ -68,7 +79,7 @@
 
     const canvas = document.createElement("canvas");
     canvas.width = ts.width || 640; canvas.height = ts.height || 480;
-    activeCanvas = canvas;
+    liveCanvases.add(canvas);
 
     const renderer = engine.createRenderer({
       video, canvas, fps,
@@ -82,6 +93,7 @@
     const outVideo = outStream.getVideoTracks()[0];
     const stopAll = () => {
       renderer.stop();
+      liveCanvases.delete(canvas);
       try { videoTrack.stop(); } catch (_) {}
       try { video.srcObject = null; } catch (_) {}
     };
@@ -89,8 +101,34 @@
       const nativeStop = outVideo.stop.bind(outVideo);
       outVideo.stop = () => { stopAll(); nativeStop(); };
       outVideo.addEventListener("ended", stopAll);
+
+      /* A canvas track answers almost nothing a conferencing site asks of a
+         camera: no device id, no facing mode, no zoom or torch range, and
+         applyConstraints on it is a no-op. Sites that probe before they
+         render can read that as "no usable camera". Forward the questions to
+         the real track this one is standing in for, and let the canvas keep
+         only the answers that are genuinely about the output: its size and
+         frame rate. applyConstraints reaching the real track also means a
+         site asking for a different resolution still gets one, because the
+         renderer follows the source size every frame. */
+      try {
+        const canvasSettings = outVideo.getSettings.bind(outVideo);
+        outVideo.getSettings = () => {
+          try { return { ...videoTrack.getSettings(), ...canvasSettings() }; }
+          catch (_) { return canvasSettings(); }
+        };
+        if (typeof videoTrack.getCapabilities === "function") {
+          outVideo.getCapabilities = () => videoTrack.getCapabilities();
+        }
+        if (typeof videoTrack.getConstraints === "function") {
+          outVideo.getConstraints = () => videoTrack.getConstraints();
+        }
+        if (typeof videoTrack.applyConstraints === "function") {
+          outVideo.applyConstraints = (c) => videoTrack.applyConstraints(c);
+        }
+      } catch (_) {}
     }
-    videoTrack.addEventListener("ended", () => renderer.stop());
+    videoTrack.addEventListener("ended", () => { renderer.stop(); liveCanvases.delete(canvas); });
     (audioTracks || []).forEach((t) => outStream.addTrack(t));
 
     renderer.start();
@@ -101,6 +139,9 @@
     const real = await nativeGUM(constraints);
     try {
       if (!constraints || !constraints.video) return real;
+      /* No shape yet means bridge.js has not reported in. Rendering with a
+         half known settings object would be worse than not rendering. */
+      if (!engine.ready()) return real;
       const videoTrack = real.getVideoTracks()[0];
       if (!videoTrack) return real;
       return processTrack(videoTrack, real.getAudioTracks());

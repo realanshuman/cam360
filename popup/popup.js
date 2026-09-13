@@ -67,18 +67,9 @@ document.getElementById("openWindow").addEventListener("click", () => {
   window.close();
 });
 
-const KEY = "cam360";
-const DEFAULTS = {
-  enabled: true, mirror: false, flipV: false, rotate: 0,
-  brightness: 100, contrast: 100, saturation: 100,
-  blur: 0, grayscale: 0, sepia: 0, hue: 0, zoom: 100,
-  lowLight: false, beautify: 0,
-  bg: "off", keyer: "ai", bgBlur: 14, bgColor: "#0b1020", bgImage: "", bgVideo: "", feather: 4,
-  chromaColor: "#00c000", chromaThreshold: 42, chromaSmooth: 14,
-  freeze: false, brb: false, brbText: "Be right back", brbImage: "",
-  showName: false, nameText: "", showLogo: false, logoImage: "", showClock: false,
-  overlayVisible: false
-};
+/* The settings shape and the settings/media split come from settings.js. */
+const S = Cam360Settings;
+const { KEY, MEDIA_KEY, DEFAULTS } = S;
 
 const SLIDERS = [
   ["brightness", "Brightness", 0, 200, "%"],
@@ -101,8 +92,63 @@ const PRESETS = {
 };
 
 let state = { ...DEFAULTS };
-const get = () => new Promise((r) => chrome.storage.local.get(KEY, (res) => r({ ...DEFAULTS, ...(res[KEY] || {}) })));
-function set(patch) { state = { ...state, ...patch }; chrome.storage.local.set({ [KEY]: state }); render(); }
+
+function get() {
+  return new Promise((resolve) => {
+    chrome.storage.local.get([KEY, MEDIA_KEY], (res) => {
+      const light = res[KEY] || {};
+      let media = res[MEDIA_KEY];
+      // An older build kept uploads inside the settings object. Lift them out
+      // once, so the first slider drag after upgrading is already cheap.
+      if (!media && S.hasInlineMedia(light)) {
+        media = S.split(S.normalize(light)).media;
+        chrome.storage.local.set({ [MEDIA_KEY]: media, [KEY]: S.split(S.normalize(light)).light });
+      }
+      resolve(S.merge(light, media));
+    });
+  });
+}
+
+/* ---------------- Writing settings ----------------
+ * Every write here is broadcast by chrome.storage to bridge.js in every
+ * frame of every open tab, and each one clones the object again on its way
+ * into the page's MAIN world. A slider fires input continuously, so an
+ * unthrottled write turns one drag into hundreds of round trips.
+ *
+ * Two things keep that cheap. The uploads live under their own key and are
+ * written only when one actually changes, so the hot object stays a few
+ * hundred bytes. And the write itself is throttled: the first move goes out
+ * at once so the call reacts immediately, the rest coalesce, and a trailing
+ * flush guarantees the value you let go on is the value that is stored.
+ */
+const WRITE_MS = 60;
+let writeTimer = 0, lastWrite = 0, mediaDirty = false;
+
+function flushWrite() {
+  clearTimeout(writeTimer); writeTimer = 0;
+  lastWrite = Date.now();
+  const { light, media } = S.split(state);
+  const patch = { [KEY]: light };
+  if (mediaDirty) { patch[MEDIA_KEY] = media; mediaDirty = false; }
+  chrome.storage.local.set(patch);
+}
+
+function scheduleWrite() {
+  const since = Date.now() - lastWrite;
+  if (since >= WRITE_MS) { flushWrite(); return; }
+  if (!writeTimer) writeTimer = setTimeout(flushWrite, WRITE_MS - since);
+}
+
+/* The popup's own preview reads `state` directly, so it is never throttled. */
+function set(patch) {
+  if (S.MEDIA_KEYS.some((k) => k in patch)) mediaDirty = true;
+  state = { ...state, ...patch };
+  render();
+  scheduleWrite();
+}
+
+// A popup can be dismissed mid drag; make sure the last value still lands.
+window.addEventListener("pagehide", () => { if (writeTimer) flushWrite(); });
 
 async function sendToTab(msg) {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -141,6 +187,8 @@ document.querySelectorAll("[data-bg]").forEach((btn) =>
   btn.addEventListener("click", () => set({ bg: btn.dataset.bg })));
 document.querySelectorAll("[data-keyer]").forEach((btn) =>
   btn.addEventListener("click", () => set({ keyer: btn.dataset.keyer })));
+document.querySelectorAll("[data-pos]").forEach((btn) =>
+  btn.addEventListener("click", () => set({ [btn.dataset.pos]: btn.dataset.val })));
 
 document.getElementById("bgColor").addEventListener("input", (e) => set({ bgColor: e.target.value }));
 document.getElementById("chromaColor").addEventListener("input", (e) => set({ chromaColor: e.target.value }));
@@ -209,7 +257,8 @@ document.getElementById("reset").addEventListener("click", () => set({
   mirror: false, flipV: false, rotate: 0, brightness: 100, contrast: 100, saturation: 100,
   blur: 0, grayscale: 0, sepia: 0, hue: 0, zoom: 100, lowLight: false, beautify: 0,
   bg: "off", keyer: "ai", bgBlur: 14, feather: 4, chromaThreshold: 42, chromaSmooth: 14,
-  freeze: false, brb: false, showName: false, showLogo: false, showClock: false
+  freeze: false, brb: false, showName: false, showLogo: false, showClock: false,
+  namePos: "bl", clockPos: "br", logoPos: "tr"
 }));
 document.getElementById("panel").addEventListener("click", () => set({ overlayVisible: !state.overlayVisible }));
 
@@ -269,6 +318,7 @@ function render() {
   SLIDERS.forEach(([k, , , , u]) => { const e = sliderEls[k]; e.input.value = state[k]; e.val.textContent = state[k] + u; });
   Object.keys(BG_SLIDERS).forEach((k) => { const e = sliderEls[k]; e.input.value = state[k]; e.val.textContent = state[k] + BG_SLIDERS[k]; });
 
+  document.querySelectorAll("[data-pos]").forEach((b) => b.classList.toggle("active", state[b.dataset.pos] === b.dataset.val));
   document.querySelectorAll("[data-bg]").forEach((b) => b.classList.toggle("active", b.dataset.bg === state.bg));
   document.querySelectorAll("[data-keyer]").forEach((b) => b.classList.toggle("active", b.dataset.keyer === state.keyer));
   document.getElementById("bgColor").value = state.bgColor;

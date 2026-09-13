@@ -54,6 +54,7 @@
         "<all_urls>"
       ],
       "js": [
+        "src/settings.js",
         "src/bridge.js"
       ],
       "run_at": "document_start",
