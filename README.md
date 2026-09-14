@@ -42,7 +42,8 @@ loaded, toggle your camera off and on once in that site.
 - **Stepping away.** Freeze the frame or show a be right back card, so the call
   still counts you as present. Save the current frame as a PNG.
 - **Overlays.** A name tag, a logo watermark and a live clock, drawn into the
-  outgoing video rather than added by the meeting app.
+  outgoing video rather than added by the meeting app. Each one sits in
+  whichever corner you pick.
 - **Mid call.** Press <kbd>Alt</kbd> <kbd>C</kbd> for a draggable panel, so you
   can adjust without leaving the meeting. The popup shows the shortcut actually
   bound on your machine, and clicking it opens Chrome's shortcuts page if you
@@ -96,6 +97,17 @@ Two content scripts, because they need different powers:
 Both run at `document_start`, so the hook is installed before any site can ask
 for the camera.
 
+`src/settings.js` holds the shape of a settings object, so the engine, the
+bridge and the popup cannot drift apart. Chrome injects a content script file
+once per document even when two entries name it for different worlds, so it
+loads in the ISOLATED world and in the popup, and the bridge hands the shape
+to the MAIN world in the same message that carries the extension's base URL.
+
+Uploaded backgrounds, cards and logos are data URLs, which can run to several
+megabytes. They live under their own storage key, because every settings write
+is broadcast to every frame of every open tab and cloned again on its way into
+the page.
+
 The frame pipeline lives in one file, `src/engine.js`, used by both the page
 pipeline and the popup preview. That is deliberate. A preview drawn by a second
 implementation would drift from the real output and stop being a preview.
@@ -104,6 +116,7 @@ implementation would drift from the real output and stop being a preview.
 
 ```
 manifest.json          MV3 manifest, content scripts in MAIN and ISOLATED worlds
+src/settings.js        the settings shape, and the settings/media storage split
 src/engine.js          the shared frame pipeline: effects, keyers, overlays
 src/inject.js          MAIN world, the getUserMedia override
 src/bridge.js          ISOLATED world, storage bridge and the in-call panel

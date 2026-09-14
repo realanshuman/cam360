@@ -10,29 +10,24 @@
   if (window.__CAM360_BRIDGE__) return;
   window.__CAM360_BRIDGE__ = true;
 
-  const DEFAULTS = {
-    enabled: true, mirror: false, flipV: false, rotate: 0,
-    brightness: 100, contrast: 100, saturation: 100,
-    blur: 0, grayscale: 0, sepia: 0, hue: 0, zoom: 100,
-    lowLight: false, beautify: 0,
-    bg: "off", keyer: "ai", bgBlur: 14, bgColor: "#0b1020", bgImage: "", bgVideo: "", feather: 4,
-    chromaColor: "#00c000", chromaThreshold: 42, chromaSmooth: 14,
-    freeze: false, brb: false, brbText: "Be right back", brbImage: "",
-    showName: false, nameText: "", showLogo: false, logoImage: "", showClock: false,
-    overlayVisible: false
-  };
-  const KEY = "cam360";
+  /* The settings shape and the settings/media storage split both live in
+     settings.js, loaded just before this file. */
+  const S = window.Cam360Settings;
+  const { KEY, MEDIA_KEY, DEFAULTS } = S;
   const BASE = chrome.runtime.getURL("");
 
   let current = { ...DEFAULTS };
+  let media = {};
   let status = { segState: "idle", message: "" };
 
   function post(value) {
-    window.postMessage({ __cam360: "settings", value, baseURL: BASE }, "*");
+    window.postMessage({ __cam360: "settings", value, baseURL: BASE, defaults: DEFAULTS }, "*");
   }
 
-  // Tell the engine its base URL as early as possible (before settings land).
-  window.postMessage({ __cam360: "base", baseURL: BASE }, "*");
+  /* Tell the engine its base URL and the settings shape as early as possible.
+     This runs at document_start, before any page script can ask for a camera,
+     so the MAIN world is never asked to render without knowing the shape. */
+  window.postMessage({ __cam360: "base", baseURL: BASE, defaults: DEFAULTS }, "*");
 
   // Receive runtime status + snapshot data from the engine.
   let snapCallbacks = [];
@@ -60,21 +55,29 @@
   }
 
   function load() {
-    chrome.storage.local.get(KEY, (res) => {
-      current = { ...DEFAULTS, ...(res[KEY] || {}) };
+    chrome.storage.local.get([KEY, MEDIA_KEY], (res) => {
+      media = res[MEDIA_KEY] || {};
+      current = S.merge(res[KEY] || {}, media);
       post(current);
       if (document.body) renderOverlay();
       else document.addEventListener("DOMContentLoaded", renderOverlay, { once: true });
     });
   }
+
+  /* The panel only ever changes settings, never an upload, so it writes the
+     light half. Writing the whole object here would put the user's uploaded
+     background back on the wire on every button press. */
   function save(patch) {
     current = { ...current, ...patch };
-    chrome.storage.local.set({ [KEY]: current });
+    chrome.storage.local.set({ [KEY]: S.split(current).light });
   }
 
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area !== "local" || !changes[KEY]) return;
-    current = { ...DEFAULTS, ...(changes[KEY].newValue || {}) };
+    if (area !== "local") return;
+    if (!changes[KEY] && !changes[MEDIA_KEY]) return;
+    if (changes[MEDIA_KEY]) media = changes[MEDIA_KEY].newValue || {};
+    const light = changes[KEY] ? (changes[KEY].newValue || {}) : S.split(current).light;
+    current = S.merge(light, media);
     post(current);
     syncOverlay();
   });
