@@ -30,7 +30,7 @@ WHAT YOU CAN DO
 - Mirror, flip, rotate and zoom your camera until the framing is right
 - Smooth skin with a subtle beautify slider
 - Freeze your frame or show a "be right back" card when you step away
-- Add your name, a logo, or a live clock to your video
+- Add your name, a logo, or a live clock to your video, in any corner you pick
 - Save a snapshot of exactly what others see
 
 WHY PEOPLE INSTALL IT
