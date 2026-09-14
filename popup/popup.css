@@ -273,9 +273,13 @@ input[type=color] { width: 40px; height: 26px; border: 1px solid var(--border-st
 }
 .meta-row { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
 .meta-dot { color: var(--border-strong); }
-.meta a { position: relative; color: var(--text-secondary); font-weight: 500; text-decoration: none; border-bottom: 1px solid var(--border-strong); }
-.meta a::after { content: ""; position: absolute; left: -4px; right: -4px; top: 50%; transform: translateY(-50%); height: 22px; }
-.meta a:hover { color: var(--accent); border-color: var(--accent); }
+/* Underlined text links inside the meta block. The coffee button is a child
+   of .meta too, and it dresses itself: without the :not it would take this
+   rule's colour, which is near white in dark mode and unreadable on yellow,
+   plus a light bottom border across the pill and a blue hover. */
+.meta a:not(.coffee) { position: relative; color: var(--text-secondary); font-weight: 500; text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+.meta a:not(.coffee)::after { content: ""; position: absolute; left: -4px; right: -4px; top: 50%; transform: translateY(-50%); height: 22px; }
+.meta a:not(.coffee):hover { color: var(--accent); border-color: var(--accent); }
 .meta-help { display: inline-flex; align-items: center; gap: 4px; border-bottom: 0 !important; }
 .meta-help svg { opacity: 0.75; }
 .meta-help:hover { color: var(--accent); }
@@ -307,7 +311,7 @@ kbd { display: inline-block; background: var(--sunken); border: 1px solid var(--
   margin-top: 2px; padding: 5px 12px; border-radius: 999px;
   background: #ffdd00; color: #14100a;
   font-size: 11.5px; font-weight: 600; line-height: 1;
-  text-decoration: none; border: 1px solid rgba(20, 16, 10, 0.14);
+  text-decoration: none; border: 1px solid rgba(20, 16, 10, 0.18);
   transition: transform .1s, box-shadow .1s;
 }
 .coffee:hover { box-shadow: 0 2px 0 #d4b800; transform: translateY(-1px); }
