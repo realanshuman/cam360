@@ -62,12 +62,25 @@ English
 | Store icon | store-icon-128.png | 128x128, mark at 96px inside transparent padding |
 | Screenshot 1, the promise | screenshot-1.png | 1280x800 |
 | Screenshot 2, backgrounds | screenshot-2.png | 1280x800 |
-| Screenshot 3, live mid call | screenshot-3.png | 1280x800 |
-| Screenshot 4, privacy | screenshot-4.png | 1280x800 |
+| Screenshot 3, the in-call panel | screenshot-3.png | 1280x800 |
+| Screenshot 4, overlays | screenshot-4.png | 1280x800 |
+| Screenshot 5, privacy | screenshot-5.png | 1280x800 |
 | Small promo tile | promo-tile-440x280.png | 440x280 |
 | Marquee promo tile | promo-marquee-1400x560.png | 1400x560 |
 
 Upload the screenshots in that order; the first one is what most people see.
+
+How these are made, so a rebuild matches: every interface in them is a live
+capture of the shipping extension, and every video frame is real output from
+src/engine.js. Nothing is mocked up, and there is no photography or generated
+imagery, per brand/BRAND.md. The room and the figure in the video frames are
+drawn in markup, the same circle over an ellipse the site uses. Type, colour
+and spacing come from the site's own tokens in web/styles.css.
+
+The AI cut-out is shown through the popup's Background controls rather than as
+a before and after frame. Its model only recognises real people, so it cannot
+be demonstrated on a drawn figure, and a drawn before and after would be a
+mock up.
 
 ## Privacy practices tab, field by field
 
