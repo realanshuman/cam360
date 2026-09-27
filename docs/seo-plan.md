@@ -145,10 +145,10 @@ so one edit improves in-store rank and Google rank together.
 
 Limit is 132 characters. Current is 130, already at the cap.
 
-Proposed, 123 characters:
+Proposed, 124 characters:
 
 ```
-Virtual background, background blur and webcam effects for any video call. Runs fully on your device. Free and open source.
+Virtual background, background blur and webcam effects for any video call. Runs fully on your device. Free, with no account.
 ```
 
 Dropping the brand names from the summary sheds the entire trademark risk
@@ -189,6 +189,10 @@ This is both a policy safeguard and, per section 4, good AEO content.
 
 ## 6. GitHub repo
 
+**Superseded on 27 September 2026.** The code repository is going private, so
+it can no longer rank for anything. See Decisions taken. The original advice is
+kept below for the record.
+
 Verified against the GitHub API on 4 September 2026: 1 star, **no description
 set**, and no topics. The `homepage` field is `fuckwebcam.xyz`, which is the
 live production domain and therefore correct.
@@ -220,7 +224,7 @@ open-source competitor found is Linux-only or an OBS plugin.
 | "Why do I look bad on webcam" | No authority publishers on page one. |
 | Chroma key in the browser without OBS | Unowned, and there is a real technical story behind it. |
 | Teams web missing background effects | Live Microsoft forum threads plus stale 2021 IT pages. |
-| Open source, no watermark, offline | The unoccupied ground. See below. |
+| No watermark, offline, no account | Open ground. See below. |
 
 ### Skip, deliberately
 
@@ -243,6 +247,11 @@ and FilterCam all claim it. **Open source is** the unoccupied position: every
 open-source result in this category is Linux-only or an OBS plugin, and every
 privacy marketer is closed-source freemium. Nobody holds open source plus
 browser plus cross-platform plus free plus no account.
+
+**Superseded on 27 September 2026.** Cam360 is no longer open source, so that
+position is given up. What is left of the combination is browser plus
+cross-platform plus free with no paid tier plus no account, set against
+competitors that are freemium.
 
 One product angle worth using: standalone webcam snapshot tools cannot capture
 during a live call, because only one application can hold the camera. This one
@@ -320,7 +329,9 @@ plan, neither of which is a blocker:
 If the domain is ever changed, the swap points are: `web/index.html`
 (canonical, `og:url`, `og:image`, `twitter:image`, and five URLs in the JSON-LD
 graph), `web/privacy.html` (canonical), `web/sitemap.xml`, `web/robots.txt`,
-`README.md`, both files in `.github/ISSUE_TEMPLATE/`, and the Homepage and
+`README.md`, `manifest.json` (`homepage_url`), `popup/popup.html` (the Get
+help link), the README and issue templates in the
+`realanshuman/cam360-support` repository, and the Homepage, Support URL and
 Privacy policy fields in the Chrome Web Store dashboard.
 
 ---
@@ -365,6 +376,14 @@ done.
 
 The FAQ copy on the landing page was kept, because the visible text has to
 match the `FAQPage` markup word for word for the markup to be legitimate.
+
+**Cam360 is no longer open source, from 27 September 2026.** The product stays
+free, but the licence is now all rights reserved and the code repository goes
+private, so the Chrome Web Store is the one way to get it. Making the code
+available let people take it from GitHub instead of installing from the
+store. This gives up the open source position in section 7 and makes section
+6 moot. Support moved to the public `realanshuman/cam360-support` repository,
+which holds no code, and to hi@realanshuman.com.
 
 ---
 

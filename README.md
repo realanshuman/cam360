@@ -4,7 +4,7 @@ Virtual backgrounds and webcam effects for any video call in your browser.
 
 [**Add to Chrome**](https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe)
 · [Website](https://fuckwebcam.xyz)
-· [Report a bug](https://github.com/realanshuman/cam360/issues/new/choose)
+· [Support](https://github.com/realanshuman/cam360-support)
 
 Cam360 sits between your webcam and the website asking for it. Blur or replace
 your background, fix bad lighting, and get your framing right, using the same
@@ -17,15 +17,8 @@ has no account, and never uploads a frame.
 
 ## Install
 
-**From the Chrome Web Store**, which is the easy path:
-[Add Cam360 to Chrome](https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe).
-
-**From source**, if you would rather run the code in front of you:
-
-1. Clone or download this repository.
-2. Open `chrome://extensions` and turn on Developer mode, top right.
-3. Choose Load unpacked and select the project folder, the one holding `manifest.json`.
-4. Pin Cam360 to the toolbar.
+[Add Cam360 to Chrome](https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe)
+from the Chrome Web Store, which is the only place it is distributed.
 
 Then open any site that uses your camera and click the icon. Changes apply to a
 running camera straight away. If a site grabbed the camera before the extension
@@ -132,9 +125,10 @@ scripts/package.sh     builds the Chrome Web Store zip
 
 ## Working on it
 
-Load the extension unpacked as described above, then reload it from
-`chrome://extensions` after each change. Content script changes also need the
-target tab reloaded.
+Load the extension unpacked: open `chrome://extensions`, turn on Developer
+mode, choose Load unpacked, and select the project folder, the one holding
+`manifest.json`. Reload it from there after each change. Content script
+changes also need the target tab reloaded.
 
 `test/test.html` exercises the pipeline without joining a real call. Opening it
 over `file://` requires "Allow access to file URLs" on the Cam360 card in
@@ -168,15 +162,24 @@ JSON-LD block), `web/privacy.html`, `web/sitemap.xml` and `web/robots.txt`.
 
 ## Support
 
-Questions, bugs and ideas all go to
-[GitHub issues](https://github.com/realanshuman/cam360/issues/new/choose).
-There is no support inbox, so asking here keeps the answer public for whoever
-hits the same thing next. Include the site you were on, your browser version,
-and the Cam360 version from `chrome://extensions`.
+People get help in two places, both offered in the site's support section:
+
+- [realanshuman/cam360-support](https://github.com/realanshuman/cam360-support),
+  a public repository with no code in it. It holds the issue templates, and
+  answers there stay public for whoever hits the same thing next.
+- [hi@realanshuman.com](mailto:hi@realanshuman.com), for anyone without a
+  GitHub account or who would rather ask privately.
+
+The popup's Get help link and the store listing's Support URL point at
+`fuckwebcam.xyz/#support` rather than at either channel, so the channels can
+change without shipping a new version of the extension.
 
 ## License
 
-[MIT](LICENSE). Use it, change it, ship it, just keep the copyright notice.
+Proprietary, all rights reserved. See [LICENSE](LICENSE).
+
+The code was MIT licensed up to and including version 1.2.0, and copies taken
+under those terms keep them.
 
 The bundled MediaPipe selfie segmentation model and WASM runtime in
 `vendor/mediapipe/` are Google's, under the Apache License 2.0, and are

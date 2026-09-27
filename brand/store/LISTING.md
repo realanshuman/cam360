@@ -38,7 +38,7 @@ WHY PEOPLE INSTALL IT
 - It works everywhere. Google Meet, Discord, Zoom in the browser, Whereby, Jitsi, and any other site that asks for your camera. One setup covers all of them.
 - It is private. Your video is processed on your own computer and handed straight to the site. Cam360 makes no network requests, has no analytics, and never records or uploads anything. Even the AI background model is bundled inside the extension.
 - It is instant. Change anything mid call from a small panel (press Alt C) and everyone sees it live.
-- It is free and open source. You can read every line of code on GitHub.
+- It is free. There is no paid tier, no trial, and no account to create.
 
 HOW IT WORKS
 
@@ -115,7 +115,7 @@ on the item's Privacy practices tab except the last one.
 ## Additional fields
 
 - Homepage URL: https://fuckwebcam.xyz
-- Support URL: https://github.com/realanshuman/cam360/issues
+- Support URL: https://fuckwebcam.xyz/#support
 - Mature content: No
 - Ads: No
 
@@ -148,10 +148,10 @@ users in their own interfaces.
 ## Summary (132 char limit)
 
 ```
-Virtual background, background blur and webcam effects for any video call. Runs fully on your device. Free and open source.
+Virtual background, background blur and webcam effects for any video call. Runs fully on your device. Free, with no account.
 ```
 
-123 characters. Dropping the third party brand names removes the entire
+124 characters. Dropping the third party brand names removes the entire
 trademark risk surface described below and reclaims 35 characters for category
 terms.
 

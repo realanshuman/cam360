@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Virtual Background &amp; Webcam Effects for Chrome | Cam360</title>
-<meta name="description" content="A free, open source Chrome extension that adds virtual backgrounds, background blur and webcam effects to any video call in your browser. Runs fully on device.">
+<meta name="description" content="A free Chrome extension that adds virtual backgrounds, background blur and webcam effects to any video call in your browser. Runs fully on device.">
 <meta name="theme-color" content="#fffdf8">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -13,14 +13,14 @@
 <meta property="og:site_name" content="Cam360">
 <meta property="og:locale" content="en_US">
 <meta property="og:title" content="Virtual Background &amp; Webcam Effects for Chrome | Cam360">
-<meta property="og:description" content="Add virtual backgrounds, background blur and webcam effects to any video call in your browser. Free, open source, and everything runs on your own device.">
+<meta property="og:description" content="Add virtual backgrounds, background blur and webcam effects to any video call in your browser. Free, and everything runs on your own device.">
 <meta property="og:image" content="https://fuckwebcam.xyz/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://fuckwebcam.xyz/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Virtual Background &amp; Webcam Effects for Chrome | Cam360">
-<meta name="twitter:description" content="Add virtual backgrounds, background blur and webcam effects to any video call in your browser. Free, open source, and everything runs on your own device.">
+<meta name="twitter:description" content="Add virtual backgrounds, background blur and webcam effects to any video call in your browser. Free, and everything runs on your own device.">
 <meta name="twitter:image" content="https://fuckwebcam.xyz/assets/og.png">
 <script type="application/ld+json">
 {
@@ -40,7 +40,6 @@
       "downloadUrl": "https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe",
       "installUrl": "https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe",
       "softwareVersion": "1.2.0",
-      "license": "https://opensource.org/licenses/MIT",
       "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "featureList": [
@@ -56,7 +55,6 @@
       "author": { "@id": "https://fuckwebcam.xyz/#author" },
       "publisher": { "@id": "https://fuckwebcam.xyz/#author" },
       "sameAs": [
-        "https://github.com/realanshuman/cam360",
         "https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe"
       ]
     },
@@ -104,7 +102,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="/styles.css?v=7">
+<link rel="stylesheet" href="/styles.css?v=8">
 <script>
 // Applied before first paint so a dark visitor never sees a white flash.
 (function () {
@@ -120,8 +118,8 @@
   setTimeout(function () { if (!window.__cam360Motion) d.classList.remove("js"); }, 2500);
 })();
 </script>
-<script src="/motion.js?v=7" defer onerror="document.documentElement.classList.remove('js')"></script>
-<script src="/theme.js?v=7" defer></script>
+<script src="/motion.js?v=8" defer onerror="document.documentElement.classList.remove('js')"></script>
+<script src="/theme.js?v=8" defer></script>
 </head>
 <body>
 
@@ -157,12 +155,12 @@
 
 <header class="hero" id="top">
   <div class="wrap hero-in">
-    <span class="c-badge c-badge-live"><span class="c-dot" aria-hidden="true"></span>Free and open source</span>
+    <span class="c-badge c-badge-live"><span class="c-dot" aria-hidden="true"></span>Free Chrome extension</span>
     <h1>Better video in every browser call.</h1>
     <p class="lede">Cam360 sits between your webcam and any website that asks for it. Fix your lighting, tidy your framing, and blur or replace your background, on every site, with one set of controls.</p>
     <div class="hero-actions">
       <a class="btn btn-primary btn-lg" href="https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="3.6"/><path d="M12 8.4h9.2M8.9 13.8L4.3 21.2M15.1 13.8L10.5 21.2"/></svg> Add to Chrome</a>
-      <a class="btn btn-soft btn-lg" href="https://github.com/realanshuman/cam360">See the code</a>
+      <a class="btn btn-soft btn-lg" href="#how">How it works</a>
     </div>
     <p class="micro">No account. No servers. Nothing leaves your computer.</p>
     <div class="shot-stage">
@@ -306,7 +304,7 @@
     <div class="c-facts">
       <div class="c-fact" data-reveal><span class="c-fact-num">0</span><span class="c-fact-label">network requests.</span><p>Not one. No analytics, no servers, no account. Even the AI background model ships inside the extension instead of being downloaded.</p></div>
       <div class="c-fact" data-reveal><span class="c-fact-num">Free</span><span class="c-fact-label">and staying free.</span><p>No paid tier, no trial, nothing to upgrade to. There is no company behind this to change its mind.</p></div>
-      <div class="c-fact" data-reveal><span class="c-fact-num">Open</span><span class="c-fact-label">source.</span><p>Every line that touches your camera is on GitHub, including the frame pipeline. Read it, or run it from source.</p></div>
+      <div class="c-fact" data-reveal><span class="c-fact-num">Offline</span><span class="c-fact-label">and still working.</span><p>Switch off your Wi-Fi and every effect keeps running in the popup preview, the AI background included. There is nothing for it to connect to.</p></div>
     </div>
     <div class="c-flow" data-reveal>
       <div class="c-flow-node">
@@ -362,11 +360,11 @@
     <div class="support-band" data-reveal>
       <div class="support-copy">
         <h2>Need a hand?</h2>
-        <p>Bugs, questions, and ideas all go to GitHub issues, straight to the person who builds Cam360. Say which site you were on and which browser, and what you expected to happen.</p>
+        <p>Email <a href="mailto:hi@realanshuman.com?subject=Cam360%20support">hi@realanshuman.com</a>, or open an issue on GitHub to keep the answer public. Either way it reaches the person who builds Cam360. Say which site you were on and which browser, and what you expected to happen.</p>
       </div>
       <div class="support-actions">
-        <a class="btn btn-primary" href="https://github.com/realanshuman/cam360/issues/new/choose" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
-        <a class="btn btn-soft" href="https://github.com/realanshuman/cam360/issues" target="_blank" rel="noopener noreferrer">Browse open issues</a>
+        <a class="btn btn-primary" href="mailto:hi@realanshuman.com?subject=Cam360%20support">Email support</a>
+        <a class="btn btn-soft" href="https://github.com/realanshuman/cam360-support/issues/new/choose" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
       </div>
     </div>
   </div>
@@ -380,15 +378,6 @@
       <div class="c-cta-actions">
         <a class="btn btn-primary btn-lg" href="https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="3.6"/><path d="M12 8.4h9.2M8.9 13.8L4.3 21.2M15.1 13.8L10.5 21.2"/></svg> Add to Chrome, it's free</a>
       </div>
-      <details class="devinstall">
-        <summary>Prefer to install from source?</summary>
-        <div class="steps">
-          <div class="step"><span class="step-n"></span><div class="step-body"><h3>Get the files</h3><p>Download the repository as a ZIP and unpack it, or run:</p><code class="block">git clone https://github.com/realanshuman/cam360.git</code></div></div>
-          <div class="step"><span class="step-n"></span><div class="step-body"><h3>Open the extensions page</h3><p>Go to <code>chrome://extensions</code> and turn on Developer mode in the top right corner.</p></div></div>
-          <div class="step"><span class="step-n"></span><div class="step-body"><h3>Load it unpacked</h3><p>Choose Load unpacked, then select the project folder, the one containing <code>manifest.json</code>.</p></div></div>
-          <div class="step"><span class="step-n"></span><div class="step-body"><h3>Pin it</h3><p>Pin Cam360 to the toolbar and you are done.</p></div></div>
-        </div>
-      </details>
     </div>
   </div>
 </section>
@@ -402,7 +391,7 @@
     <div class="foot-top">
       <div class="foot-id">
         <a class="brand" href="#top"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#2383E2"/><circle cx="24" cy="24" r="11" fill="none" stroke="#fff" stroke-width="3.25" stroke-linecap="round" stroke-dasharray="57 12.1" transform="rotate(-14 24 24)"/><circle cx="24" cy="24" r="4.25" fill="#fff"/></svg> Cam360</a>
-        <p class="foot-say">Free and open source. Every frame stays on your own device.</p>
+        <p class="foot-say">Free forever. Every frame stays on your own device.</p>
       </div>
       <div class="foot-ask">
         <p class="foot-ask-why">If Cam360 made a call better</p>
@@ -417,9 +406,7 @@
       <a href="#faq">FAQ</a>
       <a href="#support">Support</a>
       <a href="https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe" rel="noopener">Chrome Web Store</a>
-      <a href="https://github.com/realanshuman/cam360" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="https://github.com/realanshuman/cam360/issues/new/choose" target="_blank" rel="noopener noreferrer">Report a bug</a>
-      <a href="https://github.com/realanshuman/cam360/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">License</a>
+      <a href="https://github.com/realanshuman/cam360-support/issues/new/choose" target="_blank" rel="noopener noreferrer">Report a bug</a>
       <a href="/privacy">Privacy</a>
     </nav>
 

@@ -342,42 +342,10 @@ kbd {
   border: 2px solid var(--line); background: var(--sunken);
 }
 .cta-card .sec-sub { max-width: 52ch; margin-left: auto; margin-right: auto; }
-.devinstall { margin: 34px auto 0; max-width: 720px; text-align: left; }
-.devinstall > summary {
-  list-style: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  min-height: var(--tap); font-size: 15px; font-weight: 600; color: var(--ink-3);
-}
-.devinstall > summary::-webkit-details-marker { display: none; }
-.devinstall > summary::after {
-  content: ""; width: 8px; height: 8px; margin-top: -4px;
-  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
-  transform: rotate(45deg); transition: transform .18s;
-}
-.devinstall[open] > summary::after { transform: rotate(225deg); margin-top: 3px; }
-.steps { counter-reset: s; display: grid; gap: 14px; margin-top: 18px; }
-.step {
-  display: flex; gap: 16px; min-width: 0; padding: 20px;
-  border-radius: var(--radius); border: 2px solid var(--line); background: var(--surface);
-}
-.step-n {
-  counter-increment: s; flex: 0 0 auto; width: 30px; height: 30px; border-radius: 11px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--wash); color: var(--blue); font-size: 14px; font-weight: 750;
-}
-.step-n::before { content: counter(s); }
-.step-body { min-width: 0; }
-.step-body h3 { font-size: 16px; font-weight: 700; }
-.step-body p { margin-top: 5px; font-size: 15px; color: var(--ink-2); }
 code {
   font-family: var(--mono); font-size: 13.5px; padding: 2px 7px; border-radius: 7px;
   background: var(--sunken); border: 1px solid var(--line); color: var(--ink);
   overflow-wrap: anywhere;
-}
-code.block {
-  display: block; margin-top: 10px; padding: 12px 14px;
-  white-space: pre; overflow-x: auto; overflow-wrap: normal;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* ---------- FAQ ---------- */
@@ -402,7 +370,6 @@ code.block {
 }
 .faq details[open] summary::after { transform: rotate(225deg); margin-top: -2px; }
 .faq summary:focus-visible { outline-offset: -5px; border-radius: 12px; }
-.devinstall > summary:focus-visible { outline-offset: 2px; border-radius: 999px; }
 .faq p { padding: 0 22px 22px; max-width: 64ch; font-size: 15.5px; line-height: 1.65; color: var(--ink-2); }
 
 /* ---------- Support ---------- */
@@ -631,8 +598,7 @@ code.block {
   .btn-soft:hover, .btn-ghost:hover { background: var(--sunken); border-color: var(--ink-3); transform: translateY(-1px); box-shadow: 0 5px 0 var(--drop); }
   .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); border-color: var(--line-2); }
   .faq summary:hover { background: var(--sunken); }
-  .devinstall > summary:hover { color: var(--ink); }
-  .foot-built a:hover { color: var(--blue); border-color: var(--blue); }
+  .foot-built a:hover, .support-copy a:hover { color: var(--blue); border-color: var(--blue); }
   .tsw-btn:hover { color: var(--ink); }
   .bmc:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--honey-deep); }
 }
@@ -1175,6 +1141,13 @@ code.block {
 }
 .support-copy h2 { font-size: 24px; }
 .support-copy p { margin-top: 8px; font-size: 15px; line-height: 1.6; color: var(--ink-2); max-width: 58ch; }
+/* The email address, set like the footer's inline link. */
+.support-copy a {
+  color: var(--ink); font-weight: 600;
+  border-bottom: 1px solid var(--line-2); padding-bottom: 1px;
+  transition: color .15s, border-color .15s;
+}
+.support-copy a:active { color: var(--blue); border-color: var(--blue); }
 .support-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; }
 @media (max-width: 860px) {
   .support-band { grid-template-columns: 1fr; padding: 26px 24px; }
@@ -1245,8 +1218,8 @@ code.block {
     cubic-bezier(.3, 0, .6, 1),
     ease, ease, ease;
 }
-/* The step-number chips and theme switch get the same release curve so
-   nothing on the page snaps linearly. */
+/* The theme switch gets the same release curve so nothing on the page
+   snaps linearly. */
 .tsw-btn { transition-timing-function: cubic-bezier(.2, .7, .2, 1); }
 
 /* ---------- 3. Card hover lift ----------
@@ -1287,7 +1260,7 @@ html.js .nav:not(.is-scrolled) {
   box-shadow: var(--shadow-card);
 }
 
-/* ---------- 5. FAQ and install details ----------
+/* ---------- 5. FAQ details ----------
    Done in CSS only, via ::details-content and interpolate-size, so the
    native <details> semantics, keyboard handling and screen-reader
    announcements are untouched. Chromium 131+ and recent Safari animate the
@@ -1295,8 +1268,7 @@ html.js .nav:not(.is-scrolled) {
    they do today. No JavaScript is involved, so nothing here can break
    accessibility. The answer text fades and rises a few px after the box
    has started to grow. */
-.faq details::details-content,
-.devinstall::details-content {
+.faq details::details-content {
   interpolate-size: allow-keywords;
   height: 0;
   overflow: clip;
@@ -1304,12 +1276,10 @@ html.js .nav:not(.is-scrolled) {
     height .34s cubic-bezier(.2, .7, .2, 1),
     content-visibility .34s allow-discrete;
 }
-.faq details[open]::details-content,
-.devinstall[open]::details-content {
+.faq details[open]::details-content {
   height: auto;
 }
-.faq details[open] > p,
-.devinstall[open] > .steps {
+.faq details[open] > p {
   animation: cam360-fade-in .36s cubic-bezier(.2, .7, .2, 1) both;
 }
 @keyframes cam360-fade-in {
@@ -1317,8 +1287,7 @@ html.js .nav:not(.is-scrolled) {
   to   { opacity: 1; transform: none; }
 }
 /* Chevrons already rotate in styles.css; give them a matching curve. */
-.faq summary::after,
-.devinstall > summary::after {
+.faq summary::after {
   transition-duration: .28s;
   transition-timing-function: cubic-bezier(.2, .7, .2, 1);
 }
