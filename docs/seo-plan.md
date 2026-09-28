@@ -366,12 +366,13 @@ that a visitor arriving from a category search does not see matching words
 immediately. Everything invisible to visitors (title, meta description, social
 tags, JSON-LD, sitemap) was kept.
 
-**Superseded on 28 September 2026 by the desktop-style redesign.** The H1 is now
-the wordmark plus "a better webcam that lives in your browser", in the casual
-lowercase voice the new page uses throughout. It is still not a keyword line,
-and the `<title>`, meta description and social tags did not change. The FAQ
-answers were shortened into the same voice and gained "is Cam360 really
-free?"; the `FAQPage` markup still matches the page word for word.
+**Superseded on 28 September 2026 by the site redesign.** The H1 is now "Look
+better on every video call.", the benefit line the extension's own store
+description opens with. It is still not a keyword line, and the `<title>`,
+meta description and social tags did not change. The FAQ gained "Is Cam360
+really free?" and "Can I use it on my phone?", the second because phone
+visitors now get a "send to my computer" button in place of "Add to Chrome".
+The `FAQPage` markup still matches the page word for word.
 
 **Search engine submission is not being done for now.** Section 9 stands as a
 recommendation rather than a completed step. Worth knowing what that defers:

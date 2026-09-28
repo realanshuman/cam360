@@ -23,7 +23,7 @@
       b.setAttribute("aria-pressed", String(b.dataset.themeSet === choice));
     });
     var dark = isDark();
-    if (meta) meta.setAttribute("content", dark ? "#161617" : "#f2f2f1");
+    if (meta) meta.setAttribute("content", dark ? "#191919" : "#ffffff");
   }
   function apply(choice) {
     try { localStorage.setItem("cam360-theme", choice); } catch (e) {}

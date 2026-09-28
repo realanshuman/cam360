@@ -151,13 +151,17 @@ first.
 
 ## The website
 
-`web/` is a single static page with no build step and no framework. It is
-dressed as a desktop, after heyclicky.com: a menu bar with a live clock,
-windows, and a few things lying around the hero, each one a feature. The calls
-in the windows are drawn in markup, never photographed, and their name tag and
-clock copy the proportions `src/engine.js` draws with. `vercel.json` points
-Vercel at `web/` as the output directory, so a static deploy needs no
-dashboard configuration.
+`web/` is a single static page with no build step and no framework. The hero
+is a camera preview with the effects as buttons under it, so the page shows
+what Cam360 does before it says it. Every call on the page is drawn in markup,
+never photographed, and its name tag, clock and be right back card copy what
+`src/engine.js` draws. `vercel.json` points Vercel at `web/` as the output
+directory, so a static deploy needs no dashboard configuration.
+
+The layout is written phone first. Phones and tablets cannot install a Chrome
+extension, so on a touch screen every "Add to Chrome" becomes "Send to my
+computer": `web/site.js` opens the share sheet, copies the link where there is
+none, and without script the button is a prefilled email.
 
 The FAQ answers exist twice in `web/index.html`: on the page, and in the
 `FAQPage` JSON-LD in the `<head>`. Change them together, word for word.
