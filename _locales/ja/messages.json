@@ -1,0 +1,375 @@
+{
+  "lang": {
+    "message": "ja"
+  },
+  "extDescription": {
+    "message": "どのビデオ通話でも、もっときれいに。背景をぼかす・差し替える、明るさの補正、左右反転やズームも。Meet、Discord、Zoom などで使えます。"
+  },
+  "cmdTogglePanel": {
+    "message": "通話中パネルの表示と非表示"
+  },
+  "openWindowTitle": {
+    "message": "サイズを変えられるウィンドウで開く"
+  },
+  "powerLabel": {
+    "message": "Cam360 のオンとオフ"
+  },
+  "previewStart": {
+    "message": "カメラをプレビュー"
+  },
+  "previewStopTitle": {
+    "message": "プレビューを停止"
+  },
+  "sectionTransform": {
+    "message": "向き"
+  },
+  "mirror": {
+    "message": "左右反転"
+  },
+  "flipVertical": {
+    "message": "上下反転"
+  },
+  "flipShort": {
+    "message": "上下反転"
+  },
+  "rotate": {
+    "message": "回転"
+  },
+  "sectionLook": {
+    "message": "スタイル"
+  },
+  "lookNone": {
+    "message": "なし"
+  },
+  "lookWarm": {
+    "message": "ウォーム"
+  },
+  "lookCool": {
+    "message": "クール"
+  },
+  "lookBright": {
+    "message": "明るく"
+  },
+  "lookBw": {
+    "message": "モノクロ"
+  },
+  "lookSoft": {
+    "message": "ソフト"
+  },
+  "brightness": {
+    "message": "明るさ"
+  },
+  "contrast": {
+    "message": "コントラスト"
+  },
+  "saturation": {
+    "message": "彩度"
+  },
+  "zoom": {
+    "message": "ズーム"
+  },
+  "blur": {
+    "message": "ぼかし"
+  },
+  "beautify": {
+    "message": "美肌"
+  },
+  "hue": {
+    "message": "色相"
+  },
+  "lowLight": {
+    "message": "暗所補正"
+  },
+  "sectionBackground": {
+    "message": "背景"
+  },
+  "bgOff": {
+    "message": "なし"
+  },
+  "bgBlur": {
+    "message": "ぼかし"
+  },
+  "bgColour": {
+    "message": "色"
+  },
+  "bgScene": {
+    "message": "画像"
+  },
+  "bgVideo": {
+    "message": "動画"
+  },
+  "cutoutMethod": {
+    "message": "切り抜き方法"
+  },
+  "keyerAi": {
+    "message": "AI"
+  },
+  "keyerChroma": {
+    "message": "グリーンバック"
+  },
+  "keyerNoteAi": {
+    "message": "最も高品質で、グリーンバックは不要です。Google Meet など一部の厳しいサイトではブロックされます。"
+  },
+  "keyerNoteChroma": {
+    "message": "Google Meet を含むすべてのサイトで使えます。背後に無地で単色の背景があると最適です。"
+  },
+  "bgBlurStrength": {
+    "message": "ぼかしの強さ"
+  },
+  "colour": {
+    "message": "色"
+  },
+  "uploadImageTitle": {
+    "message": "画像をアップロード"
+  },
+  "uploadVideoTitle": {
+    "message": "動画をアップロード"
+  },
+  "edgeFeather": {
+    "message": "境界のぼかし"
+  },
+  "keyColour": {
+    "message": "キーカラー"
+  },
+  "keyStrength": {
+    "message": "キーの強さ"
+  },
+  "keySoftness": {
+    "message": "キーのなめらかさ"
+  },
+  "sectionPresence": {
+    "message": "在席"
+  },
+  "freezeFrame": {
+    "message": "映像を静止"
+  },
+  "freezeShort": {
+    "message": "静止"
+  },
+  "beRightBack": {
+    "message": "離席中"
+  },
+  "brbShort": {
+    "message": "離席"
+  },
+  "brbDefault": {
+    "message": "すぐに戻ります"
+  },
+  "brbImage": {
+    "message": "離席中の画像を設定…"
+  },
+  "snapshot": {
+    "message": "スナップショット"
+  },
+  "snapShort": {
+    "message": "撮影"
+  },
+  "savePng": {
+    "message": "PNG を保存"
+  },
+  "sectionOverlays": {
+    "message": "オーバーレイ"
+  },
+  "nameTag": {
+    "message": "名前表示"
+  },
+  "nameShort": {
+    "message": "名前"
+  },
+  "yourName": {
+    "message": "あなたの名前"
+  },
+  "logo": {
+    "message": "ロゴ"
+  },
+  "logoShort": {
+    "message": "ロゴ"
+  },
+  "uploadLogo": {
+    "message": "ロゴをアップロード…"
+  },
+  "liveClock": {
+    "message": "時計"
+  },
+  "clockShort": {
+    "message": "時計"
+  },
+  "cornerTL": {
+    "message": "左上"
+  },
+  "cornerTR": {
+    "message": "右上"
+  },
+  "cornerBL": {
+    "message": "左下"
+  },
+  "cornerBR": {
+    "message": "右下"
+  },
+  "positionOf": {
+    "message": "$ITEM$の位置",
+    "placeholders": {
+      "item": {
+        "content": "$1",
+        "example": "Name tag"
+      }
+    }
+  },
+  "positionAt": {
+    "message": "$ITEM$: $CORNER$",
+    "placeholders": {
+      "item": {
+        "content": "$1",
+        "example": "Name tag"
+      },
+      "corner": {
+        "content": "$2",
+        "example": "Top left"
+      }
+    }
+  },
+  "showPanel": {
+    "message": "パネルを表示"
+  },
+  "hidePanel": {
+    "message": "パネルを隠す"
+  },
+  "reset": {
+    "message": "リセット"
+  },
+  "resetAll": {
+    "message": "すべてリセット"
+  },
+  "panelHideTitle": {
+    "message": "パネルを隠す"
+  },
+  "powerOn": {
+    "message": "オン"
+  },
+  "powerOff": {
+    "message": "オフ"
+  },
+  "panelMidCall": {
+    "message": "通話中パネル:"
+  },
+  "shortcutChange": {
+    "message": "このショートカットを変更"
+  },
+  "shortcutNotSet": {
+    "message": "未設定"
+  },
+  "shortcutNotSetTitle": {
+    "message": "ショートカットが設定されていません。クリックして設定します。"
+  },
+  "getHelp": {
+    "message": "ヘルプ"
+  },
+  "getHelpTitle": {
+    "message": "質問する、または問題を報告する"
+  },
+  "builtBy": {
+    "message": "制作:"
+  },
+  "freeForever": {
+    "message": "ずっと無料"
+  },
+  "buyCoffee": {
+    "message": "コーヒーをおごる"
+  },
+  "resizeTitle": {
+    "message": "ドラッグしてサイズを変更"
+  },
+  "flashSaved": {
+    "message": "保存しました"
+  },
+  "flashFailed": {
+    "message": "失敗しました"
+  },
+  "flashNoCamera": {
+    "message": "カメラなし"
+  },
+  "previewStarting": {
+    "message": "カメラを起動中…"
+  },
+  "previewFailed": {
+    "message": "カメラを起動できませんでした: $ERROR$",
+    "placeholders": {
+      "error": {
+        "content": "$1",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "statusIdle": {
+    "message": "カメラがオンになると AI モデルが起動します。"
+  },
+  "statusLoading": {
+    "message": "AI モデルを読み込み中…"
+  },
+  "statusReady": {
+    "message": "AI 背景の準備ができました"
+  },
+  "statusError": {
+    "message": "このサイトは AI モデルをブロックしています。切り抜き方法をグリーンバックに切り替えてください。こちらは使えます。"
+  },
+  "grantTitle": {
+    "message": "Cam360: カメラへのアクセス"
+  },
+  "grantHeading": {
+    "message": "カメラへのアクセスを許可"
+  },
+  "grantBody1": {
+    "message": "ライブプレビューを表示するには、一度だけ許可が必要です。小さなポップアップの中ではブラウザが確認できないため、このページで確認します。"
+  },
+  "grantBody2": {
+    "message": "アドレスバーの近くにブラウザの確認が表示されたら、「許可」を選んでください。"
+  },
+  "grantBody2Firefox": {
+    "message": "Firefox の確認が表示されたら、記憶するチェックボックスをオンのままにして「許可」を選んでください。オフにすると毎回確認されます。"
+  },
+  "grantRequesting": {
+    "message": "カメラへのアクセスを要求しています…"
+  },
+  "grantOk": {
+    "message": "カメラへのアクセスが許可されました。このタブを閉じて、もう一度 Cam360 を開いてください。"
+  },
+  "grantDeclined": {
+    "message": "カメラへのアクセスが拒否されたか、ブロックされています。"
+  },
+  "grantBlockedChrome": {
+    "message": "確認が表示されなかった場合、この拡張機能のカメラはすでにブロックされている可能性があります。アドレスバーの右端にあるカメラのアイコンをクリックするか、$PAGE$ を開いてブロックのリストから Cam360 を削除し、もう一度お試しください。",
+    "placeholders": {
+      "page": {
+        "content": "$1",
+        "example": "chrome://settings/content/camera"
+      }
+    }
+  },
+  "grantBlockedFirefox": {
+    "message": "確認が表示されなかった場合、この拡張機能のカメラはすでにブロックされている可能性があります。$PAGE$ を開き、「許可設定」の「カメラ」で Cam360 のブロックを解除して、もう一度お試しください。",
+    "placeholders": {
+      "page": {
+        "content": "$1",
+        "example": "about:preferences#privacy"
+      }
+    }
+  },
+  "grantNoCamera": {
+    "message": "使用できるカメラが見つからないか、別のアプリが使用中です。"
+  },
+  "grantNoCameraHint": {
+    "message": "カメラを使っている可能性のある他のアプリを閉じてから、もう一度お試しください。"
+  },
+  "grantFailed": {
+    "message": "カメラを起動できませんでした: $ERROR$",
+    "placeholders": {
+      "error": {
+        "content": "$1",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "grantRetry": {
+    "message": "再試行"
+  }
+}

@@ -16,9 +16,15 @@
   const { KEY, MEDIA_KEY, DEFAULTS } = S;
   const BASE = chrome.runtime.getURL("");
 
+  /* The panel's words, from _locales. A content script can read the
+     extension's messages directly; the English is the fallback. */
+  const t = (key, fallback) => {
+    try { return chrome.i18n.getMessage(key) || fallback; } catch (_) { return fallback; }
+  };
+
   let current = { ...DEFAULTS };
   let media = {};
-  let status = { segState: "idle", message: "" };
+  let status = { segState: "idle" };
 
   function post(value) {
     window.postMessage({ __cam360: "settings", value, baseURL: BASE, defaults: DEFAULTS }, "*");
@@ -100,14 +106,23 @@
   let root = null;
   const els = {};
   const SLIDERS = [
-    ["brightness", "Brightness", 0, 200, "%"],
-    ["contrast", "Contrast", 0, 200, "%"],
-    ["saturation", "Saturation", 0, 200, "%"],
-    ["zoom", "Zoom", 100, 250, "%"],
-    ["blur", "Blur", 0, 20, "px"],
-    ["beautify", "Smooth", 0, 100, ""]
+    ["brightness", t("brightness", "Brightness"), 0, 200, "%"],
+    ["contrast", t("contrast", "Contrast"), 0, 200, "%"],
+    ["saturation", t("saturation", "Saturation"), 0, 200, "%"],
+    ["zoom", t("zoom", "Zoom"), 100, 250, "%"],
+    ["blur", t("blur", "Blur"), 0, 20, "px"],
+    ["beautify", t("beautify", "Skin smoothing"), 0, 100, ""]
   ];
-  const BG_MODES = [["off", "Off"], ["blur", "Blur"], ["color", "Color"], ["scene", "Scene"], ["video", "Video"]];
+  const BG_MODES = [
+    ["off", t("bgOff", "Off")], ["blur", t("bgBlur", "Blur")], ["color", t("bgColour", "Colour")],
+    ["scene", t("bgScene", "Scene")], ["video", t("bgVideo", "Video")]
+  ];
+  /* The model's state arrives as a code from the engine. */
+  const STATUS = {
+    loading: ["⏳ ", t("statusLoading", "Loading the AI model…")],
+    ready: ["✓ ", t("statusReady", "AI background ready")],
+    error: ["⚠ ", t("statusError", "This site blocks the AI model. Switch the cut-out method to Green screen, which works here.")]
+  };
 
   // Notion-style light palette (matches the popup).
   const C = {
@@ -119,7 +134,7 @@
   function toggleBtn(text, onClick) {
     const b = document.createElement("button");
     b.textContent = text;
-    b.style.cssText = `flex:1;padding:6px 4px;border:1px solid ${C.border};border-radius:7px;background:transparent;color:${C.sec};cursor:pointer;font-size:12px;font-family:inherit;transition:background .12s`;
+    b.style.cssText = `flex:1 1 auto;white-space:nowrap;padding:6px 6px;border:1px solid ${C.border};border-radius:7px;background:transparent;color:${C.sec};cursor:pointer;font-size:12px;font-family:inherit;transition:background .12s`;
     b.onclick = onClick;
     return b;
   }
@@ -143,6 +158,7 @@
     if (root || !document.body) { syncOverlay(); return; }
     root = document.createElement("div");
     root.id = "cam360-overlay";
+    root.lang = t("lang", "en");
     root.style.cssText = [
       "position:fixed", "top:24px", "right:24px", "z-index:2147483647", "width:258px",
       "font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif",
@@ -157,7 +173,7 @@
     els.power = document.createElement("button");
     els.power.onclick = () => save({ enabled: !current.enabled });
     const close = document.createElement("button");
-    close.textContent = "✕"; close.title = "Hide the panel";
+    close.textContent = "✕"; close.title = t("panelHideTitle", "Hide the panel");
     close.style.cssText = `border:none;background:transparent;color:${C.muted};font-size:13px;cursor:pointer;padding:2px 4px;border-radius:5px`;
     close.onclick = () => save({ overlayVisible: false });
     header.append(els.power, close);
@@ -166,22 +182,24 @@
     const body = document.createElement("div");
     body.style.cssText = "padding:12px;display:flex;flex-direction:column;gap:10px;max-height:72vh;overflow-y:auto";
 
+    /* Rows wrap, and their buttons size to their words, so a longer
+       translation moves to a new line instead of breaking inside a button. */
     const row = document.createElement("div");
-    row.style.cssText = "display:flex;gap:6px";
-    els.mirror = toggleBtn("⇋ Mirror", () => save({ mirror: !current.mirror }));
-    els.flipV = toggleBtn("⇅ Flip", () => save({ flipV: !current.flipV }));
+    row.style.cssText = "display:flex;flex-wrap:wrap;gap:6px";
+    els.mirror = toggleBtn("⇋ " + t("mirror", "Mirror"), () => save({ mirror: !current.mirror }));
+    els.flipV = toggleBtn("⇅ " + t("flipShort", "Flip"), () => save({ flipV: !current.flipV }));
     els.rotate = toggleBtn("⟳ 0°", () => save({ rotate: (current.rotate + 90) % 360 }));
     row.append(els.mirror, els.flipV, els.rotate);
     body.appendChild(row);
 
     SLIDERS.forEach(([k, l, mn, mx, u]) => sliderRow(k, l, mn, mx, u, body));
 
-    els.lowLight = toggleBtn("☀ Low-light boost", () => save({ lowLight: !current.lowLight }));
+    els.lowLight = toggleBtn("☀ " + t("lowLight", "Low-light boost"), () => save({ lowLight: !current.lowLight }));
     body.appendChild(els.lowLight);
 
     // Background section
     const bgTitle = document.createElement("div");
-    bgTitle.textContent = "BACKGROUND";
+    bgTitle.textContent = t("sectionBackground", "Background");
     bgTitle.style.cssText = `font-size:10px;letter-spacing:.06em;font-weight:600;color:${C.muted};text-transform:uppercase;margin-top:4px`;
     body.appendChild(bgTitle);
 
@@ -197,37 +215,37 @@
 
     // Keyer: AI segmentation vs green screen (chroma)
     const keyRow = document.createElement("div");
-    keyRow.style.cssText = "display:flex;gap:6px";
-    els.keyAi = toggleBtn("AI", () => save({ keyer: "ai" }));
-    els.keyChroma = toggleBtn("Green screen", () => save({ keyer: "chroma" }));
+    keyRow.style.cssText = "display:flex;flex-wrap:wrap;gap:6px";
+    els.keyAi = toggleBtn(t("keyerAi", "AI"), () => save({ keyer: "ai" }));
+    els.keyChroma = toggleBtn(t("keyerChroma", "Green screen"), () => save({ keyer: "chroma" }));
     keyRow.append(els.keyAi, els.keyChroma);
     els.keyRow = keyRow;
     body.appendChild(keyRow);
 
-    sliderRow("bgBlur", "BG blur", 2, 30, "px", body);
-    sliderRow("feather", "Edge feather", 0, 12, "px", body);
-    sliderRow("chromaThreshold", "Key strength", 5, 90, "", body);
-    sliderRow("chromaSmooth", "Key softness", 1, 60, "", body);
+    sliderRow("bgBlur", t("bgBlurStrength", "Blur strength"), 2, 30, "px", body);
+    sliderRow("feather", t("edgeFeather", "Edge feather"), 0, 12, "px", body);
+    sliderRow("chromaThreshold", t("keyStrength", "Key strength"), 5, 90, "", body);
+    sliderRow("chromaSmooth", t("keySoftness", "Key softness"), 1, 60, "", body);
 
     // Presence: freeze / be-right-back / snapshot
     const presTitle = document.createElement("div");
-    presTitle.textContent = "PRESENCE";
+    presTitle.textContent = t("sectionPresence", "Presence");
     presTitle.style.cssText = `font-size:10px;letter-spacing:.06em;font-weight:600;color:${C.muted};text-transform:uppercase;margin-top:4px`;
     body.appendChild(presTitle);
     const presRow = document.createElement("div");
-    presRow.style.cssText = "display:flex;gap:6px";
-    els.freeze = toggleBtn("❚❚ Freeze", () => save({ freeze: !current.freeze }));
-    els.brb = toggleBtn("☕ BRB", () => save({ brb: !current.brb }));
-    const snap = toggleBtn("📷 Snap", () => requestSnapshot());
+    presRow.style.cssText = "display:flex;flex-wrap:wrap;gap:6px";
+    els.freeze = toggleBtn("❚❚ " + t("freezeShort", "Freeze"), () => save({ freeze: !current.freeze }));
+    els.brb = toggleBtn("☕ " + t("brbShort", "BRB"), () => save({ brb: !current.brb }));
+    const snap = toggleBtn("📷 " + t("snapShort", "Snap"), () => requestSnapshot());
     presRow.append(els.freeze, els.brb, snap);
     body.appendChild(presRow);
 
     // Overlays: name / clock quick toggles (full editing in the popup)
     const ovRow = document.createElement("div");
-    ovRow.style.cssText = "display:flex;gap:6px";
-    els.showName = toggleBtn("🏷 Name", () => save({ showName: !current.showName }));
-    els.showClock = toggleBtn("🕐 Clock", () => save({ showClock: !current.showClock }));
-    els.showLogo = toggleBtn("★ Logo", () => save({ showLogo: !current.showLogo }));
+    ovRow.style.cssText = "display:flex;flex-wrap:wrap;gap:6px";
+    els.showName = toggleBtn("🏷 " + t("nameShort", "Name"), () => save({ showName: !current.showName }));
+    els.showClock = toggleBtn("🕐 " + t("clockShort", "Clock"), () => save({ showClock: !current.showClock }));
+    els.showLogo = toggleBtn("★ " + t("logoShort", "Logo"), () => save({ showLogo: !current.showLogo }));
     ovRow.append(els.showName, els.showClock, els.showLogo);
     body.appendChild(ovRow);
 
@@ -236,7 +254,7 @@
     body.appendChild(els.status);
 
     const reset = document.createElement("button");
-    reset.textContent = "Reset all";
+    reset.textContent = t("resetAll", "Reset all");
     reset.style.cssText = `margin-top:4px;padding:7px;border:1px solid ${C.border};border-radius:7px;cursor:pointer;background:transparent;color:${C.sec};font-size:12.5px;font-family:inherit`;
     reset.onclick = () => save({
       mirror: false, flipV: false, rotate: 0, brightness: 100, contrast: 100, saturation: 100,
@@ -263,7 +281,7 @@
   function syncOverlay() {
     if (!root) return;
     root.style.display = current.overlayVisible ? "block" : "none";
-    els.power.textContent = current.enabled ? "On" : "Off";
+    els.power.textContent = current.enabled ? t("powerOn", "On") : t("powerOff", "Off");
     els.power.style.cssText = "border:none;border-radius:6px;padding:3px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;" +
       (current.enabled ? `background:${C.accent};color:#fff` : `background:${C.sunken};color:${C.muted}`);
     setActive(els.mirror, current.mirror);
@@ -290,8 +308,9 @@
     setActive(els.showClock, current.showClock);
     setActive(els.showLogo, current.showLogo);
     if (els.status) {
-      if (bgActive && !chroma && status.message) {
-        els.status.textContent = (status.segState === "error" ? "⚠ " : status.segState === "loading" ? "⏳ " : "✓ ") + status.message;
+      const said = STATUS[status.segState];
+      if (bgActive && !chroma && said) {
+        els.status.textContent = said[0] + said[1];
         els.status.style.color = status.segState === "error" ? "#e03e3e" : C.muted;
       } else els.status.textContent = "";
     }

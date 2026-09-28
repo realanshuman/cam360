@@ -1,0 +1,375 @@
+{
+  "lang": {
+    "message": "fr"
+  },
+  "extDescription": {
+    "message": "Soyez à votre avantage en visio. Floutez ou changez l’arrière-plan, corrigez la lumière, miroir, zoom. Meet, Discord, Zoom et plus."
+  },
+  "cmdTogglePanel": {
+    "message": "Afficher ou masquer le panneau d’appel"
+  },
+  "openWindowTitle": {
+    "message": "Ouvrir dans une fenêtre redimensionnable"
+  },
+  "powerLabel": {
+    "message": "Activer ou désactiver Cam360"
+  },
+  "previewStart": {
+    "message": "Voir ma caméra"
+  },
+  "previewStopTitle": {
+    "message": "Arrêter l’aperçu"
+  },
+  "sectionTransform": {
+    "message": "Transformer"
+  },
+  "mirror": {
+    "message": "Miroir"
+  },
+  "flipVertical": {
+    "message": "Retourner verticalement"
+  },
+  "flipShort": {
+    "message": "Retourner"
+  },
+  "rotate": {
+    "message": "Pivoter"
+  },
+  "sectionLook": {
+    "message": "Style"
+  },
+  "lookNone": {
+    "message": "Aucun"
+  },
+  "lookWarm": {
+    "message": "Chaud"
+  },
+  "lookCool": {
+    "message": "Froid"
+  },
+  "lookBright": {
+    "message": "Lumineux"
+  },
+  "lookBw": {
+    "message": "N&B"
+  },
+  "lookSoft": {
+    "message": "Doux"
+  },
+  "brightness": {
+    "message": "Luminosité"
+  },
+  "contrast": {
+    "message": "Contraste"
+  },
+  "saturation": {
+    "message": "Saturation"
+  },
+  "zoom": {
+    "message": "Zoom"
+  },
+  "blur": {
+    "message": "Flou"
+  },
+  "beautify": {
+    "message": "Lissage de la peau"
+  },
+  "hue": {
+    "message": "Teinte"
+  },
+  "lowLight": {
+    "message": "Mode faible lumière"
+  },
+  "sectionBackground": {
+    "message": "Arrière-plan"
+  },
+  "bgOff": {
+    "message": "Aucun"
+  },
+  "bgBlur": {
+    "message": "Flou"
+  },
+  "bgColour": {
+    "message": "Couleur"
+  },
+  "bgScene": {
+    "message": "Scène"
+  },
+  "bgVideo": {
+    "message": "Vidéo"
+  },
+  "cutoutMethod": {
+    "message": "Méthode de détourage"
+  },
+  "keyerAi": {
+    "message": "IA"
+  },
+  "keyerChroma": {
+    "message": "Fond vert"
+  },
+  "keyerNoteAi": {
+    "message": "La meilleure qualité, sans fond vert. Quelques sites stricts, comme Google Meet, la bloquent."
+  },
+  "keyerNoteChroma": {
+    "message": "Fonctionne sur tous les sites, Google Meet compris. Idéal avec un fond uni, d’une seule couleur, derrière vous."
+  },
+  "bgBlurStrength": {
+    "message": "Intensité du flou"
+  },
+  "colour": {
+    "message": "Couleur"
+  },
+  "uploadImageTitle": {
+    "message": "Importer une image"
+  },
+  "uploadVideoTitle": {
+    "message": "Importer une vidéo"
+  },
+  "edgeFeather": {
+    "message": "Adoucir les bords"
+  },
+  "keyColour": {
+    "message": "Couleur clé"
+  },
+  "keyStrength": {
+    "message": "Tolérance"
+  },
+  "keySoftness": {
+    "message": "Douceur"
+  },
+  "sectionPresence": {
+    "message": "Présence"
+  },
+  "freezeFrame": {
+    "message": "Figer l’image"
+  },
+  "freezeShort": {
+    "message": "Figer"
+  },
+  "beRightBack": {
+    "message": "Je reviens"
+  },
+  "brbShort": {
+    "message": "Pause"
+  },
+  "brbDefault": {
+    "message": "Je reviens tout de suite"
+  },
+  "brbImage": {
+    "message": "Choisir une image de pause…"
+  },
+  "snapshot": {
+    "message": "Capture"
+  },
+  "snapShort": {
+    "message": "Capture"
+  },
+  "savePng": {
+    "message": "Enregistrer en PNG"
+  },
+  "sectionOverlays": {
+    "message": "Incrustations"
+  },
+  "nameTag": {
+    "message": "Nom à l’écran"
+  },
+  "nameShort": {
+    "message": "Nom"
+  },
+  "yourName": {
+    "message": "Votre nom"
+  },
+  "logo": {
+    "message": "Logo"
+  },
+  "logoShort": {
+    "message": "Logo"
+  },
+  "uploadLogo": {
+    "message": "Importer un logo…"
+  },
+  "liveClock": {
+    "message": "Horloge en direct"
+  },
+  "clockShort": {
+    "message": "Horloge"
+  },
+  "cornerTL": {
+    "message": "En haut à gauche"
+  },
+  "cornerTR": {
+    "message": "En haut à droite"
+  },
+  "cornerBL": {
+    "message": "En bas à gauche"
+  },
+  "cornerBR": {
+    "message": "En bas à droite"
+  },
+  "positionOf": {
+    "message": "Position : $ITEM$",
+    "placeholders": {
+      "item": {
+        "content": "$1",
+        "example": "Name tag"
+      }
+    }
+  },
+  "positionAt": {
+    "message": "$ITEM$ : $CORNER$",
+    "placeholders": {
+      "item": {
+        "content": "$1",
+        "example": "Name tag"
+      },
+      "corner": {
+        "content": "$2",
+        "example": "Top left"
+      }
+    }
+  },
+  "showPanel": {
+    "message": "Afficher le panneau"
+  },
+  "hidePanel": {
+    "message": "Masquer le panneau"
+  },
+  "reset": {
+    "message": "Réinitialiser"
+  },
+  "resetAll": {
+    "message": "Tout réinitialiser"
+  },
+  "panelHideTitle": {
+    "message": "Masquer le panneau"
+  },
+  "powerOn": {
+    "message": "Activé"
+  },
+  "powerOff": {
+    "message": "Désactivé"
+  },
+  "panelMidCall": {
+    "message": "Panneau en appel :"
+  },
+  "shortcutChange": {
+    "message": "Modifier ce raccourci"
+  },
+  "shortcutNotSet": {
+    "message": "non défini"
+  },
+  "shortcutNotSetTitle": {
+    "message": "Aucun raccourci défini. Cliquez pour en choisir un."
+  },
+  "getHelp": {
+    "message": "Aide"
+  },
+  "getHelpTitle": {
+    "message": "Poser une question ou signaler un problème"
+  },
+  "builtBy": {
+    "message": "Créé par"
+  },
+  "freeForever": {
+    "message": "Gratuit pour toujours"
+  },
+  "buyCoffee": {
+    "message": "Offrez-moi un café"
+  },
+  "resizeTitle": {
+    "message": "Faites glisser pour redimensionner"
+  },
+  "flashSaved": {
+    "message": "Enregistré"
+  },
+  "flashFailed": {
+    "message": "Échec"
+  },
+  "flashNoCamera": {
+    "message": "Pas de caméra"
+  },
+  "previewStarting": {
+    "message": "Démarrage de la caméra…"
+  },
+  "previewFailed": {
+    "message": "Impossible de démarrer la caméra : $ERROR$",
+    "placeholders": {
+      "error": {
+        "content": "$1",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "statusIdle": {
+    "message": "Le modèle d’IA démarre quand une caméra est allumée."
+  },
+  "statusLoading": {
+    "message": "Chargement du modèle d’IA…"
+  },
+  "statusReady": {
+    "message": "Arrière-plan IA prêt"
+  },
+  "statusError": {
+    "message": "Ce site bloque le modèle d’IA. Passez la méthode de détourage sur Fond vert, qui fonctionne ici."
+  },
+  "grantTitle": {
+    "message": "Cam360 : accès à la caméra"
+  },
+  "grantHeading": {
+    "message": "Autorisez l’accès à la caméra"
+  },
+  "grantBody1": {
+    "message": "Cam360 a besoin de votre autorisation, une seule fois, pour afficher l’aperçu. Le navigateur ne peut pas la demander depuis la petite fenêtre, alors il la demande ici."
+  },
+  "grantBody2": {
+    "message": "Quand le navigateur vous le demande, près de la barre d’adresse, choisissez Autoriser."
+  },
+  "grantBody2Firefox": {
+    "message": "Quand Firefox vous le demande, laissez cochée la case pour mémoriser, puis choisissez Autoriser. Sinon, Firefox vous le redemandera à chaque fois."
+  },
+  "grantRequesting": {
+    "message": "Demande d’accès à votre caméra…"
+  },
+  "grantOk": {
+    "message": "Accès autorisé. Vous pouvez fermer cet onglet et rouvrir Cam360."
+  },
+  "grantDeclined": {
+    "message": "L’accès à la caméra a été refusé ou est bloqué."
+  },
+  "grantBlockedChrome": {
+    "message": "Si aucune demande ne s’est affichée, la caméra est peut-être déjà bloquée pour cette extension. Cliquez sur l’icône de caméra au bout de la barre d’adresse, ou ouvrez $PAGE$ et retirez Cam360 de la liste des sites bloqués. Puis réessayez.",
+    "placeholders": {
+      "page": {
+        "content": "$1",
+        "example": "chrome://settings/content/camera"
+      }
+    }
+  },
+  "grantBlockedFirefox": {
+    "message": "Si aucune demande ne s’est affichée, la caméra est peut-être déjà bloquée pour cette extension. Ouvrez $PAGE$, trouvez Caméra dans Permissions et retirez le blocage de Cam360. Puis réessayez.",
+    "placeholders": {
+      "page": {
+        "content": "$1",
+        "example": "about:preferences#privacy"
+      }
+    }
+  },
+  "grantNoCamera": {
+    "message": "Aucune caméra utilisable n’a été trouvée, ou une autre application l’utilise."
+  },
+  "grantNoCameraHint": {
+    "message": "Fermez les applications qui pourraient utiliser la caméra, puis réessayez."
+  },
+  "grantFailed": {
+    "message": "Impossible de démarrer la caméra : $ERROR$",
+    "placeholders": {
+      "error": {
+        "content": "$1",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "grantRetry": {
+    "message": "Réessayer"
+  }
+}

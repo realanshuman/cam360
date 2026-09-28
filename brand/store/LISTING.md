@@ -12,6 +12,9 @@ Cam360
 
 ## Summary (132 char limit, prefilled from the manifest)
 
+This now comes from `_locales/en/messages.json` (`extDescription`), and each
+translation carries its own. Edit it there, not in the dashboard.
+
 ```
 Look better on every video call. Blur or swap your background, fix lighting, mirror and zoom. Works on Meet, Discord, Zoom & more.
 ```
@@ -28,7 +31,7 @@ WHAT YOU CAN DO
 - Blur your background, or replace it with a colour, a scene, or your own photo
 - Fix bad lighting with brightness, contrast and a one click low light boost
 - Mirror, flip, rotate and zoom your camera until the framing is right
-- Smooth skin with a subtle beautify slider
+- Smooth your skin while your eyes, hair and the room behind you stay sharp
 - Freeze your frame or show a "be right back" card when you step away
 - Add your name, a logo, or a live clock to your video, in any corner you pick
 - Save a snapshot of exactly what others see
@@ -39,6 +42,7 @@ WHY PEOPLE INSTALL IT
 - It is private. Your video is processed on your own computer and handed straight to the site. Cam360 makes no network requests, has no analytics, and never records or uploads anything. Even the AI background model is bundled inside the extension.
 - It is instant. Change anything mid call from a small panel (press Alt C) and everyone sees it live.
 - It is free. There is no paid tier, no trial, and no account to create.
+- It speaks your language: English, Spanish, Portuguese, French, German and Japanese.
 
 HOW IT WORKS
 
@@ -53,7 +57,11 @@ Social & Communication (it improves video calls; this is where users look for ca
 
 ## Language
 
-English
+English is the default. The extension and its listing are also translated
+into Spanish (`es`), Portuguese as spoken in Brazil (`pt_BR`), French (`fr`),
+German (`de`) and Japanese (`ja`). The extension's own words live in
+`_locales/`; the listing text for each language, ready to paste into the
+dashboard's language menu, is in [`listing/`](listing/).
 
 ## Graphic assets (all in this folder)
 

@@ -1,5 +1,10 @@
 /* Cam360 — popup.js : shares chrome.storage with the in-call overlay. */
 
+/* Words come from _locales through i18n.js, loaded first. The English after
+   each key is the fallback if a message is ever missing. */
+const t = (key, subs, fallback) => Cam360I18n.t(key, subs, fallback);
+const IS_FIREFOX = chrome.runtime.getURL("").indexOf("moz-extension:") === 0;
+
 /* ---------------- Dialog sizing ----------------
  * Two ways to a bigger dialog:
  *  - the grip in the corner resizes the toolbar popup live, within Chrome's
@@ -72,13 +77,13 @@ const S = Cam360Settings;
 const { KEY, MEDIA_KEY, DEFAULTS } = S;
 
 const SLIDERS = [
-  ["brightness", "Brightness", 0, 200, "%"],
-  ["contrast", "Contrast", 0, 200, "%"],
-  ["saturation", "Saturation", 0, 200, "%"],
-  ["zoom", "Zoom", 100, 250, "%"],
-  ["blur", "Blur", 0, 20, "px"],
-  ["beautify", "Smooth (beautify)", 0, 100, ""],
-  ["hue", "Hue rotate", 0, 360, "°"]
+  ["brightness", t("brightness", null, "Brightness"), 0, 200, "%"],
+  ["contrast", t("contrast", null, "Contrast"), 0, 200, "%"],
+  ["saturation", t("saturation", null, "Saturation"), 0, 200, "%"],
+  ["zoom", t("zoom", null, "Zoom"), 100, 250, "%"],
+  ["blur", t("blur", null, "Blur"), 0, 20, "px"],
+  ["beautify", t("beautify", null, "Skin smoothing"), 0, 100, ""],
+  ["hue", t("hue", null, "Hue"), 0, 360, "°"]
 ];
 const BG_SLIDERS = { bgBlur: "px", feather: "px", chromaThreshold: "", chromaSmooth: "" };
 
@@ -160,13 +165,23 @@ function readFile(file, cb) { const r = new FileReader(); r.onload = () => cb(r.
 const sliderHost = document.getElementById("sliders");
 const sliderEls = {};
 SLIDERS.forEach(([key, name, min, max, unit]) => {
+  /* Built node by node: the label is translated text, and text it stays. */
   const wrap = document.createElement("div");
   wrap.className = "slider";
-  wrap.innerHTML = `<div class="top"><span class="name">${name}</span><span class="val"></span></div><input type="range" min="${min}" max="${max}">`;
-  const input = wrap.querySelector("input");
+  const top = document.createElement("div");
+  top.className = "top";
+  const label = document.createElement("span");
+  label.className = "name";
+  label.textContent = name;
+  const val = document.createElement("span");
+  val.className = "val";
+  top.append(label, val);
+  const input = document.createElement("input");
+  input.type = "range"; input.min = min; input.max = max;
+  wrap.append(top, input);
   input.addEventListener("input", () => set({ [key]: Number(input.value) }));
   sliderHost.appendChild(wrap);
-  sliderEls[key] = { input, val: wrap.querySelector(".val"), unit };
+  sliderEls[key] = { input, val, unit };
 });
 document.querySelectorAll("input[data-slider]").forEach((input) => {
   const key = input.dataset.slider;
@@ -187,8 +202,20 @@ document.querySelectorAll("[data-bg]").forEach((btn) =>
   btn.addEventListener("click", () => set({ bg: btn.dataset.bg })));
 document.querySelectorAll("[data-keyer]").forEach((btn) =>
   btn.addEventListener("click", () => set({ keyer: btn.dataset.keyer })));
-document.querySelectorAll("[data-pos]").forEach((btn) =>
-  btn.addEventListener("click", () => set({ [btn.dataset.pos]: btn.dataset.val })));
+const CORNERS = {
+  tl: t("cornerTL", null, "Top left"), tr: t("cornerTR", null, "Top right"),
+  bl: t("cornerBL", null, "Bottom left"), br: t("cornerBR", null, "Bottom right")
+};
+document.querySelectorAll(".corners[data-item]").forEach((group) => {
+  const item = t(group.dataset.item);
+  group.setAttribute("aria-label", t("positionOf", [item], item + " position"));
+});
+document.querySelectorAll("[data-pos]").forEach((btn) => {
+  const item = t(btn.dataset.item), corner = CORNERS[btn.dataset.val];
+  btn.title = corner;
+  btn.setAttribute("aria-label", t("positionAt", [item, corner], item + ": " + corner));
+  btn.addEventListener("click", () => set({ [btn.dataset.pos]: btn.dataset.val }));
+});
 
 document.getElementById("bgColor").addEventListener("input", (e) => set({ bgColor: e.target.value }));
 document.getElementById("chromaColor").addEventListener("input", (e) => set({ chromaColor: e.target.value }));
@@ -222,7 +249,7 @@ document.getElementById("logoUpload").addEventListener("change", (e) => {
 });
 const snapBtn = document.getElementById("snapshot");
 function snapFlash(text, ok) {
-  const original = "Save PNG";
+  const original = t("savePng", null, "Save PNG");
   snapBtn.textContent = text;
   snapBtn.style.color = ok ? "var(--accent)" : "var(--danger)";
   setTimeout(() => { snapBtn.textContent = original; snapBtn.style.color = ""; }, 1800);
@@ -235,21 +262,21 @@ snapBtn.addEventListener("click", async () => {
       a.href = pv.canvas.toDataURL("image/png");
       a.download = "cam360-" + Date.now() + ".png";
       document.body.appendChild(a); a.click(); a.remove();
-      snapFlash("Saved", true);
-    } catch (err) { snapFlash("Failed", false); }
+      snapFlash(t("flashSaved", null, "Saved"), true);
+    } catch (err) { snapFlash(t("flashFailed", null, "Failed"), false); }
     return;
   }
   // Otherwise ask the active tab, and say so when nothing is filming there.
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (!tab || tab.id == null) { snapFlash("No camera", false); return; }
+  if (!tab || tab.id == null) { snapFlash(t("flashNoCamera", null, "No camera"), false); return; }
   let done = false;
-  const timer = setTimeout(() => { if (!done) { done = true; snapFlash("No camera", false); } }, 1500);
+  const timer = setTimeout(() => { if (!done) { done = true; snapFlash(t("flashNoCamera", null, "No camera"), false); } }, 1500);
   chrome.tabs.sendMessage(tab.id, { __cam360: "snapshot" }, (res) => {
     void chrome.runtime.lastError;
     if (done) return;
     done = true; clearTimeout(timer);
-    if (res && res.ok) snapFlash("Saved", true);
-    else snapFlash("No camera", false);
+    if (res && res.ok) snapFlash(t("flashSaved", null, "Saved"), true);
+    else snapFlash(t("flashNoCamera", null, "No camera"), false);
   });
 });
 
@@ -265,9 +292,10 @@ document.getElementById("panel").addEventListener("click", () => set({ overlayVi
 /* ---------------- Keyboard shortcut ----------------
  * Chrome silently drops a suggested shortcut when it clashes with something
  * else, so the manifest value is a request, not a fact. Show what is really
- * bound, and make the chip a one click route to Chrome's shortcuts page so a
- * user with a clash, or on a keyboard layout where the default is awkward,
- * can set their own.
+ * bound, and make the chip a one click route to the browser's shortcuts page
+ * so a user with a clash, or on a keyboard layout where the default is
+ * awkward, can set their own. Firefox opens its page through an API rather
+ * than a URL.
  */
 const shortcutBtn = document.getElementById("shortcut");
 
@@ -278,7 +306,7 @@ function paintShortcut() {
     shortcutBtn.textContent = "";
     if (combo) {
       shortcutBtn.classList.remove("unset");
-      shortcutBtn.title = "Change this shortcut";
+      shortcutBtn.title = t("shortcutChange", null, "Change this shortcut");
       combo.split("+").forEach((key) => {
         const k = document.createElement("kbd");
         k.textContent = key;
@@ -287,13 +315,14 @@ function paintShortcut() {
     } else {
       // Nothing bound. Say so plainly instead of printing keys that do nothing.
       shortcutBtn.classList.add("unset");
-      shortcutBtn.textContent = "not set";
-      shortcutBtn.title = "No shortcut is bound. Click to set one.";
+      shortcutBtn.textContent = t("shortcutNotSet", null, "not set");
+      shortcutBtn.title = t("shortcutNotSetTitle", null, "No shortcut is set. Click to choose one.");
     }
   });
 }
 shortcutBtn.addEventListener("click", () => {
-  chrome.tabs.create({ url: "chrome://extensions/shortcuts" });
+  if (IS_FIREFOX) chrome.commands.openShortcutSettings();
+  else chrome.tabs.create({ url: "chrome://extensions/shortcuts" });
   window.close();
 });
 paintShortcut();
@@ -337,24 +366,36 @@ function render() {
   show("featherWrap", bgOn && !chroma);
   show("chromaWrap", bgOn && chroma);
   document.getElementById("keyerNote").textContent = chroma
-    ? "Works on every site (incl. Google Meet). Best with a solid-colour backdrop behind you."
-    : "Highest quality, no green screen needed. Blocked on a few strict sites like Google Meet.";
+    ? t("keyerNoteChroma", null, "Works on every site, Google Meet included. Best with a plain, single colour backdrop behind you.")
+    : t("keyerNoteAi", null, "Highest quality, no green screen needed. A few strict sites, like Google Meet, block it.");
 
   show("brbWrap", state.brb);
   document.getElementById("brbText").value = state.brbText;
   document.getElementById("nameText").value = state.nameText;
 
-  document.getElementById("panel").textContent = state.overlayVisible ? "Hide in-call panel" : "Show in-call panel";
+  document.getElementById("panel").textContent = state.overlayVisible
+    ? t("hidePanel", null, "Hide in-call panel") : t("showPanel", null, "Show in-call panel");
   renderStatus();
+}
+
+/* The engine reports the AI model's state as a code; the words are here. */
+const STATUS = {
+  loading: ["⏳ ", "statusLoading", "Loading the AI model…"],
+  ready: ["✓ ", "statusReady", "AI background ready"],
+  error: ["⚠ ", "statusError", "This site blocks the AI model. Switch the cut-out method to Green screen, which works here."],
+  idle: ["", "statusIdle", "The AI model starts when a camera is on."]
+};
+function statusText(code) {
+  const [icon, key, fallback] = STATUS[code] || STATUS.idle;
+  return icon + t(key, null, fallback);
 }
 
 function renderStatus() {
   const el = document.getElementById("status");
   if (state.bg === "off" || state.keyer === "chroma") { el.textContent = ""; el.classList.remove("err"); return; }
   chrome.storage.local.get("cam360_status", (res) => {
-    const s = res.cam360_status || { segState: "idle", message: "" };
-    const icon = s.segState === "error" ? "⚠ " : s.segState === "loading" ? "⏳ " : s.segState === "ready" ? "✓ " : "";
-    el.textContent = s.message ? icon + s.message : "AI engine starts when a camera is active.";
+    const s = res.cam360_status || { segState: "idle" };
+    el.textContent = statusText(s.segState);
     el.classList.toggle("err", s.segState === "error");
   });
 }
@@ -394,10 +435,12 @@ async function cameraPermissionState() {
 
 async function startPreview() {
   pv.start.hidden = true;
-  previewMessage("Starting camera...");
+  previewMessage(t("previewStarting", null, "Starting camera…"));
 
   // Permission not granted yet: the popup cannot show the prompt, so ask from
-  // a tab instead of letting the request silently fail here.
+  // a tab instead of letting the request silently fail here. Firefox answers
+  // "prompt" for as long as its own prompt was never told to remember, which
+  // is why the tab asks Firefox users to tick that box.
   const perm = await cameraPermissionState();
   if (perm === "prompt" || perm === "denied") {
     try { chrome.storage.local.set({ cam360_preview: false }); } catch (_) {}
@@ -418,7 +461,7 @@ async function startPreview() {
       canvas: pv.canvas,
       getSettings: () => state,
       getBaseURL: () => chrome.runtime.getURL(""),
-      onStatus: (st) => { if (st.segState === "loading") previewMessage(st.message); else previewMessage(""); }
+      onStatus: (st) => { previewMessage(st.segState === "loading" ? statusText("loading") : ""); }
     });
     pv.renderer.start();
     try { chrome.storage.local.set({ cam360_preview: true }); } catch (_) {}
@@ -428,7 +471,8 @@ async function startPreview() {
     pv.stop.hidden = true;
     document.body.classList.remove("preview-on");
     if (err && err.name === "NotAllowedError") { openGrantTab(); return; }
-    previewMessage("Could not start the camera: " + (err && err.message ? err.message : err));
+    const why = String(err && err.message ? err.message : err);
+    previewMessage(t("previewFailed", [why], "Could not start the camera: " + why));
   }
 }
 

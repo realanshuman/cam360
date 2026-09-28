@@ -10,10 +10,10 @@
   <header class="topbar">
     <div class="brand"><svg class="logo" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#2383E2"/><circle cx="24" cy="24" r="11" fill="none" stroke="#fff" stroke-width="3.25" stroke-linecap="round" stroke-dasharray="57 12.1" transform="rotate(-14 24 24)"/><circle cx="24" cy="24" r="4.25" fill="#fff"/></svg> Cam360</div>
     <div class="top-actions">
-      <button id="openWindow" class="iconbtn win-only-hide" title="Open as a resizable window">
+      <button id="openWindow" class="iconbtn win-only-hide" title="Open as a resizable window" data-i18n-title="openWindowTitle">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
       </button>
-      <button id="power" class="sw" role="switch" aria-label="Enable Cam360"></button>
+      <button id="power" class="sw" role="switch" aria-label="Turn Cam360 on or off" data-i18n-aria-label="powerLabel"></button>
     </div>
   </header>
 
@@ -23,60 +23,60 @@
       <canvas id="previewCanvas" hidden></canvas>
       <button id="previewStart" class="preview-cta">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-        Preview my camera
+        <span data-i18n="previewStart">Preview my camera</span>
       </button>
       <p id="previewMsg" class="preview-msg" hidden></p>
-      <button id="previewStop" class="preview-close" title="Stop preview" hidden>✕</button>
+      <button id="previewStop" class="preview-close" title="Stop preview" data-i18n-title="previewStopTitle" hidden>✕</button>
     </div>
   </div>
 
   <div class="scroll">
     <section class="section">
-      <div class="section-label">Transform</div>
-      <div class="row"><span class="row-label">⇋&nbsp; Mirror</span><button class="sw" data-toggle="mirror" role="switch"></button></div>
-      <div class="row"><span class="row-label">⇅&nbsp; Flip vertical</span><button class="sw" data-toggle="flipV" role="switch"></button></div>
-      <div class="row"><span class="row-label">⟳&nbsp; Rotate</span><button id="rotate" class="tbtn tbtn-mini">0°</button></div>
+      <div class="section-label" data-i18n="sectionTransform">Transform</div>
+      <div class="row"><span class="row-label"><span aria-hidden="true">⇋&nbsp; </span><span data-i18n="mirror">Mirror</span></span><button class="sw" data-toggle="mirror" role="switch"></button></div>
+      <div class="row"><span class="row-label"><span aria-hidden="true">⇅&nbsp; </span><span data-i18n="flipVertical">Flip vertical</span></span><button class="sw" data-toggle="flipV" role="switch"></button></div>
+      <div class="row"><span class="row-label"><span aria-hidden="true">⟳&nbsp; </span><span data-i18n="rotate">Rotate</span></span><button id="rotate" class="tbtn tbtn-mini">0°</button></div>
     </section>
 
     <section class="section">
-      <div class="section-label">Look</div>
+      <div class="section-label" data-i18n="sectionLook">Look</div>
       <div class="chips" id="presets">
-        <button data-preset="none">None</button>
-        <button data-preset="warm">Warm</button>
-        <button data-preset="cool">Cool</button>
-        <button data-preset="bright">Bright</button>
-        <button data-preset="bw">B&amp;W</button>
-        <button data-preset="soft">Soft focus</button>
+        <button data-preset="none" data-i18n="lookNone">None</button>
+        <button data-preset="warm" data-i18n="lookWarm">Warm</button>
+        <button data-preset="cool" data-i18n="lookCool">Cool</button>
+        <button data-preset="bright" data-i18n="lookBright">Bright</button>
+        <button data-preset="bw" data-i18n="lookBw">B&amp;W</button>
+        <button data-preset="soft" data-i18n="lookSoft">Soft focus</button>
       </div>
       <div class="sliders" id="sliders"><!-- injected --></div>
-      <div class="row"><span class="row-label">☀&nbsp; Low-light boost</span><button class="sw" data-toggle="lowLight" role="switch"></button></div>
+      <div class="row"><span class="row-label"><span aria-hidden="true">☀&nbsp; </span><span data-i18n="lowLight">Low-light boost</span></span><button class="sw" data-toggle="lowLight" role="switch"></button></div>
     </section>
 
     <section class="section">
-      <div class="section-label">Background</div>
+      <div class="section-label" data-i18n="sectionBackground">Background</div>
       <div class="seg" id="bgmodes">
-        <button data-bg="off">Off</button>
-        <button data-bg="blur">Blur</button>
-        <button data-bg="color">Color</button>
-        <button data-bg="scene">Scene</button>
-        <button data-bg="video">Video</button>
+        <button data-bg="off" data-i18n="bgOff">Off</button>
+        <button data-bg="blur" data-i18n="bgBlur">Blur</button>
+        <button data-bg="color" data-i18n="bgColour">Colour</button>
+        <button data-bg="scene" data-i18n="bgScene">Scene</button>
+        <button data-bg="video" data-i18n="bgVideo">Video</button>
       </div>
 
       <div id="keyerWrap" class="hidden mt">
-        <div class="mini-label">Cut-out method</div>
+        <div class="mini-label" data-i18n="cutoutMethod">Cut-out method</div>
         <div class="seg" id="keyer">
-          <button data-keyer="ai">AI</button>
-          <button data-keyer="chroma">Green screen</button>
+          <button data-keyer="ai" data-i18n="keyerAi">AI</button>
+          <button data-keyer="chroma" data-i18n="keyerChroma">Green screen</button>
         </div>
         <p class="help" id="keyerNote"></p>
       </div>
 
       <div id="bgBlurWrap" class="slider hidden mt">
-        <div class="top"><span class="name">Blur strength</span><span class="val"></span></div>
+        <div class="top"><span class="name" data-i18n="bgBlurStrength">Blur strength</span><span class="val"></span></div>
         <input type="range" min="2" max="30" data-slider="bgBlur">
       </div>
 
-      <div id="bgColorWrap" class="colorrow hidden mt"><span class="row-label">Colour</span><input type="color" id="bgColor" value="#0b1020"></div>
+      <div id="bgColorWrap" class="colorrow hidden mt"><span class="row-label" data-i18n="colour">Colour</span><input type="color" id="bgColor" value="#0b1020"></div>
 
       <div id="bgSceneWrap" class="hidden mt">
         <div class="swatches" id="scenes">
@@ -85,7 +85,7 @@
           <button data-scene="grad-ocean" style="background:linear-gradient(135deg,#0ea5e9,#0f172a)"></button>
           <button data-scene="grad-forest" style="background:linear-gradient(135deg,#065f46,#a7f3d0)"></button>
           <button data-scene="grad-mono" style="background:linear-gradient(135deg,#374151,#111827)"></button>
-          <button data-scene="custom" id="customScene" class="swatch-add" title="Upload image">+</button>
+          <button data-scene="custom" id="customScene" class="swatch-add" title="Upload an image" data-i18n-title="uploadImageTitle">+</button>
         </div>
         <input type="file" id="bgUpload" accept="image/*" hidden>
       </div>
@@ -94,77 +94,78 @@
         <div class="swatches" id="vscenes">
           <button data-vscene="anim-aurora" style="background:linear-gradient(135deg,#10b981,#4f46e5,#db2777)">✦</button>
           <button data-vscene="anim-waves" style="background:linear-gradient(135deg,#0ea5e9,#0b1020)">〜</button>
-          <button data-vscene="customv" id="customVScene" class="swatch-add" title="Upload video">+</button>
+          <button data-vscene="customv" id="customVScene" class="swatch-add" title="Upload a video" data-i18n-title="uploadVideoTitle">+</button>
         </div>
         <input type="file" id="bgvUpload" accept="video/*" hidden>
       </div>
 
       <div id="featherWrap" class="slider hidden mt">
-        <div class="top"><span class="name">Edge feather</span><span class="val"></span></div>
+        <div class="top"><span class="name" data-i18n="edgeFeather">Edge feather</span><span class="val"></span></div>
         <input type="range" min="0" max="12" data-slider="feather">
       </div>
 
       <div id="chromaWrap" class="hidden mt">
-        <div class="colorrow"><span class="row-label">Key colour</span><input type="color" id="chromaColor" value="#00c000"></div>
-        <div class="slider"><div class="top"><span class="name">Key strength</span><span class="val"></span></div><input type="range" min="5" max="90" data-slider="chromaThreshold"></div>
-        <div class="slider"><div class="top"><span class="name">Key softness</span><span class="val"></span></div><input type="range" min="1" max="60" data-slider="chromaSmooth"></div>
+        <div class="colorrow"><span class="row-label" data-i18n="keyColour">Key colour</span><input type="color" id="chromaColor" value="#00c000"></div>
+        <div class="slider"><div class="top"><span class="name" data-i18n="keyStrength">Key strength</span><span class="val"></span></div><input type="range" min="5" max="90" data-slider="chromaThreshold"></div>
+        <div class="slider"><div class="top"><span class="name" data-i18n="keySoftness">Key softness</span><span class="val"></span></div><input type="range" min="1" max="60" data-slider="chromaSmooth"></div>
       </div>
 
       <p id="status" class="status"></p>
     </section>
 
     <section class="section">
-      <div class="section-label">Presence</div>
-      <div class="row"><span class="row-label">❚❚&nbsp; Freeze frame</span><button class="sw" data-toggle="freeze" role="switch"></button></div>
-      <div class="row"><span class="row-label">☕&nbsp; Be right back</span><button class="sw" data-toggle="brb" role="switch"></button></div>
+      <div class="section-label" data-i18n="sectionPresence">Presence</div>
+      <div class="row"><span class="row-label"><span aria-hidden="true">❚❚&nbsp; </span><span data-i18n="freezeFrame">Freeze frame</span></span><button class="sw" data-toggle="freeze" role="switch"></button></div>
+      <div class="row"><span class="row-label"><span aria-hidden="true">☕&nbsp; </span><span data-i18n="beRightBack">Be right back</span></span><button class="sw" data-toggle="brb" role="switch"></button></div>
       <div id="brbWrap" class="hidden">
-        <input type="text" id="brbText" class="txt" placeholder="Be right back" maxlength="40">
-        <button id="brbUploadBtn" class="tbtn full">Set BRB image…</button>
+        <input type="text" id="brbText" class="txt" placeholder="Be right back" data-i18n-placeholder="brbDefault" maxlength="40">
+        <button id="brbUploadBtn" class="tbtn full" data-i18n="brbImage">Set a be right back image…</button>
         <input type="file" id="brbUpload" accept="image/*" hidden>
       </div>
-      <div class="row"><span class="row-label">📷&nbsp; Snapshot</span><button id="snapshot" class="tbtn tbtn-mini">Save PNG</button></div>
+      <div class="row"><span class="row-label"><span aria-hidden="true">📷&nbsp; </span><span data-i18n="snapshot">Snapshot</span></span><button id="snapshot" class="tbtn tbtn-mini" data-i18n="savePng">Save PNG</button></div>
     </section>
 
     <section class="section">
-      <div class="section-label">Overlays</div>
-      <div class="row"><span class="row-label">🏷&nbsp; Name tag</span><div class="corners" role="group" aria-label="Name tag position"><button type="button" data-pos="namePos" data-val="tl" title="Top left" aria-label="Name tag: top left"></button><button type="button" data-pos="namePos" data-val="tr" title="Top right" aria-label="Name tag: top right"></button><button type="button" data-pos="namePos" data-val="bl" title="Bottom left" aria-label="Name tag: bottom left"></button><button type="button" data-pos="namePos" data-val="br" title="Bottom right" aria-label="Name tag: bottom right"></button></div><button class="sw" data-toggle="showName" role="switch"></button></div>
-      <input type="text" id="nameText" class="txt" placeholder="Your name" maxlength="40">
-      <div class="row"><span class="row-label">★&nbsp; Logo</span><div class="corners" role="group" aria-label="Logo position"><button type="button" data-pos="logoPos" data-val="tl" title="Top left" aria-label="Logo: top left"></button><button type="button" data-pos="logoPos" data-val="tr" title="Top right" aria-label="Logo: top right"></button><button type="button" data-pos="logoPos" data-val="bl" title="Bottom left" aria-label="Logo: bottom left"></button><button type="button" data-pos="logoPos" data-val="br" title="Bottom right" aria-label="Logo: bottom right"></button></div><button class="sw" data-toggle="showLogo" role="switch"></button></div>
-      <button id="logoUploadBtn" class="tbtn full">Upload logo…</button>
+      <div class="section-label" data-i18n="sectionOverlays">Overlays</div>
+      <div class="row"><span class="row-label"><span aria-hidden="true">🏷&nbsp; </span><span data-i18n="nameTag">Name tag</span></span><div class="corners" role="group" data-item="nameTag"><button type="button" data-pos="namePos" data-val="tl" data-item="nameTag"></button><button type="button" data-pos="namePos" data-val="tr" data-item="nameTag"></button><button type="button" data-pos="namePos" data-val="bl" data-item="nameTag"></button><button type="button" data-pos="namePos" data-val="br" data-item="nameTag"></button></div><button class="sw" data-toggle="showName" role="switch"></button></div>
+      <input type="text" id="nameText" class="txt" placeholder="Your name" data-i18n-placeholder="yourName" maxlength="40">
+      <div class="row"><span class="row-label"><span aria-hidden="true">★&nbsp; </span><span data-i18n="logo">Logo</span></span><div class="corners" role="group" data-item="logo"><button type="button" data-pos="logoPos" data-val="tl" data-item="logo"></button><button type="button" data-pos="logoPos" data-val="tr" data-item="logo"></button><button type="button" data-pos="logoPos" data-val="bl" data-item="logo"></button><button type="button" data-pos="logoPos" data-val="br" data-item="logo"></button></div><button class="sw" data-toggle="showLogo" role="switch"></button></div>
+      <button id="logoUploadBtn" class="tbtn full" data-i18n="uploadLogo">Upload logo…</button>
       <input type="file" id="logoUpload" accept="image/*" hidden>
-      <div class="row"><span class="row-label">🕐&nbsp; Live clock</span><div class="corners" role="group" aria-label="Live clock position"><button type="button" data-pos="clockPos" data-val="tl" title="Top left" aria-label="Live clock: top left"></button><button type="button" data-pos="clockPos" data-val="tr" title="Top right" aria-label="Live clock: top right"></button><button type="button" data-pos="clockPos" data-val="bl" title="Bottom left" aria-label="Live clock: bottom left"></button><button type="button" data-pos="clockPos" data-val="br" title="Bottom right" aria-label="Live clock: bottom right"></button></div><button class="sw" data-toggle="showClock" role="switch"></button></div>
+      <div class="row"><span class="row-label"><span aria-hidden="true">🕐&nbsp; </span><span data-i18n="liveClock">Live clock</span></span><div class="corners" role="group" data-item="liveClock"><button type="button" data-pos="clockPos" data-val="tl" data-item="liveClock"></button><button type="button" data-pos="clockPos" data-val="tr" data-item="liveClock"></button><button type="button" data-pos="clockPos" data-val="bl" data-item="liveClock"></button><button type="button" data-pos="clockPos" data-val="br" data-item="liveClock"></button></div><button class="sw" data-toggle="showClock" role="switch"></button></div>
     </section>
   </div>
 
   <footer class="footer">
-    <button id="panel" class="tbtn">Show in-call panel</button>
-    <button id="reset" class="tbtn">Reset</button>
+    <button id="panel" class="tbtn" data-i18n="showPanel">Show in-call panel</button>
+    <button id="reset" class="tbtn" data-i18n="reset">Reset</button>
   </footer>
   <div class="meta">
     <p class="meta-row">
-      <span>Panel mid-call: <button type="button" id="shortcut" class="kbdbtn" title="Change this shortcut"></button></span>
+      <span><span data-i18n="panelMidCall">Panel mid-call:</span> <button type="button" id="shortcut" class="kbdbtn" title="Change this shortcut" data-i18n-title="shortcutChange"></button></span>
       <span class="meta-dot">·</span>
-      <a class="meta-help" href="https://fuckwebcam.xyz/#support" target="_blank" rel="noopener noreferrer" title="Ask a question or report a problem">
+      <a class="meta-help" href="https://fuckwebcam.xyz/#support" target="_blank" rel="noopener noreferrer" title="Ask a question or report a problem" data-i18n-title="getHelpTitle">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M9.2 9.3a2.9 2.9 0 0 1 5.6 1c0 1.9-2.8 2.4-2.8 2.4"/><path d="M12 17.1h.01"/></svg>
-        Get help
+        <span data-i18n="getHelp">Get help</span>
       </a>
     </p>
     <p class="meta-row">
-      <span>Built by <a href="https://realanshuman.com" target="_blank" rel="noopener noreferrer">Anshuman</a></span>
+      <span><span data-i18n="builtBy">Built by</span> <a href="https://realanshuman.com" target="_blank" rel="noopener noreferrer">Anshuman</a></span>
       <span class="meta-dot">·</span>
-      <span>Free forever</span>
+      <span data-i18n="freeForever">Free forever</span>
     </p>
     <a class="coffee" href="https://buymeacoffee.com/realanshuman" target="_blank" rel="noopener noreferrer">
-      <span class="coffee-cup" aria-hidden="true">&#9749;</span> Buy me a coffee
+      <span class="coffee-cup" aria-hidden="true">&#9749;</span> <span data-i18n="buyCoffee">Buy me a coffee</span>
     </a>
   </div>
 
-  <div id="edgeR" class="edge edge-r" title="Drag to resize"></div>
-  <div id="edgeB" class="edge edge-b" title="Drag to resize"></div>
-  <div id="grip" class="grip" title="Drag to resize">
+  <div id="edgeR" class="edge edge-r" title="Drag to resize" data-i18n-title="resizeTitle"></div>
+  <div id="edgeB" class="edge edge-b" title="Drag to resize" data-i18n-title="resizeTitle"></div>
+  <div id="grip" class="grip" title="Drag to resize" data-i18n-title="resizeTitle">
     <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="8.5" cy="1.5" r="1.1"/><circle cx="8.5" cy="5" r="1.1"/><circle cx="5" cy="5" r="1.1"/><circle cx="8.5" cy="8.5" r="1.1"/><circle cx="5" cy="8.5" r="1.1"/><circle cx="1.5" cy="8.5" r="1.1"/></svg>
   </div>
 
+  <script src="i18n.js"></script>
   <script src="../src/settings.js"></script>
   <script src="../src/engine.js"></script>
   <script src="popup.js"></script>

@@ -30,7 +30,10 @@ loaded, toggle your camera off and on once in that site.
   a looping video. You are cut out either by an AI model running on your device
   or by green screen keying.
 - **Lighting.** Brightness, contrast, saturation and hue, a low light boost for
-  dim rooms, six one click presets, and skin smoothing.
+  dim rooms, and six one click presets.
+- **Skin smoothing.** Softens skin while your eyes, brows, lips and hair stay
+  sharp, and leaves the room behind you alone. It finds you with the same AI
+  cut-out the backgrounds use.
 - **Framing.** Mirror, flip, rotate, and zoom up to 250 percent.
 - **Stepping away.** Freeze the frame or show a be right back card, so the call
   still counts you as present. Save the current frame as a PNG.
@@ -45,6 +48,10 @@ loaded, toggle your camera off and on once in that site.
 The popup also has a live preview that runs the real pipeline, so what you see
 there is what the call receives.
 
+The popup, the in-call panel and the words on the be right back card follow
+your browser's language: English, Spanish, Portuguese (Brazil), French, German
+or Japanese.
+
 ## What it cannot do
 
 Worth knowing before you install.
@@ -58,8 +65,9 @@ Worth knowing before you install.
   that stops extensions loading WebAssembly into its page, and the segmentation
   model needs it. Switch the cut out method to green screen and background
   replacement works there too. Every other effect is unaffected.
-- **Chromium browsers only.** Chrome, Edge, Brave and Arc. Firefox and Safari
-  use a different extension model.
+- **Chrome, Edge, Brave, Arc and Firefox.** Firefox needs version 140 or
+  later, and its build is not on addons.mozilla.org yet (see Building a
+  release). Safari uses a different extension model.
 
 ## Privacy
 
@@ -109,18 +117,21 @@ implementation would drift from the real output and stop being a preview.
 
 ```
 manifest.json          MV3 manifest, content scripts in MAIN and ISOLATED worlds
+_locales/              every word the extension shows, one folder per language
 src/settings.js        the settings shape, and the settings/media storage split
 src/engine.js          the shared frame pipeline: effects, keyers, overlays
 src/inject.js          MAIN world, the getUserMedia override
 src/bridge.js          ISOLATED world, storage bridge and the in-call panel
 src/background.js      service worker, relays the keyboard shortcut
 popup/                 toolbar popup, runs the engine for the live preview
+popup/i18n.js          fills the popup and the permission tab from _locales
 vendor/mediapipe/      bundled selfie segmentation model and WASM
 test/test.html         standalone page to check the pipeline without a call
 web/                   the marketing site, static, no build step
 brand/                 brand guide and logo source
 docs/seo-plan.md       search and answer engine plan
-scripts/package.sh     builds the Chrome Web Store zip
+scripts/package.sh     builds the Chrome Web Store and Firefox zips
+scripts/firefox-manifest.py  the Firefox manifest, made from manifest.json
 ```
 
 ## Working on it
@@ -139,15 +150,51 @@ popup ceiling, or use the arrow in the header to open the same UI as a real
 window. The layout switches to two panes past 560px and flows into more columns
 as it grows.
 
+## Translations
+
+Every word the extension shows comes from `_locales/<language>/messages.json`,
+through the browser's i18n API, and the browser picks the language. English
+is the source and the fallback, and its entries carry a description for
+translators.
+
+- The popup and the permission tab mark their text with `data-i18n` (and
+  `data-i18n-title`, `data-i18n-aria-label`, `data-i18n-placeholder`), and
+  `popup/i18n.js` fills it in. The English stays in the markup, so a missing
+  message shows English, never a blank.
+- `src/bridge.js` builds the in-call panel and reads its words directly.
+- `src/engine.js` runs in the page's MAIN world, where the extension's
+  messages cannot be read. It reports the AI model's state as a code, and the
+  popup and the panel put it into words. The one text it draws, the be right
+  back card, arrives already translated inside the settings.
+
+To add a language, copy `_locales/en/messages.json` to `_locales/<code>/`,
+translate every `message`, keep each `$PLACEHOLDER$` as it is, and keep
+`extDescription` within 132 characters, the store's limit for the summary it
+reads from there. The store listing text for each language is in
+`brand/store/listing/`.
+
 ## Building a release
 
 ```bash
 ./scripts/package.sh
 ```
 
-This writes `dist/cam360-<version>.zip` with `manifest.json` at the zip root,
-which is what the Chrome Web Store requires. Bump `version` in `manifest.json`
-first.
+This writes `dist/cam360-<version>.zip` for the Chrome Web Store (Edge Add-ons
+takes the same file) and `dist/cam360-firefox-<version>.zip` for
+addons.mozilla.org, each with `manifest.json` at the zip root, which is what
+both stores require. Bump `version` in `manifest.json` first.
+
+Firefox runs the same code with a rewritten manifest, made by
+`scripts/firefox-manifest.py`: an event page in place of the service worker,
+the add-on ID, Firefox 140 as the minimum, and the declaration that Cam360
+collects no data. The unpacked build is left in `dist/firefox/`. To try it,
+open `about:debugging`, This Firefox, Load Temporary Add-on, and pick
+`dist/firefox/manifest.json`, or run `npx web-ext run --source-dir
+dist/firefox`. `npx web-ext lint --source-dir dist/firefox` reports no errors
+and two expected warnings: the dynamic import that loads the bundled AI model
+from inside the package, and a Firefox for Android version note for a
+platform the build does not target. For the add-on review, the files in
+`vendor/mediapipe/` are Google's unmodified release, as its README says.
 
 ## The website
 

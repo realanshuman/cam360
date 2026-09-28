@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cam360 camera access</title>
+  <title data-i18n="grantTitle">Cam360 camera access</title>
   <style>
     :root {
       --bg: #ffffff; --sunken: #f7f6f3; --text: #37352f;
@@ -50,13 +50,14 @@
       <svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#2383E2"/><circle cx="24" cy="24" r="11" fill="none" stroke="#fff" stroke-width="3.25" stroke-linecap="round" stroke-dasharray="57 12.1" transform="rotate(-14 24 24)"/><circle cx="24" cy="24" r="4.25" fill="#fff"/></svg>
       Cam360
     </div>
-    <h1>Allow camera access</h1>
-    <p>Cam360 needs one-time permission to show your live preview. Chrome cannot ask from inside the small popup, so it asks here instead.</p>
-    <p>When the browser prompt appears near the address bar, choose <b>Allow</b>.</p>
-    <p class="state" id="state">Requesting your camera…</p>
+    <h1 data-i18n="grantHeading">Allow camera access</h1>
+    <p data-i18n="grantBody1">Cam360 needs permission once to show your live preview. Your browser cannot ask from inside the small popup, so it asks here instead.</p>
+    <p data-i18n="grantBody2">When your browser asks, next to the address bar, choose Allow.</p>
+    <p class="state" id="state" data-i18n="grantRequesting">Requesting your camera…</p>
     <p class="hint" id="hint" hidden></p>
-    <button id="retry" hidden>Try again</button>
+    <button id="retry" data-i18n="grantRetry" hidden>Try again</button>
   </div>
+  <script src="i18n.js"></script>
   <script src="grant.js"></script>
 </body>
 </html>

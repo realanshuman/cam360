@@ -29,6 +29,16 @@
   "use strict";
   if (window.Cam360Settings) return;
 
+  /* The words drawn into the video by default, in the browser's language
+     where there is a translation. This file runs where chrome.i18n exists
+     (the ISOLATED world and the popup); the MAIN world gets the result
+     inside DEFAULTS. */
+  const say = (key, fallback) => {
+    try { return (typeof chrome !== "undefined" && chrome.i18n && chrome.i18n.getMessage(key)) || fallback; }
+    catch (_) { return fallback; }
+  };
+  const BRB_EN = "Be right back";
+
   /* Storage keys. MEDIA_KEY is written only when an upload changes. */
   const KEY = "cam360";
   const MEDIA_KEY = "cam360_media";
@@ -46,7 +56,7 @@
     keyer: "ai",        // ai | chroma
     bgBlur: 14, bgColor: "#0b1020", bgImage: "", bgVideo: "", feather: 4,
     chromaColor: "#00c000", chromaThreshold: 42, chromaSmooth: 14,
-    freeze: false, brb: false, brbText: "Be right back", brbImage: "",
+    freeze: false, brb: false, brbText: say("brbDefault", BRB_EN), brbImage: "",
     showName: false, nameText: "", showLogo: false, logoImage: "", showClock: false,
     /* Where each overlay sits in the frame: tl | tr | bl | br */
     namePos: "bl", clockPos: "br", logoPos: "tr",
@@ -57,10 +67,18 @@
      URL, so "is this an upload" is a prefix test rather than a second flag. */
   const isUpload = (v) => typeof v === "string" && v.slice(0, 5) === "data:";
 
+  /* Every build before translations stored the English default whether or
+     not it was ever edited. Read that exact text as "not chosen", so the card
+     follows the language, while anything the user typed stays as typed. */
+  function localise(s) {
+    if (s.brbText === BRB_EN) s.brbText = DEFAULTS.brbText;
+    return s;
+  }
+
   function normalize(value) {
     const s = { ...DEFAULTS, ...(value || {}) };
     if (s.bg === "image") s.bg = "scene";   // a value stored by an older build
-    return s;
+    return localise(s);
   }
 
   /* Split a full settings object into the part that is written on every
@@ -82,7 +100,7 @@
     for (const k of MEDIA_KEYS) {
       if (m[k] !== undefined && m[k] !== "") out[k] = m[k];
     }
-    return out;
+    return localise(out);
   }
 
   /* True when a settings object written by an older build still carries its

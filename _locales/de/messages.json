@@ -1,0 +1,375 @@
+{
+  "lang": {
+    "message": "de"
+  },
+  "extDescription": {
+    "message": "Sieh in jedem Videoanruf besser aus: Hintergrund unscharf oder neu, besseres Licht, Spiegeln, Zoom. Für Meet, Discord, Zoom & mehr."
+  },
+  "cmdTogglePanel": {
+    "message": "Anrufpanel ein- oder ausblenden"
+  },
+  "openWindowTitle": {
+    "message": "In einem eigenen Fenster öffnen"
+  },
+  "powerLabel": {
+    "message": "Cam360 ein- oder ausschalten"
+  },
+  "previewStart": {
+    "message": "Kamera-Vorschau"
+  },
+  "previewStopTitle": {
+    "message": "Vorschau beenden"
+  },
+  "sectionTransform": {
+    "message": "Ausrichtung"
+  },
+  "mirror": {
+    "message": "Spiegeln"
+  },
+  "flipVertical": {
+    "message": "Vertikal spiegeln"
+  },
+  "flipShort": {
+    "message": "Kippen"
+  },
+  "rotate": {
+    "message": "Drehen"
+  },
+  "sectionLook": {
+    "message": "Stil"
+  },
+  "lookNone": {
+    "message": "Keiner"
+  },
+  "lookWarm": {
+    "message": "Warm"
+  },
+  "lookCool": {
+    "message": "Kühl"
+  },
+  "lookBright": {
+    "message": "Hell"
+  },
+  "lookBw": {
+    "message": "S/W"
+  },
+  "lookSoft": {
+    "message": "Weich"
+  },
+  "brightness": {
+    "message": "Helligkeit"
+  },
+  "contrast": {
+    "message": "Kontrast"
+  },
+  "saturation": {
+    "message": "Sättigung"
+  },
+  "zoom": {
+    "message": "Zoom"
+  },
+  "blur": {
+    "message": "Unschärfe"
+  },
+  "beautify": {
+    "message": "Haut glätten"
+  },
+  "hue": {
+    "message": "Farbton"
+  },
+  "lowLight": {
+    "message": "Aufhellen bei wenig Licht"
+  },
+  "sectionBackground": {
+    "message": "Hintergrund"
+  },
+  "bgOff": {
+    "message": "Aus"
+  },
+  "bgBlur": {
+    "message": "Unscharf"
+  },
+  "bgColour": {
+    "message": "Farbe"
+  },
+  "bgScene": {
+    "message": "Bild"
+  },
+  "bgVideo": {
+    "message": "Video"
+  },
+  "cutoutMethod": {
+    "message": "Freistellung"
+  },
+  "keyerAi": {
+    "message": "KI"
+  },
+  "keyerChroma": {
+    "message": "Greenscreen"
+  },
+  "keyerNoteAi": {
+    "message": "Beste Qualität, kein Greenscreen nötig. Einige strenge Seiten wie Google Meet blockieren es."
+  },
+  "keyerNoteChroma": {
+    "message": "Funktioniert auf jeder Seite, auch in Google Meet. Am besten mit einem glatten, einfarbigen Hintergrund hinter dir."
+  },
+  "bgBlurStrength": {
+    "message": "Stärke der Unschärfe"
+  },
+  "colour": {
+    "message": "Farbe"
+  },
+  "uploadImageTitle": {
+    "message": "Bild hochladen"
+  },
+  "uploadVideoTitle": {
+    "message": "Video hochladen"
+  },
+  "edgeFeather": {
+    "message": "Weiche Kante"
+  },
+  "keyColour": {
+    "message": "Key-Farbe"
+  },
+  "keyStrength": {
+    "message": "Toleranz"
+  },
+  "keySoftness": {
+    "message": "Weichheit"
+  },
+  "sectionPresence": {
+    "message": "Anwesenheit"
+  },
+  "freezeFrame": {
+    "message": "Standbild"
+  },
+  "freezeShort": {
+    "message": "Standbild"
+  },
+  "beRightBack": {
+    "message": "Bin gleich zurück"
+  },
+  "brbShort": {
+    "message": "Pause"
+  },
+  "brbDefault": {
+    "message": "Bin gleich zurück"
+  },
+  "brbImage": {
+    "message": "Pausenbild wählen…"
+  },
+  "snapshot": {
+    "message": "Schnappschuss"
+  },
+  "snapShort": {
+    "message": "Foto"
+  },
+  "savePng": {
+    "message": "PNG speichern"
+  },
+  "sectionOverlays": {
+    "message": "Einblendungen"
+  },
+  "nameTag": {
+    "message": "Namensschild"
+  },
+  "nameShort": {
+    "message": "Name"
+  },
+  "yourName": {
+    "message": "Dein Name"
+  },
+  "logo": {
+    "message": "Logo"
+  },
+  "logoShort": {
+    "message": "Logo"
+  },
+  "uploadLogo": {
+    "message": "Logo hochladen…"
+  },
+  "liveClock": {
+    "message": "Live-Uhr"
+  },
+  "clockShort": {
+    "message": "Uhr"
+  },
+  "cornerTL": {
+    "message": "Oben links"
+  },
+  "cornerTR": {
+    "message": "Oben rechts"
+  },
+  "cornerBL": {
+    "message": "Unten links"
+  },
+  "cornerBR": {
+    "message": "Unten rechts"
+  },
+  "positionOf": {
+    "message": "Position: $ITEM$",
+    "placeholders": {
+      "item": {
+        "content": "$1",
+        "example": "Name tag"
+      }
+    }
+  },
+  "positionAt": {
+    "message": "$ITEM$: $CORNER$",
+    "placeholders": {
+      "item": {
+        "content": "$1",
+        "example": "Name tag"
+      },
+      "corner": {
+        "content": "$2",
+        "example": "Top left"
+      }
+    }
+  },
+  "showPanel": {
+    "message": "Panel zeigen"
+  },
+  "hidePanel": {
+    "message": "Panel ausblenden"
+  },
+  "reset": {
+    "message": "Zurücksetzen"
+  },
+  "resetAll": {
+    "message": "Alles zurücksetzen"
+  },
+  "panelHideTitle": {
+    "message": "Panel ausblenden"
+  },
+  "powerOn": {
+    "message": "An"
+  },
+  "powerOff": {
+    "message": "Aus"
+  },
+  "panelMidCall": {
+    "message": "Panel im Anruf:"
+  },
+  "shortcutChange": {
+    "message": "Tastenkürzel ändern"
+  },
+  "shortcutNotSet": {
+    "message": "nicht festgelegt"
+  },
+  "shortcutNotSetTitle": {
+    "message": "Kein Tastenkürzel festgelegt. Zum Auswählen klicken."
+  },
+  "getHelp": {
+    "message": "Hilfe"
+  },
+  "getHelpTitle": {
+    "message": "Eine Frage stellen oder ein Problem melden"
+  },
+  "builtBy": {
+    "message": "Gebaut von"
+  },
+  "freeForever": {
+    "message": "Für immer kostenlos"
+  },
+  "buyCoffee": {
+    "message": "Spendier mir einen Kaffee"
+  },
+  "resizeTitle": {
+    "message": "Zum Ändern der Größe ziehen"
+  },
+  "flashSaved": {
+    "message": "Gespeichert"
+  },
+  "flashFailed": {
+    "message": "Fehler"
+  },
+  "flashNoCamera": {
+    "message": "Keine Kamera"
+  },
+  "previewStarting": {
+    "message": "Kamera wird gestartet…"
+  },
+  "previewFailed": {
+    "message": "Die Kamera konnte nicht gestartet werden: $ERROR$",
+    "placeholders": {
+      "error": {
+        "content": "$1",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "statusIdle": {
+    "message": "Das KI-Modell startet, sobald eine Kamera läuft."
+  },
+  "statusLoading": {
+    "message": "KI-Modell wird geladen…"
+  },
+  "statusReady": {
+    "message": "KI-Hintergrund bereit"
+  },
+  "statusError": {
+    "message": "Diese Seite blockiert das KI-Modell. Stell die Freistellung auf Greenscreen um, das funktioniert hier."
+  },
+  "grantTitle": {
+    "message": "Cam360: Kamerazugriff"
+  },
+  "grantHeading": {
+    "message": "Kamerazugriff erlauben"
+  },
+  "grantBody1": {
+    "message": "Cam360 braucht einmalig deine Erlaubnis, um die Vorschau zu zeigen. Dein Browser kann im kleinen Popup nicht fragen, deshalb fragt er hier."
+  },
+  "grantBody2": {
+    "message": "Wenn dein Browser neben der Adressleiste fragt, wähle Erlauben."
+  },
+  "grantBody2Firefox": {
+    "message": "Wenn Firefox fragt, lass das Häkchen zum Merken gesetzt und wähle Erlauben. Sonst fragt Firefox jedes Mal neu."
+  },
+  "grantRequesting": {
+    "message": "Kamera wird angefragt…"
+  },
+  "grantOk": {
+    "message": "Kamerazugriff erlaubt. Du kannst diesen Tab schließen und Cam360 erneut öffnen."
+  },
+  "grantDeclined": {
+    "message": "Der Kamerazugriff wurde abgelehnt oder ist blockiert."
+  },
+  "grantBlockedChrome": {
+    "message": "Wenn keine Abfrage erschienen ist, ist die Kamera für diese Erweiterung vielleicht schon blockiert. Klicke auf das Kamerasymbol am rechten Ende der Adressleiste oder öffne $PAGE$ und entferne Cam360 aus der Liste der blockierten Seiten. Versuch es dann erneut.",
+    "placeholders": {
+      "page": {
+        "content": "$1",
+        "example": "chrome://settings/content/camera"
+      }
+    }
+  },
+  "grantBlockedFirefox": {
+    "message": "Wenn keine Abfrage erschienen ist, ist die Kamera für diese Erweiterung vielleicht schon blockiert. Öffne $PAGE$, suche unter Berechtigungen nach Kamera und entferne die Sperre für Cam360. Versuch es dann erneut.",
+    "placeholders": {
+      "page": {
+        "content": "$1",
+        "example": "about:preferences#privacy"
+      }
+    }
+  },
+  "grantNoCamera": {
+    "message": "Keine nutzbare Kamera gefunden, oder eine andere App verwendet sie."
+  },
+  "grantNoCameraHint": {
+    "message": "Schließ andere Apps, die die Kamera nutzen könnten, und versuch es erneut."
+  },
+  "grantFailed": {
+    "message": "Die Kamera konnte nicht gestartet werden: $ERROR$",
+    "placeholders": {
+      "error": {
+        "content": "$1",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "grantRetry": {
+    "message": "Erneut versuchen"
+  }
+}

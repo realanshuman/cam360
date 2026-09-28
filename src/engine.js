@@ -42,13 +42,16 @@
    * timestamp it is fed must increase monotonically, so that counter is
    * shared too rather than kept per renderer.
    */
-  let segmenter = null, segLoading = false, lastTs = 0, lastSegAt = 0;
+  let segmenter = null, segLoading = false, segFailed = false, lastTs = 0, lastSegAt = 0;
   const SEG_INTERVAL_MS = 66;   /* about 15 mask updates a second */
 
+  /* Status goes out as a code, never as a sentence: this file runs in the
+     page's MAIN world, where the extension's translations cannot be read.
+     The popup and the in-call panel turn the code into words. */
   async function initSegmenter(baseURL, onStatus) {
-    if (segmenter || segLoading || !baseURL) return segmenter;
+    if (segmenter || segLoading || segFailed || !baseURL) return segmenter;
     segLoading = true;
-    onStatus && onStatus({ segState: "loading", message: "Loading AI background engine…" });
+    onStatus && onStatus({ segState: "loading" });
     try {
       const vision = await import(baseURL + "vendor/mediapipe/vision_bundle.mjs");
       const fileset = await vision.FilesetResolver.forVisionTasks(baseURL + "vendor/mediapipe/wasm");
@@ -57,15 +60,25 @@
         runningMode: "VIDEO", outputConfidenceMasks: true, outputCategoryMask: false
       });
       try { segmenter = await make("GPU"); } catch (_) { segmenter = await make("CPU"); }
-      onStatus && onStatus({ segState: "ready", message: "AI background ready" });
+      onStatus && onStatus({ segState: "ready" });
     } catch (err) {
+      /* A site that blocks the model (Google Meet's security policy) blocks
+         it for the life of the page, so stop here. Without this every frame
+         asked again, and each refusal went out as a status write. */
+      segFailed = true;
       console.warn("[Cam360] segmenter init failed:", err);
-      onStatus && onStatus({
-        segState: "error",
-        message: "AI background blocked by this site's security policy. Tip: switch keyer to Green screen, it works here."
-      });
+      onStatus && onStatus({ segState: "error" });
     } finally { segLoading = false; }
     return segmenter;
+  }
+
+  /* The model is wanted by an AI background, and by skin smoothing, which
+     uses the same cut-out to find you. A green screen background brings its
+     own cut-out, so smoothing on top of one never loads the model. */
+  function wantsModel(s) {
+    const bgOn = s.bg !== "off";
+    if (bgOn && s.keyer === "ai") return true;
+    return s.beautify > 0 && !(bgOn && s.keyer === "chroma");
   }
 
   /* --------------------------- Helpers ------------------------------- */
@@ -194,6 +207,16 @@
     const keyIn = document.createElement("canvas"), keyInCtx = keyIn.getContext("2d");
     const keyMask = document.createElement("canvas"), keyMaskCtx = keyMask.getContext("2d");
     const soft = document.createElement("canvas"), softCtx = soft.getContext("2d");
+    /* Skin smoothing: the blurred frame, the small frame its edges are found
+       on, and the mask built from them. See smoothSkin(). The small frame is
+       made on the GPU, for the same reason as keyIn, then copied to a CPU
+       canvas to be read: the copy moves only the small result, and reading
+       a CPU canvas does not trip Chrome's readback warning in the page. */
+    const skin = document.createElement("canvas"), skinCtx = skin.getContext("2d");
+    const edgeIn = document.createElement("canvas"), edgeInCtx = edgeIn.getContext("2d");
+    const edgeCpu = document.createElement("canvas"), edgeCpuCtx = edgeCpu.getContext("2d", { willReadFrequently: true });
+    const smoothMask = document.createElement("canvas"), smoothMaskCtx = smoothMask.getContext("2d");
+    let edgeData = null, edgeLum = null, edgeSum = null, edgeGrad = null, edgeRow = null, lastEdgeAt = 0;
 
     let running = false, maskData = null;
 
@@ -217,11 +240,13 @@
        returns barely changes between neighbouring frames, so run it at a
        fraction of the frame rate and keep using the last mask in between.
        At 30fps that is one run in two; the edge is blurred by the feather
-       either way, so the saving does not show. */
-    function runSegmentation(w, h) {
+       either way, so the saving does not show. Skin smoothing on its own
+       asks for half that again: it only needs to know roughly where you
+       are, because its own edge mask does the fine work. */
+    function runSegmentation(w, h, interval) {
       if (!segmenter) return;
       const now = performance.now();
-      if (now - lastSegAt < SEG_INTERVAL_MS) return;
+      if (now - lastSegAt < interval) return;
       lastSegAt = now;
       const scale = Math.min(1, 320 / Math.max(w, h));
       const sw = Math.max(2, Math.round(w * scale)), sh = Math.max(2, Math.round(h * scale));
@@ -314,6 +339,123 @@
       cutCtx.globalCompositeOperation = "source-over";
       ctx.drawImage(bgLayer, 0, 0);
       ctx.drawImage(cut, 0, 0);
+    }
+
+    /* ------------------------- Skin smoothing -------------------------
+     * Smoothing used to lay a blurred copy of the whole frame over itself,
+     * so the room went soft along with your skin, and so did your eyes.
+     *
+     * Now the blurred copy is cut to a mask before it lands. The mask is
+     * you, from the same cut-out the backgrounds use, minus everything
+     * with a strong edge: eyes, brows, lips, hair, glasses and your outline
+     * stay sharp, and only smooth areas, which on a face means skin, are
+     * softened. Where the AI model is blocked (Google Meet) the edge mask
+     * works alone. The flat parts of a room have nothing to soften, so the
+     * effect still lands where it should.
+     *
+     * The edges are found on a frame about 320px across, at the same pace
+     * as the cut-out. At that scale skin texture is finer than a pixel and
+     * averages out, while an eye or a brow still shows.
+     *
+     * An edge here is a pixel that stands out from the average of its
+     * neighbours, not a steep one. Shading across a cheek is steep but
+     * close to a straight ramp, which the average keeps, so it scores near
+     * zero. The rim of an eye, a brow, the lips and hair do not. Measured on
+     * a portrait: skin stays under 10, those features reach 20 to 50.
+     */
+    const EDGE_SIDE = 320;
+    /* Detail (0 to 255) where protection starts, and where it is complete. */
+    const EDGE_LO = 6, EDGE_HI = 18;
+
+    /* Rebuild the edge mask into smoothMask. False when it is too soon to. */
+    function buildEdgeMask(w, h) {
+      const now = performance.now();
+      if (smoothMask.width && now - lastEdgeAt < SEG_INTERVAL_MS) return false;
+      lastEdgeAt = now;
+      const scale = Math.min(1, EDGE_SIDE / Math.max(w, h));
+      const ew = Math.max(3, Math.round(w * scale)), eh = Math.max(3, Math.round(h * scale));
+      if (edgeIn.width !== ew || edgeIn.height !== eh) {
+        edgeIn.width = ew; edgeIn.height = eh;
+        edgeCpu.width = ew; edgeCpu.height = eh;
+        smoothMask.width = ew; smoothMask.height = eh;
+        edgeData = smoothMaskCtx.createImageData(ew, eh);
+        edgeLum = new Uint8Array(ew * eh); edgeSum = new Uint16Array(ew * eh);
+        edgeGrad = new Uint8Array(ew * eh); edgeRow = new Uint8Array(ew * eh);
+      }
+      /* "high" averages the pixels a downscale skips, so camera noise does
+         not read as edges. Ignored where unsupported. */
+      edgeInCtx.imageSmoothingQuality = "high";
+      edgeInCtx.drawImage(fg, 0, 0, ew, eh);
+      edgeCpuCtx.drawImage(edgeIn, 0, 0);
+      const px = edgeCpuCtx.getImageData(0, 0, ew, eh).data;
+      for (let i = 0, j = 0; i < edgeLum.length; i++, j += 4) {
+        edgeLum[i] = (px[j] * 54 + px[j + 1] * 183 + px[j + 2] * 19) >> 8;
+      }
+      /* Detail: how far each pixel sits from the 3x3 average around it,
+         summed across then down, held at the border. */
+      for (let y = 0; y < eh; y++) {
+        const row = y * ew;
+        for (let x = 0; x < ew; x++) {
+          edgeSum[row + x] = edgeLum[row + (x > 0 ? x - 1 : x)] + edgeLum[row + x] + edgeLum[row + (x < ew - 1 ? x + 1 : x)];
+        }
+      }
+      for (let y = 0; y < eh; y++) {
+        const row = y * ew, up = (y > 0 ? y - 1 : y) * ew, dn = (y < eh - 1 ? y + 1 : y) * ew;
+        for (let x = 0; x < ew; x++) {
+          const d = Math.abs(edgeLum[row + x] - (edgeSum[up + x] + edgeSum[row + x] + edgeSum[dn + x]) / 9);
+          edgeGrad[row + x] = d > 255 ? 255 : d;
+        }
+      }
+      /* Grow every edge by a pixel, the strongest neighbour deciding, in two
+         passes (across, then down). The blur below reaches a few pixels
+         sideways, and this keeps it from pulling an eye's dark into the skin
+         just beside it. */
+      for (let y = 0; y < eh; y++) {
+        const row = y * ew;
+        for (let x = 0; x < ew; x++) {
+          const a = edgeGrad[row + (x > 0 ? x - 1 : x)], b = edgeGrad[row + x], c = edgeGrad[row + (x < ew - 1 ? x + 1 : x)];
+          edgeRow[row + x] = a > b ? (a > c ? a : c) : (b > c ? b : c);
+        }
+      }
+      const out = edgeData.data, span = EDGE_HI - EDGE_LO;
+      for (let y = 0; y < eh; y++) {
+        const row = y * ew, up = (y > 0 ? y - 1 : y) * ew, dn = (y < eh - 1 ? y + 1 : y) * ew;
+        for (let x = 0; x < ew; x++) {
+          const a = edgeRow[up + x], b = edgeRow[row + x], c = edgeRow[dn + x];
+          const g = a > b ? (a > c ? a : c) : (b > c ? b : c);
+          const k = (row + x) * 4;
+          out[k] = 255; out[k + 1] = 255; out[k + 2] = 255;
+          out[k + 3] = g <= EDGE_LO ? 255 : g >= EDGE_HI ? 0 : Math.round((255 * (EDGE_HI - g)) / span);
+        }
+      }
+      smoothMaskCtx.putImageData(edgeData, 0, 0);
+      return true;
+    }
+
+    /* Soften skin in fg. `person` is a cut-out mask (AI or green screen),
+       or null when there is none, and then the edges decide alone. */
+    function smoothSkin(s, w, h, person) {
+      if (buildEdgeMask(w, h) && person) {
+        smoothMaskCtx.globalCompositeOperation = "destination-in";
+        smoothMaskCtx.drawImage(person, 0, 0, smoothMask.width, smoothMask.height);
+        smoothMaskCtx.globalCompositeOperation = "source-over";
+      }
+      /* The slider keeps its old feel at 720p and scales with the frame,
+         so a 480p camera is not smoothed harder than a 1080p one. */
+      const r = (1 + s.beautify / 30) * Math.max(0.5, h / 720);
+      if (skin.width !== w || skin.height !== h) { skin.width = w; skin.height = h; }
+      skinCtx.globalCompositeOperation = "source-over";
+      skinCtx.clearRect(0, 0, w, h);
+      skinCtx.filter = `blur(${r}px)`;
+      try { skinCtx.drawImage(fg, 0, 0); } catch (_) {}
+      skinCtx.filter = "none";
+      skinCtx.globalCompositeOperation = "destination-in";
+      skinCtx.drawImage(smoothMask, 0, 0, w, h);   // bilinear on the way up
+      skinCtx.globalCompositeOperation = "source-over";
+      fgCtx.save();
+      fgCtx.globalAlpha = Math.min(0.8, s.beautify / 125);
+      fgCtx.drawImage(skin, 0, 0);
+      fgCtx.restore();
     }
 
     /* ---------------------------- Overlays ----------------------------
@@ -417,7 +559,7 @@
       ctx.textAlign = "center"; ctx.textBaseline = "middle";
       ctx.font = `700 ${Math.round(h * 0.085)}px ${OV_FONT}`;
       ctx.fillStyle = "#ffffff";
-      ctx.fillText(s.brbText || "Be right back", w / 2, h / 2);
+      ctx.fillText(s.brbText || (DEFAULTS && DEFAULTS.brbText) || "Be right back", w / 2, h / 2);
       ctx.restore();
     }
 
@@ -434,7 +576,7 @@
         return schedule();
       }
 
-      if (s.bg !== "off" && s.keyer === "ai" && !segmenter) initSegmenter(getBaseURL(), onStatus);
+      if (!segmenter && wantsModel(s)) initSegmenter(getBaseURL(), onStatus);
 
       const rot = ((s.rotate % 360) + 360) % 360, swap = rot === 90 || rot === 270;
       const outW = swap ? srcH : srcW, outH = swap ? srcW : srcH;
@@ -454,33 +596,30 @@
       try { fgCtx.drawImage(video, cx, cy, cw, ch, -srcW / 2, -srcH / 2, srcW, srcH); } catch (_) {}
       fgCtx.restore();
 
-      if (s.beautify > 0) {
-        fgCtx.save();
-        fgCtx.globalAlpha = Math.min(0.7, s.beautify / 130);
-        fgCtx.filter = `blur(${1 + s.beautify / 30}px)`;
-        try { fgCtx.drawImage(fg, 0, 0); } catch (_) {}
-        fgCtx.restore();
-      }
+      /* Find the person first, on the frame as the camera gave it. The
+         background needs the cut-out, and so does skin smoothing. */
+      const wantBg = s.bg !== "off", chroma = wantBg && s.keyer === "chroma";
+      const key = chroma ? chromaMask(outW, outH, s) : null;
+      if (!chroma && segmenter && (wantBg || s.beautify > 0)) runSegmentation(outW, outH, wantBg ? SEG_INTERVAL_MS : SEG_INTERVAL_MS * 2);
+      const ai = !chroma && segmenter && maskCanvas.width > 0 ? maskCanvas : null;
 
-      const wantBg = s.bg !== "off";
+      if (s.beautify > 0) smoothSkin(s, outW, outH, key || ai);
+
       let composited = false;
-      if (wantBg && s.keyer === "chroma") {
+      if (chroma) {
         if (bgLayer.width !== outW || bgLayer.height !== outH) { bgLayer.width = outW; bgLayer.height = outH; }
         bgCtx.clearRect(0, 0, outW, outH);
         drawBackgroundContent(bgCtx, s, outW, outH, fg);
         /* chromaSmooth already widens the key's own soft band, so the extra
            feather here only has to hide the step from the upscale. */
-        compose(softenMask(chromaMask(outW, outH, s), outW, 3), outW, outH);
+        compose(softenMask(key, outW, 3), outW, outH);
         composited = true;
-      } else if (wantBg && s.keyer === "ai" && segmenter) {
-        runSegmentation(outW, outH);
-        if (maskCanvas.width > 0) {
-          if (bgLayer.width !== outW || bgLayer.height !== outH) { bgLayer.width = outW; bgLayer.height = outH; }
-          bgCtx.clearRect(0, 0, outW, outH);
-          drawBackgroundContent(bgCtx, s, outW, outH, fg);
-          compose(softenMask(maskCanvas, outW, s.feather), outW, outH);
-          composited = true;
-        }
+      } else if (wantBg && s.keyer === "ai" && ai) {
+        if (bgLayer.width !== outW || bgLayer.height !== outH) { bgLayer.width = outW; bgLayer.height = outH; }
+        bgCtx.clearRect(0, 0, outW, outH);
+        drawBackgroundContent(bgCtx, s, outW, outH, fg);
+        compose(softenMask(ai, outW, s.feather), outW, outH);
+        composited = true;
       }
       if (!composited) ctx.drawImage(fg, 0, 0);
 
@@ -509,7 +648,7 @@
   }
 
   window.Cam360Engine = {
-    normalize, createRenderer, initSegmenter, setDefaults, ready,
+    normalize, createRenderer, initSegmenter, wantsModel, setDefaults, ready,
     get DEFAULTS() { return DEFAULTS; }
   };
 })();

@@ -40,8 +40,12 @@
       engine.setDefaults(d.defaults);
       settings = engine.normalize(d.value);
       if (d.baseURL) baseURL = d.baseURL;
-      // Warm the model as soon as an AI background is wanted.
-      if (settings.enabled && settings.bg !== "off" && settings.keyer === "ai") {
+      // Warm the model as soon as something wants it (an AI background, or
+      // skin smoothing, which uses the same cut-out to find you), but only in
+      // a page that has a camera running. This script runs in every frame of
+      // every tab, and nearly all of them never open a camera; a page that
+      // does gets the model from its first frame anyway.
+      if (settings.enabled && liveCanvases.size && engine.wantsModel(settings)) {
         engine.initSegmenter(baseURL, pushStatus);
       }
     } else if (d.__cam360 === "base") {

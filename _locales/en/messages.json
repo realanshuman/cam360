@@ -1,0 +1,486 @@
+{
+  "lang": {
+    "message": "en",
+    "description": "The BCP 47 tag of this translation, used as the page's lang attribute."
+  },
+  "extDescription": {
+    "message": "Look better on every video call. Blur or swap your background, fix lighting, mirror and zoom. Works on Meet, Discord, Zoom & more.",
+    "description": "The store summary and the extension's description. 132 characters at most."
+  },
+  "cmdTogglePanel": {
+    "message": "Show or hide the in-call panel",
+    "description": "Keyboard shortcut description, shown in the browser's shortcuts page."
+  },
+  "openWindowTitle": {
+    "message": "Open as a resizable window",
+    "description": "Tooltip on the button that moves the popup into its own window."
+  },
+  "powerLabel": {
+    "message": "Turn Cam360 on or off",
+    "description": "Screen reader label for the main on/off switch."
+  },
+  "previewStart": {
+    "message": "Preview my camera",
+    "description": "Button that starts the live camera preview in the popup."
+  },
+  "previewStopTitle": {
+    "message": "Stop preview",
+    "description": "Tooltip on the button that stops the preview."
+  },
+  "sectionTransform": {
+    "message": "Transform",
+    "description": "Section heading: mirror, flip, rotate."
+  },
+  "mirror": {
+    "message": "Mirror",
+    "description": "Mirror the camera left to right."
+  },
+  "flipVertical": {
+    "message": "Flip vertical",
+    "description": "Turn the camera upside down."
+  },
+  "flipShort": {
+    "message": "Flip",
+    "description": "Short label for flip vertical, in the small in-call panel."
+  },
+  "rotate": {
+    "message": "Rotate",
+    "description": "Rotate the camera in 90 degree steps."
+  },
+  "sectionLook": {
+    "message": "Look",
+    "description": "Section heading for colour presets and sliders."
+  },
+  "lookNone": {
+    "message": "None",
+    "description": "Look preset: no colour changes."
+  },
+  "lookWarm": {
+    "message": "Warm",
+    "description": "Look preset: warmer colours."
+  },
+  "lookCool": {
+    "message": "Cool",
+    "description": "Look preset: cooler colours."
+  },
+  "lookBright": {
+    "message": "Bright",
+    "description": "Look preset: brighter."
+  },
+  "lookBw": {
+    "message": "B&W",
+    "description": "Look preset: black and white. Keep it very short."
+  },
+  "lookSoft": {
+    "message": "Soft focus",
+    "description": "Look preset: slightly soft."
+  },
+  "brightness": {
+    "message": "Brightness",
+    "description": "Slider."
+  },
+  "contrast": {
+    "message": "Contrast",
+    "description": "Slider."
+  },
+  "saturation": {
+    "message": "Saturation",
+    "description": "Slider."
+  },
+  "zoom": {
+    "message": "Zoom",
+    "description": "Slider."
+  },
+  "blur": {
+    "message": "Blur",
+    "description": "Slider that blurs the whole picture."
+  },
+  "beautify": {
+    "message": "Skin smoothing",
+    "description": "Slider that softens skin while keeping eyes and hair sharp."
+  },
+  "hue": {
+    "message": "Hue",
+    "description": "Slider that shifts every colour around the colour wheel."
+  },
+  "lowLight": {
+    "message": "Low-light boost",
+    "description": "Switch that brightens a dim room."
+  },
+  "sectionBackground": {
+    "message": "Background",
+    "description": "Section heading."
+  },
+  "bgOff": {
+    "message": "Off",
+    "description": "Background mode: none. Very short, it shares a row with four others."
+  },
+  "bgBlur": {
+    "message": "Blur",
+    "description": "Background mode: blurred. Very short."
+  },
+  "bgColour": {
+    "message": "Colour",
+    "description": "Background mode: a solid colour. Very short."
+  },
+  "bgScene": {
+    "message": "Scene",
+    "description": "Background mode: an image. Very short."
+  },
+  "bgVideo": {
+    "message": "Video",
+    "description": "Background mode: a looping video. Very short."
+  },
+  "cutoutMethod": {
+    "message": "Cut-out method",
+    "description": "Label: how the person is separated from the background."
+  },
+  "keyerAi": {
+    "message": "AI",
+    "description": "Cut-out method: an AI model on the computer."
+  },
+  "keyerChroma": {
+    "message": "Green screen",
+    "description": "Cut-out method: removing one backdrop colour."
+  },
+  "keyerNoteAi": {
+    "message": "Highest quality, no green screen needed. A few strict sites, like Google Meet, block it.",
+    "description": "Note under the AI option."
+  },
+  "keyerNoteChroma": {
+    "message": "Works on every site, Google Meet included. Best with a plain, single colour backdrop behind you.",
+    "description": "Note under the green screen option."
+  },
+  "bgBlurStrength": {
+    "message": "Blur strength",
+    "description": "Slider for how blurred the background is."
+  },
+  "colour": {
+    "message": "Colour",
+    "description": "Label next to the background colour picker."
+  },
+  "uploadImageTitle": {
+    "message": "Upload an image",
+    "description": "Tooltip on the button that adds your own background image."
+  },
+  "uploadVideoTitle": {
+    "message": "Upload a video",
+    "description": "Tooltip on the button that adds your own background video."
+  },
+  "edgeFeather": {
+    "message": "Edge feather",
+    "description": "Slider that softens the outline of the cut-out."
+  },
+  "keyColour": {
+    "message": "Key colour",
+    "description": "Green screen: the backdrop colour to remove."
+  },
+  "keyStrength": {
+    "message": "Key strength",
+    "description": "Green screen: how much of that colour is removed."
+  },
+  "keySoftness": {
+    "message": "Key softness",
+    "description": "Green screen: how soft the removed edge is."
+  },
+  "sectionPresence": {
+    "message": "Presence",
+    "description": "Section heading: freeze frame, be right back, snapshot."
+  },
+  "freezeFrame": {
+    "message": "Freeze frame",
+    "description": "Switch that holds the current picture."
+  },
+  "freezeShort": {
+    "message": "Freeze",
+    "description": "Short label for freeze frame, in the in-call panel."
+  },
+  "beRightBack": {
+    "message": "Be right back",
+    "description": "Switch that shows a be right back card instead of the camera."
+  },
+  "brbShort": {
+    "message": "BRB",
+    "description": "Short label for be right back, in the in-call panel."
+  },
+  "brbDefault": {
+    "message": "Be right back",
+    "description": "The words drawn on the be right back card by default. Everyone on the call sees them."
+  },
+  "brbImage": {
+    "message": "Set a be right back image…",
+    "description": "Button: choose an image for the be right back card."
+  },
+  "snapshot": {
+    "message": "Snapshot",
+    "description": "Row label: save the current frame."
+  },
+  "snapShort": {
+    "message": "Snap",
+    "description": "Short label for snapshot, in the in-call panel."
+  },
+  "savePng": {
+    "message": "Save PNG",
+    "description": "Button that saves the snapshot as a PNG file."
+  },
+  "sectionOverlays": {
+    "message": "Overlays",
+    "description": "Section heading: name tag, logo, clock drawn into the video."
+  },
+  "nameTag": {
+    "message": "Name tag",
+    "description": "Overlay: your name on the video."
+  },
+  "nameShort": {
+    "message": "Name",
+    "description": "Short label for name tag, in the in-call panel."
+  },
+  "yourName": {
+    "message": "Your name",
+    "description": "Placeholder in the name tag text field."
+  },
+  "logo": {
+    "message": "Logo",
+    "description": "Overlay: your logo on the video."
+  },
+  "logoShort": {
+    "message": "Logo",
+    "description": "Short label for logo, in the in-call panel."
+  },
+  "uploadLogo": {
+    "message": "Upload logo…",
+    "description": "Button: choose a logo image."
+  },
+  "liveClock": {
+    "message": "Live clock",
+    "description": "Overlay: the current time on the video."
+  },
+  "clockShort": {
+    "message": "Clock",
+    "description": "Short label for live clock, in the in-call panel."
+  },
+  "cornerTL": {
+    "message": "Top left",
+    "description": "Corner of the video."
+  },
+  "cornerTR": {
+    "message": "Top right",
+    "description": "Corner of the video."
+  },
+  "cornerBL": {
+    "message": "Bottom left",
+    "description": "Corner of the video."
+  },
+  "cornerBR": {
+    "message": "Bottom right",
+    "description": "Corner of the video."
+  },
+  "positionOf": {
+    "message": "$ITEM$ position",
+    "description": "Screen reader label for a group of four corner buttons.",
+    "placeholders": {
+      "item": {
+        "content": "$1",
+        "example": "Name tag"
+      }
+    }
+  },
+  "positionAt": {
+    "message": "$ITEM$: $CORNER$",
+    "description": "Screen reader label for one corner button.",
+    "placeholders": {
+      "item": {
+        "content": "$1",
+        "example": "Name tag"
+      },
+      "corner": {
+        "content": "$2",
+        "example": "Top left"
+      }
+    }
+  },
+  "showPanel": {
+    "message": "Show in-call panel",
+    "description": "Button."
+  },
+  "hidePanel": {
+    "message": "Hide in-call panel",
+    "description": "Button."
+  },
+  "reset": {
+    "message": "Reset",
+    "description": "Button: put every setting back."
+  },
+  "resetAll": {
+    "message": "Reset all",
+    "description": "Button in the in-call panel: put every setting back."
+  },
+  "panelHideTitle": {
+    "message": "Hide the panel",
+    "description": "Tooltip on the in-call panel's close button."
+  },
+  "powerOn": {
+    "message": "On",
+    "description": "State of the in-call panel's power button. Very short."
+  },
+  "powerOff": {
+    "message": "Off",
+    "description": "State of the in-call panel's power button. Very short."
+  },
+  "panelMidCall": {
+    "message": "Panel mid-call:",
+    "description": "Label before the keyboard shortcut that opens the in-call panel."
+  },
+  "shortcutChange": {
+    "message": "Change this shortcut",
+    "description": "Tooltip on the shortcut keys."
+  },
+  "shortcutNotSet": {
+    "message": "not set",
+    "description": "Shown when no keyboard shortcut is set."
+  },
+  "shortcutNotSetTitle": {
+    "message": "No shortcut is set. Click to choose one.",
+    "description": "Tooltip when no keyboard shortcut is set."
+  },
+  "getHelp": {
+    "message": "Get help",
+    "description": "Link to the support page."
+  },
+  "getHelpTitle": {
+    "message": "Ask a question or report a problem",
+    "description": "Tooltip on the help link."
+  },
+  "builtBy": {
+    "message": "Built by",
+    "description": "Followed by the author's name, as a link."
+  },
+  "freeForever": {
+    "message": "Free forever",
+    "description": "Footer note."
+  },
+  "buyCoffee": {
+    "message": "Buy me a coffee",
+    "description": "Link to a tip page."
+  },
+  "resizeTitle": {
+    "message": "Drag to resize",
+    "description": "Tooltip on the popup's resize handles."
+  },
+  "flashSaved": {
+    "message": "Saved",
+    "description": "Shown briefly after a snapshot is saved."
+  },
+  "flashFailed": {
+    "message": "Failed",
+    "description": "Shown briefly when a snapshot fails."
+  },
+  "flashNoCamera": {
+    "message": "No camera",
+    "description": "Shown briefly when there is no camera to snapshot."
+  },
+  "previewStarting": {
+    "message": "Starting camera…",
+    "description": "Shown while the preview starts."
+  },
+  "previewFailed": {
+    "message": "Could not start the camera: $ERROR$",
+    "description": "The browser's own error message follows.",
+    "placeholders": {
+      "error": {
+        "content": "$1",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "statusIdle": {
+    "message": "The AI model starts when a camera is on.",
+    "description": "AI background status."
+  },
+  "statusLoading": {
+    "message": "Loading the AI model…",
+    "description": "AI background status."
+  },
+  "statusReady": {
+    "message": "AI background ready",
+    "description": "AI background status."
+  },
+  "statusError": {
+    "message": "This site blocks the AI model. Switch the cut-out method to Green screen, which works here.",
+    "description": "AI background status."
+  },
+  "grantTitle": {
+    "message": "Cam360 camera access",
+    "description": "Title of the tab that asks for camera permission."
+  },
+  "grantHeading": {
+    "message": "Allow camera access",
+    "description": "Heading on that tab."
+  },
+  "grantBody1": {
+    "message": "Cam360 needs permission once to show your live preview. Your browser cannot ask from inside the small popup, so it asks here instead.",
+    "description": "Paragraph."
+  },
+  "grantBody2": {
+    "message": "When your browser asks, next to the address bar, choose Allow.",
+    "description": "Paragraph. Use the browser's own word for Allow."
+  },
+  "grantBody2Firefox": {
+    "message": "When Firefox asks, keep Remember for all cameras ticked, then choose Allow. Otherwise Firefox asks again every time.",
+    "description": "Firefox only, in place of grantBody2. Name the box as Firefox labels it in this language if you know it, else describe it."
+  },
+  "grantRequesting": {
+    "message": "Requesting your camera…",
+    "description": "Status."
+  },
+  "grantOk": {
+    "message": "Camera access granted. You can close this tab and open Cam360 again.",
+    "description": "Status."
+  },
+  "grantDeclined": {
+    "message": "Camera access was declined or is blocked.",
+    "description": "Status."
+  },
+  "grantBlockedChrome": {
+    "message": "If no prompt appeared, the camera may already be blocked for this extension. Click the camera icon at the right end of the address bar, or open $PAGE$ and remove Cam360 from the blocked list. Then try again.",
+    "description": "Chrome, Edge, Brave, Arc. $PAGE$ is a settings address, shown as code.",
+    "placeholders": {
+      "page": {
+        "content": "$1",
+        "example": "chrome://settings/content/camera"
+      }
+    }
+  },
+  "grantBlockedFirefox": {
+    "message": "If no prompt appeared, the camera may already be blocked for this extension. Open $PAGE$, find Camera under Permissions, and remove the block on Cam360. Then try again.",
+    "description": "Firefox. $PAGE$ is a settings address, shown as code. Use the names Firefox shows in this language.",
+    "placeholders": {
+      "page": {
+        "content": "$1",
+        "example": "about:preferences#privacy"
+      }
+    }
+  },
+  "grantNoCamera": {
+    "message": "No usable camera was found, or another app is using it.",
+    "description": "Status."
+  },
+  "grantNoCameraHint": {
+    "message": "Close other apps that might be holding the camera, then try again.",
+    "description": "Hint."
+  },
+  "grantFailed": {
+    "message": "Could not start the camera: $ERROR$",
+    "description": "The browser's own error message follows.",
+    "placeholders": {
+      "error": {
+        "content": "$1",
+        "example": "Permission denied"
+      }
+    }
+  },
+  "grantRetry": {
+    "message": "Try again",
+    "description": "Button."
+  }
+}
