@@ -151,10 +151,16 @@ first.
 
 ## The website
 
-`web/` is a single static page with no build step and no framework. Every
-product image on it is a real screenshot rendered from this code, never a
-mockup. `vercel.json` points Vercel at `web/` as the output directory, so a
-static deploy needs no dashboard configuration.
+`web/` is a single static page with no build step and no framework. It is
+dressed as a desktop, after heyclicky.com: a menu bar with a live clock,
+windows, and a few things lying around the hero, each one a feature. The calls
+in the windows are drawn in markup, never photographed, and their name tag and
+clock copy the proportions `src/engine.js` draws with. `vercel.json` points
+Vercel at `web/` as the output directory, so a static deploy needs no
+dashboard configuration.
+
+The FAQ answers exist twice in `web/index.html`: on the page, and in the
+`FAQPage` JSON-LD in the `<head>`. Change them together, word for word.
 
 If you move it to a different domain, update the absolute URLs in
 `web/index.html` (canonical, `og:url`, `og:image`, `twitter:image`, and the

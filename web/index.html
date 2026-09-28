@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Virtual Background &amp; Webcam Effects for Chrome | Cam360</title>
 <meta name="description" content="A free Chrome extension that adds virtual backgrounds, background blur and webcam effects to any video call in your browser. Runs fully on device.">
-<meta name="theme-color" content="#fffdf8">
+<meta name="theme-color" content="#f2f2f1">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="canonical" href="https://fuckwebcam.xyz/">
@@ -41,7 +41,11 @@
       "installUrl": "https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe",
       "softwareVersion": "1.2.1",
       "isAccessibleForFree": true,
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
       "featureList": [
         "Virtual background replacement with an on device AI segmentation model",
         "Background blur",
@@ -52,8 +56,12 @@
         "Name tag, logo watermark and live clock overlays",
         "PNG snapshot during a live call"
       ],
-      "author": { "@id": "https://fuckwebcam.xyz/#author" },
-      "publisher": { "@id": "https://fuckwebcam.xyz/#author" },
+      "author": {
+        "@id": "https://fuckwebcam.xyz/#author"
+      },
+      "publisher": {
+        "@id": "https://fuckwebcam.xyz/#author"
+      },
       "sameAs": [
         "https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe"
       ]
@@ -70,8 +78,12 @@
       "name": "Cam360",
       "url": "https://fuckwebcam.xyz/",
       "inLanguage": "en",
-      "publisher": { "@id": "https://fuckwebcam.xyz/#author" },
-      "about": { "@id": "https://fuckwebcam.xyz/#software" }
+      "publisher": {
+        "@id": "https://fuckwebcam.xyz/#author"
+      },
+      "about": {
+        "@id": "https://fuckwebcam.xyz/#software"
+      }
     },
     {
       "@type": "FAQPage",
@@ -79,30 +91,50 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Does Cam360 work in the Discord or Zoom desktop app?",
-          "acceptedAnswer": { "@type": "Answer", "text": "No. Cam360 works only on websites inside your browser, so the Discord and Zoom desktop clients are out of reach. Reaching a desktop app needs an operating system level virtual camera driver, which no browser extension can install. Use the web version of those apps, or pair Cam360 with OBS Virtual Camera." }
+          "name": "is Cam360 really free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "yes. every feature, with no trial, no paid tier and no account. there are no servers to pay for, because everything runs on your own computer."
+          }
         },
         {
           "@type": "Question",
-          "name": "Does my video ever leave my computer?",
-          "acceptedAnswer": { "@type": "Answer", "text": "No. Cam360 makes no network requests and includes no analytics, so video never leaves your device. Frames are captured, processed and handed back to the site inside the same browser tab. The AI background model ships inside the extension rather than being fetched." }
+          "name": "does my video ever leave my computer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "no. Cam360 makes no network requests at all. your video is changed inside the browser tab and handed straight to the call, and even the ai model ships inside the extension."
+          }
         },
         {
           "@type": "Question",
-          "name": "Why is the AI background unavailable on Google Meet?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Google Meet sets a strict content security policy that blocks extensions from loading WebAssembly, which the AI segmentation model needs. Switch the cut out method to green screen and background replacement works on Meet too. Every other effect works normally there." }
+          "name": "does it work in the zoom or discord desktop app?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "no, only on websites in your browser. no browser extension can reach a desktop app. use the web version of zoom or discord, or pair Cam360 with obs virtual camera."
+          }
         },
         {
           "@type": "Question",
-          "name": "Which browsers does Cam360 support?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Cam360 runs on Chrome and other Chromium browsers that support Manifest V3, including Microsoft Edge, Brave and Arc. Firefox and Safari use a different extension model and are not supported today." }
+          "name": "why doesn't the ai background work on google meet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "meet blocks the webassembly the ai model needs. switch the cut out method to green screen and backgrounds work there too. every other effect works on meet as normal."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "which browsers does it work in?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "chrome, and the browsers built on it: edge, brave and arc. firefox and safari aren't supported today."
+          }
         }
       ]
     }
   ]
 }
 </script>
-<link rel="stylesheet" href="/styles.css?v=8">
+<link rel="stylesheet" href="/styles.css?v=10">
 <script>
 // Applied before first paint so a dark visitor never sees a white flash.
 (function () {
@@ -118,328 +150,335 @@
   setTimeout(function () { if (!window.__cam360Motion) d.classList.remove("js"); }, 2500);
 })();
 </script>
-<script src="/motion.js?v=8" defer onerror="document.documentElement.classList.remove('js')"></script>
-<script src="/theme.js?v=8" defer></script>
+<script src="/motion.js?v=10" defer onerror="document.documentElement.classList.remove('js')"></script>
+<script src="/theme.js?v=10" defer></script>
 </head>
 <body>
 
 <a class="skip" href="#main">Skip to content</a>
 
-<nav class="nav" id="nav">
-  <div class="wrap nav-in">
-    <a class="brand" href="#top"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#2383E2"/><circle cx="24" cy="24" r="11" fill="none" stroke="#fff" stroke-width="3.25" stroke-linecap="round" stroke-dasharray="57 12.1" transform="rotate(-14 24 24)"/><circle cx="24" cy="24" r="4.25" fill="#fff"/></svg> Cam360</a>
-    <div class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#how">How it works</a>
-      <a href="#faq">FAQ</a>
-      <a href="#support">Support</a>
-    </div>
-    <div class="nav-cta">
-      <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe" rel="noopener"><span class="cta-long">Add to Chrome</span><span class="cta-short">Install</span></a>
-      <details class="menu" id="menu">
-        <summary class="menu-btn" aria-label="Open menu" role="button">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-        </summary>
-        <div class="menu-panel">
-          <a href="#features">Features</a>
-          <a href="#how">How it works</a>
-          <a href="#faq">FAQ</a>
-          <a href="#support">Support</a>
-        </div>
-      </details>
-    </div>
-  </div>
-</nav>
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86c3f0"/><stop offset=".6" stop-color="#cde5f7"/><stop offset="1" stop-color="#fbe2c6"/></linearGradient>
+    <!-- The rooms, the beach and the figure are drawn, not photographed, per brand/BRAND.md. -->
+    <symbol id="room" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+      <rect width="1600" height="900" fill="#eee5d9"/>
+      <rect x="140" y="110" width="440" height="470" rx="12" fill="#d3c5b3"/>
+      <rect x="160" y="130" width="400" height="430" rx="4" fill="#dbe8f2"/>
+      <rect x="352" y="130" width="16" height="430" fill="#d3c5b3"/>
+      <rect x="160" y="337" width="400" height="16" fill="#d3c5b3"/>
+      <rect x="118" y="574" width="484" height="18" rx="6" fill="#cbbba7"/>
+      <rect x="1110" y="140" width="250" height="170" rx="8" fill="#d9ccbb"/>
+      <rect x="1126" y="156" width="218" height="138" rx="3" fill="#f3ece2"/>
+      <path d="M1142 280 L1200 222 L1240 256 L1276 216 L1328 280 Z" fill="#c5d3c2"/>
+      <rect x="1040" y="430" width="420" height="16" rx="4" fill="#cbbba7"/>
+      <rect x="1075" y="330" width="58" height="100" rx="14" fill="#8fae98"/>
+      <rect x="1160" y="366" width="92" height="64" rx="6" fill="#cf946d"/>
+      <rect x="1290" y="338" width="24" height="92" rx="4" fill="#9fb4c6"/>
+      <rect x="1318" y="350" width="24" height="80" rx="4" fill="#dbb57c"/>
+      <rect x="1346" y="332" width="24" height="98" rx="4" fill="#b9a58e"/>
+      <rect x="1454" y="560" width="10" height="140" fill="#b8a893"/>
+      <path d="M1400 560 h118 l-22 -82 h-74 z" fill="#f1e2c6"/>
+      <rect y="700" width="1600" height="200" fill="#e0d3c1"/>
+      <rect y="700" width="1600" height="10" fill="#d4c5b1"/>
+      <path d="M198 700 l12 -86 h118 l12 86 z" fill="#c8b196"/>
+      <ellipse cx="238" cy="560" rx="32" ry="70" fill="#7f9f87" transform="rotate(-20 238 560)"/>
+      <ellipse cx="270" cy="545" rx="32" ry="78" fill="#6d9077"/>
+      <ellipse cx="302" cy="560" rx="32" ry="70" fill="#88aa90" transform="rotate(20 302 560)"/>
+      <rect x="1120" y="640" width="46" height="60" rx="8" fill="#b9c7d6"/>
+      <rect x="1190" y="662" width="150" height="38" rx="4" fill="#f6f1e8" transform="rotate(-4 1265 681)"/>
+    </symbol>
+    <symbol id="beach" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+      <rect width="1600" height="900" fill="url(#sky)"/>
+      <circle cx="1240" cy="250" r="130" fill="#ffd27a" opacity=".28"/>
+      <circle cx="1240" cy="250" r="86" fill="#ffd27a"/>
+      <g fill="#fff" opacity=".85"><ellipse cx="360" cy="210" rx="120" ry="30"/><ellipse cx="420" cy="190" rx="70" ry="36"/><ellipse cx="760" cy="130" rx="90" ry="22"/></g>
+      <rect y="560" width="1600" height="110" fill="#5aa9d8"/>
+      <rect y="598" width="1600" height="16" fill="#7cc0e4" opacity=".7"/>
+      <path d="M0 650 C 320 615 640 690 960 652 S 1440 620 1600 648 V900 H0 Z" fill="#f1d6a0"/>
+    </symbol>
+    <symbol id="person" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+      <circle cx="800" cy="410" r="150" fill="#35302a"/>
+      <ellipse cx="800" cy="1020" rx="410" ry="430" fill="#35302a"/>
+    </symbol>
+    <symbol id="mark" viewBox="0 0 48 48">
+      <rect width="48" height="48" rx="11" fill="#2383E2"/><circle cx="24" cy="24" r="11" fill="none" stroke="#fff" stroke-width="3.25" stroke-linecap="round" stroke-dasharray="57 12.1" transform="rotate(-14 24 24)"/><circle cx="24" cy="24" r="4.25" fill="#fff"/>
+    </symbol>
+    <symbol id="chrome" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="3.6"/><path d="M12 8.4h9.2M8.9 13.8L4.3 21.2M15.1 13.8L10.5 21.2"/></g>
+    </symbol>
+  </defs>
+</svg>
 
-<main id="main">
-
-<header class="hero" id="top">
-  <div class="wrap hero-in">
-    <span class="c-badge c-badge-live"><span class="c-dot" aria-hidden="true"></span>Free Chrome extension</span>
-    <h1>Better video in every browser call.</h1>
-    <p class="lede">Cam360 sits between your webcam and any website that asks for it. Fix your lighting, tidy your framing, and blur or replace your background, on every site, with one set of controls.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary btn-lg" href="https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="3.6"/><path d="M12 8.4h9.2M8.9 13.8L4.3 21.2M15.1 13.8L10.5 21.2"/></svg> Add to Chrome</a>
-      <a class="btn btn-soft btn-lg" href="#how">How it works</a>
-    </div>
-    <p class="micro">No account. No servers. Nothing leaves your computer.</p>
-    <div class="shot-stage">
-      <div class="shot-card">
-        <picture>
-          <source srcset="/assets/popup-dark.png" media="(prefers-color-scheme: dark)">
-          <img id="heroShot" src="/assets/popup-light.png" width="300" height="585" alt="The Cam360 popup showing transform toggles, lighting sliders, background controls, and overlay options.">
-        </picture>
-      </div>
+<header class="menubar">
+  <div class="menubar-in">
+    <nav class="menubar-left" aria-label="Main">
+      <a class="menubar-brand" href="/">Cam360</a>
+      <a class="menubar-link" href="#features">features</a>
+      <a class="menubar-link" href="#faq">faq</a>
+    </nav>
+    <a class="menubar-mark" href="/" aria-hidden="true" tabindex="-1"><svg><use href="#mark"/></svg></a>
+    <div class="menubar-right">
+      <span class="menubar-status" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M2.5 9.2a14 14 0 0 1 19 0M5.6 12.5a9.5 9.5 0 0 1 12.8 0M8.8 15.8a5 5 0 0 1 6.4 0"/><circle cx="12" cy="19" r="1.2" fill="currentColor" stroke="none"/></svg>
+        <svg viewBox="0 0 30 24"><rect x="2" y="7" width="22" height="11" rx="3"/><rect x="4.3" y="9.3" width="14" height="6.4" rx="1.4" fill="currentColor" stroke="none"/><path d="M26.5 10.5v4"/></svg>
+        <time class="menubar-clock" data-clock>9:41 AM</time>
+      </span>
+      <a class="menubar-cta" href="https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe" rel="noopener"><svg aria-hidden="true"><use href="#chrome"/></svg>add to chrome</a>
     </div>
   </div>
 </header>
 
-<div class="strip">
-  <div class="wrap strip-in">
-    <span class="strip-label">Works on</span>
-    <div class="logos">
-      <span class="logo-item"><svg viewBox="0 2.1 24 19.8" role="img" aria-label="Google Meet" style="color:#00897B"><title>Google Meet</title><path fill="currentColor" d="M5.53 2.13 0 7.75h5.53zm.398 0v5.62h7.608v3.65l5.47-4.45c-.014-1.22.031-2.25-.025-3.46-.148-1.09-1.287-1.47-2.236-1.36zM23.1 4.32c-.802.295-1.358.995-2.047 1.49-2.506 2.05-4.982 4.12-7.468 6.19 3.025 2.59 6.04 5.18 9.065 7.76 1.218.671 1.428-.814 1.328-1.64v-13a.828.828 0 0 0-.877-.825zM.038 8.15v7.7h5.53v-7.7zm13.577 8.1H6.008v5.62c3.864-.006 7.737.011 11.58-.009 1.02-.07 1.618-1.12 1.468-2.07v-2.51l-5.47-4.68v3.65zm-13.577 0c.02 1.44-.041 2.88.033 4.31.162.948 1.158 1.43 2.047 1.31h3.464v-5.62z"/></svg>Google Meet</span>
-      <span class="logo-item"><svg viewBox="0 2.9 24 18.3" role="img" aria-label="Discord" style="color:#5865F2"><title>Discord</title><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>Discord</span>
-      <span class="logo-item wordmark"><svg viewBox="0 9.3 24 5.5" role="img" aria-label="Zoom" style="color:#0B5CFF"><title>Zoom</title><path fill="currentColor" d="M5.033 14.649H.743a.74.74 0 0 1-.686-.458.74.74 0 0 1 .16-.808L3.19 10.41H1.06A1.06 1.06 0 0 1 0 9.35h3.957c.301 0 .57.18.686.458a.74.74 0 0 1-.161.808L1.51 13.59h2.464c.585 0 1.06.475 1.06 1.06zM24 11.338c0-1.14-.927-2.066-2.066-2.066-.61 0-1.158.265-1.537.686a2.061 2.061 0 0 0-1.536-.686c-1.14 0-2.066.926-2.066 2.066v3.311a1.06 1.06 0 0 0 1.06-1.06v-2.251a1.004 1.004 0 0 1 2.013 0v2.251c0 .586.474 1.06 1.06 1.06v-3.311a1.004 1.004 0 0 1 2.012 0v2.251c0 .586.475 1.06 1.06 1.06zM16.265 12a2.728 2.728 0 1 1-5.457 0 2.728 2.728 0 0 1 5.457 0zm-1.06 0a1.669 1.669 0 1 0-3.338 0 1.669 1.669 0 0 0 3.338 0zm-4.82 0a2.728 2.728 0 1 1-5.458 0 2.728 2.728 0 0 1 5.457 0zm-1.06 0a1.669 1.669 0 1 0-3.338 0 1.669 1.669 0 0 0 3.338 0z"/></svg></span>
+<main id="main">
+
+<section class="hero">
+  <!-- Desktop clutter. Every item is one of the features, so the mess explains the product. -->
+  <div class="clutter" aria-hidden="true">
+    <div class="thing is-trash"><svg class="trash" viewBox="0 0 64 72"><rect x="10" y="14" width="44" height="54" rx="6" fill="#dfe3e8" stroke="#b8bec7" stroke-width="2"/><path d="M22 24v34M32 24v34M42 24v34" stroke="#b8bec7" stroke-width="2.5" stroke-linecap="round"/><rect x="5" y="7" width="54" height="9" rx="4.5" fill="#eceff3" stroke="#b8bec7" stroke-width="2"/><path d="M28 7V4h8v3" fill="none" stroke="#b8bec7" stroke-width="2"/></svg><span>messy room</span></div>
+    <div class="thing is-sticker"><span class="sticker-head">HELLO</span><span class="sticker-sub">my name is</span><span class="sticker-name">you</span></div>
+    <div class="thing is-kao1">( ^ω^ )</div>
+    <div class="thing is-kao2">¯\_(ツ)_/¯</div>
+    <div class="thing is-brb">
+      <div class="mini-window"><div class="mini-bar"><i></i><i></i><i></i></div><div class="brb-card is-mini"><svg viewBox="0 0 48 48"><path d="M10 20h26v9a10 10 0 0 1-10 10h-6a10 10 0 0 1-10-10z"/><path d="M36 23h3a4 4 0 0 1 0 8h-3"/><path d="M18 8c-2 3 2 5 0 8M26 8c-2 3 2 5 0 8"/></svg><b>be right back</b></div></div>
+      <span>brb.png</span>
     </div>
-    <span class="strip-note">Plus Jitsi, Whereby, and any other site that asks for your camera. Browser tabs only: the Discord and Zoom desktop apps are out of reach.</span>
+    <div class="thing is-folder"><svg class="folder" viewBox="0 0 80 64"><path d="M4 12a6 6 0 0 1 6-6h18l6 7h36a6 6 0 0 1 6 6v33a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6z" fill="#6fb5f5"/><path d="M4 22a6 6 0 0 1 6-6h60a6 6 0 0 1 6 6v30a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6z" fill="#93c9f8"/></svg><span>backgrounds</span></div>
+    <div class="thing is-clock"><i></i>10:42</div>
+    <div class="thing is-light"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.8v2.1M12 19.1v2.1M2.8 12h2.1M19.1 12h2.1M5.5 5.5 7 7M17 17l1.5 1.5M5.5 18.5 7 17M17 7l1.5-1.5"/></svg>128%</div>
   </div>
-</div>
 
-<section id="features">
-  <div class="wrap">
-    <div class="sec-head" data-reveal>
-      <h2>One set of controls, every site.</h2>
-      <p class="sec-sub">Websites decide which camera controls you get. Cam360 gives you the same set everywhere, from the popup or from a panel inside the call.</p>
+  <div class="hero-in">
+    <h1><span class="wordmark">Cam360</span><span class="tagline">a better webcam that lives in your browser</span></h1>
+    <a class="aqua" href="https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe" rel="noopener"><svg aria-hidden="true"><use href="#chrome"/></svg>add to chrome</a>
+    <p class="fine">100% free. no account. works in chrome, edge, brave and arc.</p>
+  </div>
+
+  <figure class="demo" aria-labelledby="demo-cap">
+    <div class="window">
+      <div class="window-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">your-next-call.mov</span></div>
+      <div class="stage" data-look="off" data-demo>
+        <svg class="l-room"><use href="#room"/></svg>
+        <svg class="l-beach"><use href="#beach"/></svg>
+        <svg class="l-person"><use href="#person"/></svg>
+        <span class="l-tag">Ada Lovelace</span>
+        <span class="l-clock"><i></i>10:42</span>
+      </div>
     </div>
-    <div class="c-cards">
-
-      <article class="c-card c-card-wide" data-reveal>
-        <div class="c-viz c-viz-amber c-viz-bg" aria-hidden="true">
-          <div class="c-view">
-            <div class="c-room"><div class="c-room-floor"></div><div class="c-room-window"></div><div class="c-room-shelf"></div><div class="c-room-lamp"></div></div>
-            <div class="c-room c-room-blur"><div class="c-room-floor"></div><div class="c-room-window"></div><div class="c-room-shelf"></div><div class="c-room-lamp"></div></div>
-            <div class="c-sil-wrap"><svg viewBox="0 0 120 90" preserveAspectRatio="xMidYMax meet"><g class="c-sil"><circle cx="60" cy="31" r="19"/><ellipse cx="60" cy="95" rx="46" ry="55"/></g></svg></div>
-            <div class="c-seam"></div>
-            <span class="c-viz-label is-left">Your room</span>
-            <span class="c-viz-label is-right">Blur on</span>
-          </div>
-        </div>
-        <div class="c-card-body">
-          <h3>Change what's behind you</h3>
-          <p>Blur it, fill it with a colour, or replace it with a photo, a scene, or a moving backdrop. You are cut out by an AI model that runs on your device.</p>
-          <ul class="c-list">
-            <li>Blur</li><li>Solid colour</li><li>Your own image</li><li>Video backdrop</li><li>On device AI cut out</li><li>Green screen fallback for sites that block the model</li>
-          </ul>
-          <p class="c-fine">On Google Meet the AI model is blocked, so green screen is used there.</p>
-        </div>
-      </article>
-
-      <article class="c-card" data-reveal>
-        <div class="c-viz c-viz-blue c-viz-light" aria-hidden="true">
-          <div class="c-view">
-            <div class="c-sliders">
-              <div class="c-slider"><span>Brightness</span><div class="c-track" style="--at:64%"><div class="c-track-fill"></div><div class="c-track-knob"></div></div><output>128%</output></div>
-              <div class="c-slider"><span>Contrast</span><div class="c-track" style="--at:46%"><div class="c-track-fill"></div><div class="c-track-knob"></div></div><output>104%</output></div>
-              <div class="c-slider"><span>Saturation</span><div class="c-track" style="--at:30%"><div class="c-track-fill"></div><div class="c-track-knob"></div></div><output>92%</output></div>
-            </div>
-          </div>
-          <div class="c-chips"><span class="c-chip">Off</span><span class="c-chip is-on">Warm</span><span class="c-chip">Cool</span><span class="c-chip">Low light</span></div>
-        </div>
-        <div class="c-card-body">
-          <h3>Fix the lighting</h3>
-          <p>Fix the room's light once, and it holds on every site.</p>
-          <ul class="c-list">
-            <li>Brightness, contrast, saturation, and hue</li><li>Low light boost for dim rooms</li><li>Six presets for when one click is enough</li><li>Skin smoothing</li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="c-card" data-reveal>
-        <div class="c-viz c-viz-lilac c-viz-frame" aria-hidden="true">
-          <div class="c-view">
-            <div class="c-axis"></div>
-            <div class="c-sil-wrap"><svg viewBox="0 0 120 90" preserveAspectRatio="xMidYMax meet"><g class="c-sil"><circle cx="60" cy="31" r="19"/><ellipse cx="60" cy="95" rx="46" ry="55"/></g></svg></div>
-            <span class="c-crop tl"></span><span class="c-crop tr"></span><span class="c-crop bl"></span><span class="c-crop br"></span>
-          </div>
-          <div class="c-chips"><span class="c-chip is-on">Mirror</span><span class="c-chip">Flip</span><span class="c-chip">Rotate</span><span class="c-chip">Zoom</span></div>
-        </div>
-        <div class="c-card-body">
-          <h3>Frame it your way</h3>
-          <p>Get the shot right without moving your desk.</p>
-          <ul class="c-list">
-            <li>Mirror, flip, and rotate</li><li>Zoom up to 250 percent</li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="c-card" data-reveal>
-        <div class="c-viz c-viz-mint c-viz-overlay" aria-hidden="true">
-          <div class="c-view">
-            <div class="c-sil-wrap"><svg viewBox="0 0 120 90" preserveAspectRatio="xMidYMax meet"><g class="c-sil"><circle cx="60" cy="31" r="19"/><ellipse cx="60" cy="95" rx="46" ry="55"/></g></svg></div>
-            <span class="c-ov c-ov-logo"><svg viewBox="0 0 24 24"><circle class="c-mark-ring" cx="12" cy="12" r="7.5" stroke-dasharray="39 8.1" transform="rotate(-14 12 12)"/><circle class="c-mark-dot" cx="12" cy="12" r="2.8"/></svg></span>
-            <span class="c-ov c-ov-clock">10:42</span>
-            <span class="c-ov c-ov-name">Ansh <small>Product</small></span>
-          </div>
-        </div>
-        <div class="c-card-body">
-          <h3>Put your name on it</h3>
-          <p>Drawn straight into the outgoing feed, so they show up on any site, not just the ones with a name tag setting.</p>
-          <ul class="c-list">
-            <li>Name tag</li><li>Logo watermark</li><li>Live clock</li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="c-card" data-reveal>
-        <div class="c-viz c-viz-mint c-viz-presence" aria-hidden="true">
-          <div class="c-brb">
-            <span class="c-brb-dot"></span>
-            <svg class="c-brb-cup" viewBox="0 0 48 48"><path class="c-steam" d="M18 6c-2 3 2 5 0 8M26 6c-2 3 2 5 0 8"/><path class="c-cup" d="M10 20h26v9a10 10 0 0 1-10 10h-6a10 10 0 0 1-10-10z"/><path class="c-cup" d="M36 23h3a4 4 0 0 1 0 8h-3"/><path class="c-cup" d="M12 43h24"/></svg>
-            <div class="c-brb-title">Be right back</div>
-            <div class="c-brb-sub">Your camera is paused on a card, not a frozen face.</div>
-          </div>
-          <div class="c-chips"><span class="c-chip">Freeze</span><span class="c-chip">Snapshot</span></div>
-        </div>
-        <div class="c-card-body">
-          <h3>Handle the call as it happens</h3>
-          <p>Press <kbd class="c-kbd">Alt</kbd><kbd class="c-kbd">C</kbd> to open a panel on top of the call and adjust without leaving the meeting. You can change the shortcut from the popup.</p>
-          <ul class="c-list">
-            <li>Draggable in-call panel</li><li>Freeze frame, so you can step away and still count as present</li><li>Be right back card</li><li>Save the current frame as a PNG</li>
-          </ul>
-        </div>
-      </article>
-
+    <div class="looks" role="group" aria-label="Try a look">
+      <button type="button" data-look-set="off" aria-pressed="true">off</button>
+      <button type="button" data-look-set="blur" aria-pressed="false">blur</button>
+      <button type="button" data-look-set="bg" aria-pressed="false">new background</button>
+      <button type="button" data-look-set="light" aria-pressed="false">better light</button>
+      <button type="button" data-look-set="tag" aria-pressed="false">name tag</button>
     </div>
-    <p class="bridge" data-reveal>Every effect runs on your device. Nothing is uploaded, nothing is sent.</p>
+    <figcaption id="demo-cap" class="visually-hidden">A drawn video call. The buttons switch it between no effects, a blurred background, a beach background, corrected lighting, and a name tag with a clock.</figcaption>
+  </figure>
+
+  <div class="works">
+    <span>works with</span>
+    <span class="works-logo"><svg class="logo-meet" viewBox="0 2.1 24 19.8" aria-hidden="true"><path fill="currentColor" d="M5.53 2.13 0 7.75h5.53zm.398 0v5.62h7.608v3.65l5.47-4.45c-.014-1.22.031-2.25-.025-3.46-.148-1.09-1.287-1.47-2.236-1.36zM23.1 4.32c-.802.295-1.358.995-2.047 1.49-2.506 2.05-4.982 4.12-7.468 6.19 3.025 2.59 6.04 5.18 9.065 7.76 1.218.671 1.428-.814 1.328-1.64v-13a.828.828 0 0 0-.877-.825zM.038 8.15v7.7h5.53v-7.7zm13.577 8.1H6.008v5.62c3.864-.006 7.737.011 11.58-.009 1.02-.07 1.618-1.12 1.468-2.07v-2.51l-5.47-4.68v3.65zm-13.577 0c.02 1.44-.041 2.88.033 4.31.162.948 1.158 1.43 2.047 1.31h3.464v-5.62z"/></svg>google meet</span>
+    <span class="works-logo"><svg class="logo-zoom" viewBox="0 9.3 24 5.5" role="img" aria-label="Zoom"><path fill="currentColor" d="M5.033 14.649H.743a.74.74 0 0 1-.686-.458.74.74 0 0 1 .16-.808L3.19 10.41H1.06A1.06 1.06 0 0 1 0 9.35h3.957c.301 0 .57.18.686.458a.74.74 0 0 1-.161.808L1.51 13.59h2.464c.585 0 1.06.475 1.06 1.06zM24 11.338c0-1.14-.927-2.066-2.066-2.066-.61 0-1.158.265-1.537.686a2.061 2.061 0 0 0-1.536-.686c-1.14 0-2.066.926-2.066 2.066v3.311a1.06 1.06 0 0 0 1.06-1.06v-2.251a1.004 1.004 0 0 1 2.013 0v2.251c0 .586.474 1.06 1.06 1.06v-3.311a1.004 1.004 0 0 1 2.012 0v2.251c0 .586.475 1.06 1.06 1.06zM16.265 12a2.728 2.728 0 1 1-5.457 0 2.728 2.728 0 0 1 5.457 0zm-1.06 0a1.669 1.669 0 1 0-3.338 0 1.669 1.669 0 0 0 3.338 0zm-4.82 0a2.728 2.728 0 1 1-5.458 0 2.728 2.728 0 0 1 5.457 0zm-1.06 0a1.669 1.669 0 1 0-3.338 0 1.669 1.669 0 0 0 3.338 0z"/></svg></span>
+    <span class="works-logo"><svg class="logo-discord" viewBox="0 2.9 24 18.3" aria-hidden="true"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>discord</span>
+    <span>and any site that uses your camera</span>
   </div>
 </section>
 
-<section class="tinted" id="how">
-  <div class="wrap">
-    <div class="sec-head" data-reveal>
-      <h2>Nothing leaves your computer.</h2>
-      <p class="sec-sub">Cam360 answers the camera request itself, so every frame is processed in your browser tab and handed to the site as an ordinary camera.</p>
+<section class="rows" id="features" aria-label="What it fixes">
+
+  <div class="row" data-reveal>
+    <div class="row-copy">
+      <p class="bubble" data-type>ugh, my room is a mess</p>
+      <h2>blur it or swap it</h2>
+      <p>blur the room behind you, or swap it for a colour, a photo or a looping video. an ai model on your computer cuts you out.</p>
     </div>
-    <div class="c-facts">
-      <div class="c-fact" data-reveal><span class="c-fact-num">0</span><span class="c-fact-label">network requests.</span><p>Not one. No analytics, no servers, no account. Even the AI background model ships inside the extension instead of being downloaded.</p></div>
-      <div class="c-fact" data-reveal><span class="c-fact-num">Free</span><span class="c-fact-label">and staying free.</span><p>No paid tier, no trial, nothing to upgrade to. There is no company behind this to change its mind.</p></div>
-      <div class="c-fact" data-reveal><span class="c-fact-num">Offline</span><span class="c-fact-label">and still working.</span><p>Switch off your Wi-Fi and every effect keeps running in the popup preview, the AI background included. There is nothing for it to connect to.</p></div>
-    </div>
-    <div class="c-flow" data-reveal>
-      <div class="c-flow-node">
-        <div class="c-flow-head"><span class="c-flow-num">1</span><span class="c-flow-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg></span></div>
-        <h3>A site asks for your camera</h3>
-        <p>Cam360 picks up the request before the page can run its own code.</p>
-        <div class="c-chips"><span class="c-chip">getUserMedia</span></div>
-      </div>
-      <div class="c-flow-link" aria-hidden="true"><svg viewBox="0 0 56 24"><path class="c-flow-line" d="M2 12h40"/><path class="c-flow-tip" d="M42 4l12 8-12 8z"/></svg></div>
-      <div class="c-flow-node is-core">
-        <div class="c-flow-head"><span class="c-flow-num">2</span><span class="c-flow-icon"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="3"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></span></div>
-        <h3>Your feed runs through a canvas</h3>
-        <p>Every frame is processed on your device, on the GPU where the browser allows it.</p>
-        <div class="c-chips"><span class="c-chip is-on">On device</span><span class="c-chip">0 uploads</span></div>
-      </div>
-      <div class="c-flow-link" aria-hidden="true"><svg viewBox="0 0 56 24"><path class="c-flow-line" d="M2 12h40"/><path class="c-flow-tip" d="M42 4l12 8-12 8z"/></svg></div>
-      <div class="c-flow-node">
-        <div class="c-flow-head"><span class="c-flow-num">3</span><span class="c-flow-icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="13" height="10" rx="2.5"/><path d="M16 10l5-2.5v9L16 14"/></svg></span></div>
-        <h3>The site receives the result</h3>
-        <p>To the page it is a normal camera. No plugin, no virtual camera driver.</p>
-        <div class="c-chips"><span class="c-chip">Looks like a webcam</span></div>
+    <div class="window">
+      <div class="window-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">blur.mov</span></div>
+      <div class="stage" data-look="blur" aria-hidden="true">
+        <svg class="l-room"><use href="#room"/></svg>
+        <svg class="l-beach"><use href="#beach"/></svg>
+        <svg class="l-person"><use href="#person"/></svg>
+        <span class="l-tag">Ada Lovelace</span>
+        <span class="l-clock"><i></i>10:42</span>
       </div>
     </div>
   </div>
+
+  <div class="row" data-reveal>
+    <div class="row-copy">
+      <p class="bubble" data-type>why do i look so dark on camera</p>
+      <h2>fix the light</h2>
+      <p>brighten a dim room, balance the colour and smooth your skin. set it once and it sticks on every site.</p>
+    </div>
+    <div class="window">
+      <div class="window-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">light.mov</span></div>
+      <div class="stage is-relight" data-look="light" aria-hidden="true">
+        <svg class="l-room"><use href="#room"/></svg>
+        <svg class="l-beach"><use href="#beach"/></svg>
+        <svg class="l-person"><use href="#person"/></svg>
+        <span class="l-tag">Ada Lovelace</span>
+        <span class="l-clock"><i></i>10:42</span>
+        <span class="toggle-chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.8v2.1M12 19.1v2.1M2.8 12h2.1M19.1 12h2.1M5.5 5.5 7 7M17 17l1.5 1.5M5.5 18.5 7 17M17 7l1.5-1.5"/></svg>low light boost<span class="switch"><i></i></span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" data-reveal>
+    <div class="row-copy">
+      <p class="bubble" data-type>brb, getting coffee</p>
+      <h2>step away, stay in the call</h2>
+      <p>freeze your frame or show a be right back card, so you still look present while you are gone.</p>
+    </div>
+    <div class="window">
+      <div class="window-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">brb.mov</span></div>
+      <div class="stage" aria-hidden="true">
+        <div class="brb-card"><svg viewBox="0 0 48 48"><path d="M10 20h26v9a10 10 0 0 1-10 10h-6a10 10 0 0 1-10-10z"/><path d="M36 23h3a4 4 0 0 1 0 8h-3"/><path d="M18 8c-2 3 2 5 0 8M26 8c-2 3 2 5 0 8"/></svg><b>be right back</b><small>your camera is paused on a card, not a frozen face</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" data-reveal>
+    <div class="row-copy">
+      <p class="bubble" data-type>wait, where does my video go</p>
+      <h2>nowhere. it stays on your computer</h2>
+      <p>no uploads, no account, no tracking. every frame is changed right on your computer, and it even works with the wi-fi off.</p>
+    </div>
+    <div class="window">
+      <div class="window-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">network activity</span></div>
+      <div class="netlog" aria-hidden="true">
+        <div><span>app</span><span>sent</span><span>received</span></div>
+        <div class="is-us"><span><svg><use href="#mark"/></svg>Cam360</span><span>0 KB</span><span>0 KB</span></div>
+        <div><span>accounts</span><span>none</span><span></span></div>
+        <div><span>works offline</span><span>yes</span><span></span></div>
+      </div>
+    </div>
+  </div>
+
 </section>
 
-<section id="faq">
-  <div class="wrap wrap-narrow">
-    <div class="sec-head" data-reveal><h2>Straight answers.</h2></div>
-    <div class="faq" data-reveal>
-      <details open>
-        <summary><h3>Which browsers does Cam360 support?</h3></summary>
-        <p>Cam360 runs on Chrome and other Chromium browsers that support Manifest V3, including Microsoft Edge, Brave and Arc. Firefox and Safari use a different extension model and are not supported today.</p>
-      </details>
-      <details>
-        <summary><h3>Does Cam360 work in the Discord or Zoom desktop app?</h3></summary>
-        <p>No. Cam360 works only on websites inside your browser, so the Discord and Zoom desktop clients are out of reach. Reaching a desktop app needs an operating system level virtual camera driver, which no browser extension can install. Use the web version of those apps, or pair Cam360 with OBS Virtual Camera.</p>
-      </details>
-      <details>
-        <summary><h3>Why is the AI background unavailable on Google Meet?</h3></summary>
-        <p>Google Meet sets a strict content security policy that blocks extensions from loading WebAssembly, which the AI segmentation model needs. Switch the cut out method to green screen and background replacement works on Meet too. Every other effect works normally there.</p>
-      </details>
-      <details>
-        <summary><h3>Does my video ever leave my computer?</h3></summary>
-        <p>No. Cam360 makes no network requests and includes no analytics, so video never leaves your device. Frames are captured, processed and handed back to the site inside the same browser tab. The AI background model ships inside the extension rather than being fetched.</p>
-      </details>
-    </div>
+<section class="faq" id="faq">
+  <h2>questions</h2>
+  <div class="faq-list">
+    <details>
+      <summary><h3>is Cam360 really free?</h3><span class="plus" aria-hidden="true"></span></summary>
+      <p>yes. every feature, with no trial, no paid tier and no account. there are no servers to pay for, because everything runs on your own computer.</p>
+    </details>
+    <details>
+      <summary><h3>does my video ever leave my computer?</h3><span class="plus" aria-hidden="true"></span></summary>
+      <p>no. Cam360 makes no network requests at all. your video is changed inside the browser tab and handed straight to the call, and even the ai model ships inside the extension.</p>
+    </details>
+    <details>
+      <summary><h3>does it work in the zoom or discord desktop app?</h3><span class="plus" aria-hidden="true"></span></summary>
+      <p>no, only on websites in your browser. no browser extension can reach a desktop app. use the web version of zoom or discord, or pair Cam360 with obs virtual camera.</p>
+    </details>
+    <details>
+      <summary><h3>why doesn't the ai background work on google meet?</h3><span class="plus" aria-hidden="true"></span></summary>
+      <p>meet blocks the webassembly the ai model needs. switch the cut out method to green screen and backgrounds work there too. every other effect works on meet as normal.</p>
+    </details>
+    <details>
+      <summary><h3>which browsers does it work in?</h3><span class="plus" aria-hidden="true"></span></summary>
+      <p>chrome, and the browsers built on it: edge, brave and arc. firefox and safari aren't supported today.</p>
+    </details>
   </div>
+  <p class="support" id="support">still stuck? email <a href="mailto:hi@realanshuman.com?subject=Cam360%20support">hi@realanshuman.com</a> or <a href="https://github.com/realanshuman/cam360-support/issues/new/choose" target="_blank" rel="noopener noreferrer">open an issue on github</a>.</p>
 </section>
 
-<section class="support" id="support">
-  <div class="wrap">
-    <div class="support-band" data-reveal>
-      <div class="support-copy">
-        <h2>Need a hand?</h2>
-        <p>Email <a href="mailto:hi@realanshuman.com?subject=Cam360%20support">hi@realanshuman.com</a>, or open an issue on GitHub to keep the answer public. Either way it reaches the person who builds Cam360. Say which site you were on and which browser, and what you expected to happen.</p>
-      </div>
-      <div class="support-actions">
-        <a class="btn btn-primary" href="mailto:hi@realanshuman.com?subject=Cam360%20support">Email support</a>
-        <a class="btn btn-soft" href="https://github.com/realanshuman/cam360-support/issues/new/choose" target="_blank" rel="noopener noreferrer">Open an issue on GitHub</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="install">
-  <div class="wrap">
-    <div class="c-cta" data-reveal>
-      <h2>Ready when you are.</h2>
-      <p>Add it, open any site that uses your camera, and adjust from the popup. There is nothing to sign up for.</p>
-      <div class="c-cta-actions">
-        <a class="btn btn-primary btn-lg" href="https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="3.6"/><path d="M12 8.4h9.2M8.9 13.8L4.3 21.2M15.1 13.8L10.5 21.2"/></svg> Add to Chrome, it's free</a>
-      </div>
-    </div>
-  </div>
+<section class="last" id="install">
+  <h2>try it on your next call</h2>
+  <p>add it, join any call, click the Cam360 icon. that's it.</p>
+  <a class="aqua" href="https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe" rel="noopener"><svg aria-hidden="true"><use href="#chrome"/></svg>add to chrome</a>
+  <p class="fine">100% free. no account.</p>
 </section>
 
 </main>
 
 <footer class="foot">
-  <svg class="foot-mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="15" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-dasharray="77.8 16.5" transform="rotate(-14 24 24)"/><circle cx="24" cy="24" r="9.4" fill="none" stroke="currentColor" stroke-width="0.7"/></svg>
-  <div class="wrap foot-in">
-
-    <div class="foot-top">
-      <div class="foot-id">
-        <a class="brand" href="#top"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#2383E2"/><circle cx="24" cy="24" r="11" fill="none" stroke="#fff" stroke-width="3.25" stroke-linecap="round" stroke-dasharray="57 12.1" transform="rotate(-14 24 24)"/><circle cx="24" cy="24" r="4.25" fill="#fff"/></svg> Cam360</a>
-        <p class="foot-say">Free forever. Every frame stays on your own device.</p>
-      </div>
-      <div class="foot-ask">
-        <p class="foot-ask-why">If Cam360 made a call better</p>
-        <a class="bmc" href="https://buymeacoffee.com/realanshuman" target="_blank" rel="noopener noreferrer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M17 10.5h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 2.5v2.6M12 2.5v2.6"/></svg> Buy me a coffee</a>
-      </div>
+  <div class="foot-cols">
+    <div><p class="foot-h">product</p><a href="/#features">features</a><a href="/#faq">faq</a><a href="https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe" rel="noopener">chrome web store</a></div>
+    <div><p class="foot-h">help</p><a href="/#support">support</a><a href="https://github.com/realanshuman/cam360-support/issues/new/choose" target="_blank" rel="noopener noreferrer">report a bug</a><a href="/privacy">privacy</a></div>
+    <div><p class="foot-h">made by</p><a href="https://realanshuman.com" target="_blank" rel="noopener noreferrer">Ansh</a><a href="https://buymeacoffee.com/realanshuman" target="_blank" rel="noopener noreferrer">buy me a coffee</a></div>
+    <div><p class="foot-h">note</p><p>*Cam360 changes your video on your own computer. nothing is ever uploaded.</p><p>not affiliated with google, discord, zoom, whereby or jitsi. their names only say where it runs.</p></div>
+  </div>
+  <div class="foot-base">
+    <span>&#169; 2026 Cam360</span>
+    <div class="tsw" role="group" aria-label="Appearance">
+      <button class="tsw-btn" type="button" data-theme-set="light" aria-pressed="false" title="Light" aria-label="Light"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg></button>
+      <button class="tsw-btn" type="button" data-theme-set="system" aria-pressed="true" title="Match system" aria-label="Match system"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 3.4a8.6 8.6 0 0 1 0 17.2z" fill="currentColor" stroke="none"/></svg></button>
+      <button class="tsw-btn" type="button" data-theme-set="dark" aria-pressed="false" title="Dark" aria-label="Dark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/></svg></button>
     </div>
-
-    <nav class="foot-nav" aria-label="Footer">
-      <a href="#features">Features</a>
-      <a href="#how">How it works</a>
-      <a href="#install">Install</a>
-      <a href="#faq">FAQ</a>
-      <a href="#support">Support</a>
-      <a href="https://chromewebstore.google.com/detail/cam360/ddnijfcmkiogmndecegggdieokbhlhpe" rel="noopener">Chrome Web Store</a>
-      <a href="https://github.com/realanshuman/cam360-support/issues/new/choose" target="_blank" rel="noopener noreferrer">Report a bug</a>
-      <a href="/privacy">Privacy</a>
-    </nav>
-
-    <div class="foot-base">
-      <p class="foot-built">&#169; 2026 Cam360. Built by <a href="https://realanshuman.com" target="_blank" rel="noopener noreferrer">Ansh</a>.</p>
-      <div class="tsw" role="group" aria-label="Appearance">
-        <span class="tsw-thumb" aria-hidden="true"></span>
-        <button class="tsw-btn" type="button" data-theme-set="light" aria-pressed="false" title="Light" aria-label="Light"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg></button>
-        <button class="tsw-btn" type="button" data-theme-set="system" aria-pressed="true" title="Match system" aria-label="Match system"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 3.4a8.6 8.6 0 0 1 0 17.2z" fill="currentColor" stroke="none"/></svg></button>
-        <button class="tsw-btn" type="button" data-theme-set="dark" aria-pressed="false" title="Dark" aria-label="Dark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/></svg></button>
-      </div>
-    </div>
-
-    <p class="foot-fine">Cam360 is an independent project and is not affiliated with, endorsed by, or sponsored by Google, Discord, Zoom, Whereby, or Jitsi. Product names are used only to describe where the extension runs.</p>
-
+  </div>
+  <div class="foot-word" aria-hidden="true">
+    <svg class="trash" viewBox="0 0 64 72"><rect x="10" y="14" width="44" height="54" rx="6" fill="#dfe3e8" stroke="#b8bec7" stroke-width="2"/><path d="M22 24v34M32 24v34M42 24v34" stroke="#b8bec7" stroke-width="2.5" stroke-linecap="round"/><rect x="5" y="7" width="54" height="9" rx="4.5" fill="#eceff3" stroke="#b8bec7" stroke-width="2"/><path d="M28 7V4h8v3" fill="none" stroke="#b8bec7" stroke-width="2"/></svg>
+    <span>Cam360</span>
+    <svg class="folder" viewBox="0 0 80 64"><path d="M4 12a6 6 0 0 1 6-6h18l6 7h36a6 6 0 0 1 6 6v33a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6z" fill="#6fb5f5"/><path d="M4 22a6 6 0 0 1 6-6h60a6 6 0 0 1 6 6v30a6 6 0 0 1-6 6H10a6 6 0 0 1-6-6z" fill="#93c9f8"/></svg>
   </div>
 </footer>
 
 <script>
+/* The clock in the menu bar, like the one on a real desktop. */
 (function () {
-  var menu = document.getElementById("menu");
-  if (!menu) return;
-  menu.querySelectorAll(".menu-panel a").forEach(function (a) {
-    a.addEventListener("click", function () { menu.open = false; });
+  var el = document.querySelector("[data-clock]");
+  if (!el) return;
+  function tick() { el.textContent = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); }
+  tick(); setInterval(tick, 15000);
+})();
+</script>
+
+<script>
+/* The demo call: the buttons switch the look, and until someone presses one
+   it steps through them on its own while it is on screen. */
+(function () {
+  var stage = document.querySelector("[data-demo]");
+  if (!stage) return;
+  var buttons = [].slice.call(document.querySelectorAll("[data-look-set]"));
+  var order = buttons.map(function (b) { return b.dataset.lookSet; });
+  var i = 0, timer = 0, stopped = false;
+  function show(look) {
+    stage.dataset.look = look;
+    buttons.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.lookSet === look)); });
+  }
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () { stopped = true; clearTimeout(timer); show(b.dataset.lookSet); });
   });
-  document.addEventListener("click", function (e) {
-    if (menu.open && !menu.contains(e.target)) menu.open = false;
-  });
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") menu.open = false;
-  });
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+  function next() {
+    if (stopped) return;
+    i = (i + 1) % order.length;
+    show(order[i]);
+    timer = setTimeout(next, order[i] === "off" ? 1600 : 2400);
+  }
+  new IntersectionObserver(function (entries) {
+    clearTimeout(timer);
+    if (entries[0].isIntersecting && !stopped) timer = setTimeout(next, 1400);
+  }, { threshold: 0.4 }).observe(stage);
 })();
 
+/* Chat bubbles type themselves out the first time they scroll into view. */
+(function () {
+  var bubbles = [].slice.call(document.querySelectorAll("[data-type]"));
+  if (!bubbles.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      io.unobserve(entry.target);
+      var el = entry.target, full = el.dataset.full, shown = el.querySelector(".typed"), n = 0;
+      (function type() {
+        n += 1;
+        shown.textContent = full.slice(0, n);
+        if (n < full.length) setTimeout(type, 38 + Math.random() * 40);
+        else el.classList.remove("is-typing");
+      })();
+    });
+  }, { threshold: 0.6 });
+  bubbles.forEach(function (el) {
+    var full = el.textContent, said = document.createElement("span"), shown = document.createElement("span");
+    said.className = "visually-hidden"; said.textContent = full;
+    shown.className = "typed"; shown.setAttribute("aria-hidden", "true");
+    el.textContent = ""; el.append(said, shown);
+    el.dataset.full = full;
+    el.classList.add("is-typing");
+    io.observe(el);
+  });
+})();
 </script>
 </body>
 </html>

@@ -1,13 +1,12 @@
 /* Cam360 theme switch: light, dark, or follow the system.
    Shared by every page. The no flash snippet that applies the saved choice
    before first paint stays inline in each page's <head>; this only wires the
-   control and keeps the theme dependent bits in sync. */
+   control and keeps the browser's theme colour in step. */
 (function () {
   var root = document.documentElement;
   var buttons = [].slice.call(document.querySelectorAll("[data-theme-set]"));
   if (!buttons.length) return;
 
-  var shot = document.getElementById("heroShot");   /* home page only */
   var meta = document.querySelector('meta[name="theme-color"]');
   var mq = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -24,9 +23,7 @@
       b.setAttribute("aria-pressed", String(b.dataset.themeSet === choice));
     });
     var dark = isDark();
-    /* The <picture> covers the system case; override it when a choice is set. */
-    if (shot) shot.src = dark ? "/assets/popup-dark.png" : "/assets/popup-light.png";
-    if (meta) meta.setAttribute("content", dark ? "#14120e" : "#fffdf8");
+    if (meta) meta.setAttribute("content", dark ? "#161617" : "#f2f2f1");
   }
   function apply(choice) {
     try { localStorage.setItem("cam360-theme", choice); } catch (e) {}
